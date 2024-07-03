@@ -1,10 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
 import BasicTable from './component/table';
+import IndexPage from './component/IndexPage';
+
 function App() {
   return (
     <div >
-   <BasicTable></BasicTable>
+      <IndexPage></IndexPage>
+   {/* <BasicTable></BasicTable> */}
     </div>
   );
 }
