@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import ProductManagerRepo from '../repositories/productManagerRepo';
 
-
-
 export const getRequestorNames = async (req: Request, res: Response): Promise<void> => {
     console.log('controller')
     try {
@@ -13,4 +11,5 @@ export const getRequestorNames = async (req: Request, res: Response): Promise<vo
       res.status(500).send('Internal Server Error');
     }
   };
+  
   

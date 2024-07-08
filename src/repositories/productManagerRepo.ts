@@ -9,7 +9,7 @@
 //         return result.rows;
 //       }
 // }
-import pool from '../config/db';
+import {pool} from '../config/db';
 
 export default class ProductManagerRepo {
     static async getAllProductManagerNames(): Promise<{ name: string }[]> {

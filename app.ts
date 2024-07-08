@@ -21,6 +21,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import ProductmanagerRoutes from './src/routes/productManagerRoutes'
+import GroupRoutes from './src/routes/groupRoutes';
+
 
 dotenv.config();
 
@@ -31,6 +33,7 @@ app.use(express.json());
 
 
 app.use('/api', ProductmanagerRoutes);
+app.use('/api',GroupRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
