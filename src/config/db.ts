@@ -15,7 +15,10 @@ const pool = new Pool({
  password: process.env.PGPASSWORD, 
   port: Number(process.env.PGPORT),
   idleTimeoutMillis: 0,
-  connectionTimeoutMillis: 0
+  connectionTimeoutMillis: 0,
+  ssl:{
+    rejectUnauthorized: false
+  }
 });
 
 export default pool;
