@@ -1,15 +1,15 @@
-import {group} from './groupModel';
+import {Group} from './groupModel';
 export interface Request{
     id:string,
     title: string,
-    requesterGroup:group,
+    requesterGroup:Group,
     description:string,
     priority:priority,
     finalDecision:boolean,
     planned:string,
     comments:string,
     date:Date,
-    affectedGroupsList:group[],
+    affectedGroupsList:JSON,
     JiraLink:string
 
 

@@ -1,4 +1,4 @@
-export  default interface AffectedGroupModel {
+export  default interface AffectedGroup {
     id: number;
     requestId: number;
     status: Status;
