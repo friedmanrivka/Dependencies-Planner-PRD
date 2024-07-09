@@ -1,10 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
-import BasicTable from './component/table';
+// import BasicTable from './component/table';
+import ListComponent from './component/table';
 function App() {
   return (
     <div >
-   <BasicTable></BasicTable>
+   {/* <BasicTable></BasicTable> */}
+    <ListComponent></ListComponent>
+
     </div>
   );
 }

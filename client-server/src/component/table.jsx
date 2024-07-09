@@ -1,4 +1,6 @@
-import * as React from 'react';
+// import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,20 +8,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { getAllGroup } from './service';
+const ListComponent = () => {
 
-function createData(
-  InitiativeTitle,
-  RequestorGroup,
-  Description,
-  Priority,
-  FinalDecision,
-  Group1,
-  Group2,
-  Group3,
-  Planned,
-  comments
-) {
-  return {
+  function createData(
     InitiativeTitle,
     RequestorGroup,
     Description,
@@ -30,18 +22,42 @@ function createData(
     Group3,
     Planned,
     comments
+  ) {
+    return {
+      InitiativeTitle,
+      RequestorGroup,
+      Description,
+      Priority,
+      FinalDecision,
+      Group1,
+      Group2,
+      Group3,
+      Planned,
+      comments
+    };
+  }
+  const [group, setGroup] = useState([]);
+  useEffect(() => {
+    fetchGruop();
+  }, []);
+
+  const fetchGruop = async () => {
+    try {
+      const data = await getAllGroup();
+      setGroup(data);
+    } catch (error) {
+      console.error('Error fetching lists:', error);
+    }
   };
-}
+  const rows = [
+    createData('Frozen yoghurt', 'Group A', 'Tasty dessert', 'High', 'Approved', 'Yes', 'No', 'Maybe', 'Q1', 'Delicious'),
+    createData('Ice cream sandwich', 'Group B', 'Cold dessert', 'Medium', 'Pending', 'No', 'Yes', 'No', 'Q2', 'Sweet'),
+    createData('Eclair', 'Group C', 'Pastry', 'Low', 'Rejected', 'No', 'No', 'Yes', 'Q3', 'Rich flavor'),
+    createData('Cupcake', 'Group D', 'Small cake', 'High', 'Approved', 'Yes', 'Yes', 'No', 'Q4', 'Colorful'),
+    createData('Gingerbread', 'Group E', 'Spicy cookie', 'Medium', 'Pending', 'Maybe', 'No', 'Yes', 'Q1', 'Seasonal')
+  ];
 
-const rows = [
-  createData('Frozen yoghurt', 'Group A', 'Tasty dessert', 'High', 'Approved', 'Yes', 'No', 'Maybe', 'Q1', 'Delicious'),
-  createData('Ice cream sandwich', 'Group B', 'Cold dessert', 'Medium', 'Pending', 'No', 'Yes', 'No', 'Q2', 'Sweet'),
-  createData('Eclair', 'Group C', 'Pastry', 'Low', 'Rejected', 'No', 'No', 'Yes', 'Q3', 'Rich flavor'),
-  createData('Cupcake', 'Group D', 'Small cake', 'High', 'Approved', 'Yes', 'Yes', 'No', 'Q4', 'Colorful'),
-  createData('Gingerbread', 'Group E', 'Spicy cookie', 'Medium', 'Pending', 'Maybe', 'No', 'Yes', 'Q1', 'Seasonal')
-];
-
-export default function BasicTable() {
+  // export default function BasicTable() {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -52,6 +68,14 @@ export default function BasicTable() {
             <TableCell><b>Description</b></TableCell>
             <TableCell><b>Priority</b></TableCell>
             <TableCell><b>Final Decision</b></TableCell>
+
+            {/* {group.map((item) => ( */}
+            {/* <tr key={item.id}> */}
+            {/* <TableCell><b>{item.id}</b></TableCell> */}
+            {/* <TableCell><b>{item.name}</b></TableCell> */}
+            {/* <td>{item.name}</td> */}
+            {/* </tr> ))} */}
+
             <TableCell><b>Group 1</b></TableCell>
             <TableCell><b>Group 2</b></TableCell>
             <TableCell><b>Group 3</b></TableCell>
@@ -61,8 +85,8 @@ export default function BasicTable() {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow   key={row.name}
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            <TableRow key={row.name}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell component="th" scope="row">
                 {row.InitiativeTitle}
               </TableCell>
@@ -82,3 +106,5 @@ export default function BasicTable() {
     </TableContainer>
   );
 }
+export default ListComponent
+//  }
