@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import {getGroup} from './services'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -41,7 +42,20 @@ const rows = [
   createData('Gingerbread', 'Group E', 'Spicy cookie', 'Medium', 'Pending', 'Maybe', 'No', 'Yes', 'Q1', 'Seasonal')
 ];
 
-export default function BasicTable() {
+const BasicTable = () => {
+  const [group, setGroup] = useState([]);
+  const fetchGroup = async () => {
+    try {
+        const data = await getGroup();
+        setGroup(data);
+    } catch (error) {
+        console.error('Error fetching Group:', error);
+    }
+};
+useEffect(() => {
+  fetchGroup();
+}, []);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -52,7 +66,15 @@ export default function BasicTable() {
             <TableCell><b>Description</b></TableCell>
             <TableCell><b>Priority</b></TableCell>
             <TableCell><b>Final Decision</b></TableCell>
-            <TableCell><b>Group 1</b></TableCell>
+            <TableBody>
+          {group.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell component="th" scope="row">
+                {item.name}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
             <TableCell><b>Group 2</b></TableCell>
             <TableCell><b>Group 3</b></TableCell>
             <TableCell><b>Planned</b></TableCell>
@@ -81,4 +103,7 @@ export default function BasicTable() {
       </Table>
     </TableContainer>
   );
+
+
 }
+export default BasicTable;

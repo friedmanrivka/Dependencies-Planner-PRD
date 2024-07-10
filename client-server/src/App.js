@@ -1,10 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
-import BasicTable from './component/table';
+import { Navbar } from './routing/navbar';
+import { Routing } from './routing/routing';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 function App() {
   return (
     <div >
-   <BasicTable></BasicTable>
+     <Router>
+      <div>
+        <Navbar />
+        <Routing />
+      </div>
+    </Router>
     </div>
   );
 }
