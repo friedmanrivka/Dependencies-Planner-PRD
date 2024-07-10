@@ -12,3 +12,5 @@ export const getAllPriority = async (req: Request, res: Response): Promise<void>
         res.status(500).send('Internal Server Error');
     }
 };
+
+

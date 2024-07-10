@@ -7,7 +7,7 @@ export const getAllDescriptions = async (req: Request, res: Response): Promise<v
     console.log('controller');
     try {
         const descriptions = await RequestRepo.getAllDescriptions();
-        res.json(descriptions);  // Return the entire array of objects
+        res.json(descriptions);  
     } catch (error) {
         console.error('Error fetching descriptions:', error);
         res.status(500).send('Internal Server Error');
