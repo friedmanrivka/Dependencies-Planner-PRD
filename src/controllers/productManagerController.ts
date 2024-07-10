@@ -7,7 +7,6 @@ export const getRequestorNames = async (req: Request, res: Response): Promise<vo
     console.log('controller')
     try {
       const productManagerNames = await ProductManagerRepo.getAllProductManagerNames();
-     
       const namesArray = productManagerNames.map(pm => pm.productmanagername);
       res.json(namesArray);
     } catch (error) {
@@ -15,6 +14,3 @@ export const getRequestorNames = async (req: Request, res: Response): Promise<vo
       res.status(500).send('Internal Server Error');
     }
   };
-
-
-
