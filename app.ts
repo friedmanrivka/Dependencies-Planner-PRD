@@ -6,6 +6,7 @@ import priorityRoutes from './src/routes/priorityRoutes'
 import ProductManageRoutes from './src/routes/productManagerRoutes';
 import quarterDatesRoutes from './src/routes/quarterDatesRoutes';
 import finalDesicion from './src/routes/filnalDesicionRoutes'
+import statusRoutes from './src/routes/statusRoutes'
 dotenv.config();
 const app = express();
 const port = process.env.EXPRESS_PORT || 3000;
@@ -16,7 +17,8 @@ app.use('/api',groupRoutes);
 app.use('/api',priorityRoutes)
 app.use('/api',ProductManageRoutes);
 app.use('/api', quarterDatesRoutes);
-app.use('/api',finalDesicion)
+app.use('/api',finalDesicion);
+app.use('/api',statusRoutes)
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 })
