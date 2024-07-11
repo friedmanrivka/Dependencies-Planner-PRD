@@ -1,5 +1,5 @@
-export interface productManagerModels{
+export interface ProductManager{
     email:string,
-    name:string,
+    productmanagername:string,
     groupId:number
     };

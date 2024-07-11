@@ -1,4 +1,4 @@
-export interface group{
-    id: Number;
-    productmanagername: string;
+export interface Group{
+    id: number;
+    name: string;
 }

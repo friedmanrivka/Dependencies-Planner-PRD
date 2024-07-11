@@ -1,17 +1,18 @@
-import {group} from './groupModel';
+import {Group} from './groupModel';
+import { Priority } from './priorityModel';
 export interface Request{
     id:string,
     title: string,
-    requesterGroup:group,
+    requesterGroup?:Group,
     description:string,
-    priority:priority,
+    priority:Priority,
     finalDecision:boolean,
     planned:string,
     comments:string,
     date:Date,
-    affectedGroupsList:group[],
-    JiraLink:string
+    affectedGroupsList:JSON,
+    JiraLink:string,
+    gtoupid:number;
 
 
 }
-export type priority='Critical' | 'High' | 'Low';

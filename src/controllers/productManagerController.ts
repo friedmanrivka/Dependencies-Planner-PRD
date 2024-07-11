@@ -7,6 +7,7 @@ export const getRequestorNames = async (req: Request, res: Response): Promise<vo
     console.log('controller')
     try {
       const productManagerNames = await ProductManagerRepo.getAllProductManagerNames();
+      console.log(productManagerNames)
       const namesArray = productManagerNames.map(pm => pm.productmanagername);
       res.json(namesArray);
     } catch (error) {

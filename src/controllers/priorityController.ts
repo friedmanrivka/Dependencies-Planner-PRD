@@ -4,7 +4,7 @@ export const getAllPriority = async (req: Request, res: Response): Promise<void>
     console.log('controller');
     try {
         const priority = await priorityRepo.getAllPriority();
-        const priorityArray = priority.map(req => req.name);  // Change 'req.priority' to 'req.name'
+        const priorityArray = priority.map(req => req.critical);  // Change 'req.priority' to 'req.name'
         res.json(priorityArray);
         console.log(priorityArray);
     } catch (error) {
@@ -12,5 +12,21 @@ export const getAllPriority = async (req: Request, res: Response): Promise<void>
         res.status(500).send('Internal Server Error');
     }
 };
+
+// import { Request, Response } from 'express';
+// import priorityRepo from '../repositories/priorityRepo';
+// import { Priority } from '../models/priorityModel';
+
+// export default class PriorityController {
+//     static async getAllPriorities(req: Request, res: Response) {
+//         try {
+//             const priorities: Priority[] = await priorityRepo.getAllPriority();
+//             res.json(priorities);
+//         } catch (err) {
+//             console.error('Error in getAllPriorities controller:', err);
+//             res.status(500).send('Internal Server Error');
+//         }
+//     }
+// }
 
 

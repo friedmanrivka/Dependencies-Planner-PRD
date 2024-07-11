@@ -1,12 +1,13 @@
 import {pool} from '../config/db';
-
+import {Request} from '../models/requestModel';
+import GroupRepo from './groupRepo'; 
 export default class RequestRepo {
-    static async getAllDescriptions(): Promise<{ description: string }[]> {
+    static async getAllDescriptions(): Promise<Request[]> {
         try {
             console.log('Entering getAllDescriptions method');
-            const result = await pool.query(' SELECT pr.productmanagername, r.title, r.comment, r.description, r.planned, r.jiralink, p.name, f.decision  FROM finaldecision f JOIN request r ON f.id = r.finaldecision JOIN priority p ON r.priority_id = p.id JOIN productmanager pr ON r.productmanagerid = pr.email;');
+            const result = await pool.query(' SELECT pr.productmanagername, r.title, r.comment, r.description, r.planned, r.jiralink, p.critical, f.decision,r.groupid  FROM finaldecision f JOIN request r ON f.id = r.finaldecision JOIN priority p ON r.priority_id = p.id JOIN productmanager pr ON r.productmanagerid = pr.email;');
            console.log('Query executed successfully, result:', result.rows);
-            return result.rows;
+            return result.rows as Request[];
         } catch (err) {
             console.error('Error executing query in getAllDescriptions:', err);
             throw err;
