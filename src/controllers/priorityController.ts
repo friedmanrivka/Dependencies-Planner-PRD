@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import priorityRepo from '../repositories/priorityRepo'
+import priorityRepo from '../repositories/priorityRepo';
+import { Priority } from '../models/priorityModel';
 export const getAllPriority = async (req: Request, res: Response): Promise<void> => {
     console.log('controller');
     try {
@@ -17,8 +18,8 @@ export const getAllPriority = async (req: Request, res: Response): Promise<void>
 // import priorityRepo from '../repositories/priorityRepo';
 // import { Priority } from '../models/priorityModel';
 
-// export default class PriorityController {
-//     static async getAllPriorities(req: Request, res: Response) {
+// export  class PriorityController {
+//     static async getAllPriority(req: Request, res: Response) {
 //         try {
 //             const priorities: Priority[] = await priorityRepo.getAllPriority();
 //             res.json(priorities);
