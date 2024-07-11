@@ -7,9 +7,13 @@ import ProductManageRoutes from './src/routes/productManagerRoutes';
 import quarterDatesRoutes from './src/routes/quarterDatesRoutes';
 import finalDesicion from './src/routes/filnalDesicionRoutes'
 import statusRoutes from './src/routes/statusRoutes'
+import cors from 'cors';
+
 dotenv.config();
 const app = express();
-const port = process.env.EXPRESS_PORT || 3000;
+const port = process.env.EXPRESS_PORT || 3001
+app.use(cors());
+
 app.use(express.json());
 
 app.use('/api', requestRoutes);
