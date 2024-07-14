@@ -3,10 +3,10 @@ import RequestRepo from '../repositories/requestRepo';
 
 
 
-export const getAllDescriptions = async (req: Request, res: Response): Promise<void> => {
+export const getAllRequst = async (req: Request, res: Response): Promise<void> => {
     console.log('controller');
     try {
-        const descriptions = await RequestRepo.getAllDescriptions();
+        const descriptions = await RequestRepo.getAllRequst();
         res.json(descriptions);  
     } catch (error) {
         console.error('Error fetching descriptions:', error);
