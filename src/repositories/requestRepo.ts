@@ -1,6 +1,6 @@
 import {pool} from '../config/db';
 import {Request} from '../models/requestModel';
-import {ExtendedRequest}from '../models/extendedRequestModel'
+import  {ExtendedRequest}from '../models/extendedRequestModel'
 import { mapRequestsToGroups } from '../utility/dataMapper';
 import GroupRepo from '../repositories/groupRepo';
 export default class RequestRepo {
@@ -16,13 +16,15 @@ static async getAllRequst(): Promise<ExtendedRequest[]> {
             
         `);
         console.log(' Request Query executed successfully, result:', result.rows);
-      const requests = result.rows as Request[];
+
+        const requests = result.rows as Request[];
         const groups = await GroupRepo.getAllGroup();
 console .log('Groups fetched successfully:', groups)
         const requestsWithGroup = mapRequestsToGroups(requests, groups) as ExtendedRequest[];
 console.log('mapped requests with groups:',requestsWithGroup)
         return requestsWithGroup;
-    } catch (err) {
+    } 
+        catch (err) {
         console.error('Error executing query in getAllRequests:', err);
         throw err;
     }
