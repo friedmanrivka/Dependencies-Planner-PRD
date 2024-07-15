@@ -12,15 +12,18 @@ import Button from '@mui/material/Button';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './BasicTable.css'; // Import the CSS file for custom styles
-import { Select, MenuItem } from '@mui/material';
+import { Select, MenuItem, TextField, Checkbox, ListItemText } from '@mui/material';
 
 const ItemType = 'ROW';
 
-const DraggableRow = ({ row, index, moveRow, showGroups, group, status }) => {
+const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priorityOptions, quarterDates, finalDecision, requestorNames }) => {
   const ref = useRef(null);
-  const [selectedStatus, setSelectedStatus] = useState(
-    Array(group.length).fill('Pending Response')
-  );
+  const [selectedStatus, setSelectedStatus] = useState(Array(group.length).fill('Pending Response'));
+  const [selectedPriority, setSelectedPriority] = useState(row.critical || ''); // HIGHLIGHTED
+  const [selectedPlanned, setSelectedPlanned] = useState(row.planned || ''); // HIGHLIGHTED
+  const [selectedRequestorGroup, setSelectedRequestorGroup] = useState(row.requestorGroup || '');
+  const [selectedFinalDecision, setSelectedFinalDecision] = useState(row.decision || '');
+  const [selectedRequestorName, setSelectedRequestorName] = useState(row.productmanagername || '');
 
   const [, drop] = useDrop({
     accept: ItemType,
@@ -65,6 +68,26 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status }) => {
     }));
   };
 
+  const handlePriorityChange = (event) => {
+    setSelectedPriority(event.target.value);
+  };
+
+  const handlePlannedChange = (event) => {
+    setSelectedPlanned(event.target.value);
+  };
+
+  const handleRequestorGroupChange = (event) => {
+    setSelectedRequestorGroup(event.target.value);
+  };
+
+  const handleFinalDecisionChange = (event) => {
+    setSelectedFinalDecision(event.target.value);
+  };
+
+  const handleRequestorNameChange = (event) => {
+    setSelectedRequestorName(event.target.value);
+  };
+
   return (
     <TableRow
       ref={ref}
@@ -72,13 +95,73 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status }) => {
       key={index}
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
-      <TableCell>{row.requestorGroup}</TableCell>
-      <TableCell align="right">{row.productmanagername}</TableCell>
+      <TableCell>
+        <Select
+          value={selectedRequestorGroup}
+          onChange={handleRequestorGroupChange}
+          displayEmpty
+        >
+          {group.map((groupOption, groupIndex) => (
+            <MenuItem value={groupOption} key={groupIndex}>
+              {groupOption}
+            </MenuItem>
+          ))}
+        </Select>
+      </TableCell>
+      <TableCell align="right">
+        <Select
+          value={selectedRequestorName}
+          onChange={handleRequestorNameChange}
+          displayEmpty
+        >
+          {requestorNames.map((nameOption, nameIndex) => (
+            <MenuItem value={nameOption} key={nameIndex}>
+              {nameOption}
+            </MenuItem>
+          ))}
+        </Select>
+      </TableCell>
       <TableCell>{row.title}</TableCell>
-      <TableCell align="right">{row.planned}</TableCell>
+      <TableCell align="right">
+        <Select
+          value={selectedPlanned} // HIGHLIGHTED
+          onChange={handlePlannedChange}
+          displayEmpty
+        >
+          {quarterDates.map((dateOption, dateIndex) => (
+            <MenuItem value={dateOption} key={dateIndex}>
+              {dateOption}
+            </MenuItem>
+          ))}
+        </Select>
+      </TableCell>
       <TableCell>{row.description}</TableCell>
-      <TableCell>{row.critical}</TableCell>
-      <TableCell>{row.decision}</TableCell>
+      <TableCell>
+        <Select
+          value={selectedPriority} // HIGHLIGHTED
+          onChange={handlePriorityChange}
+          displayEmpty
+        >
+          {priorityOptions.map((priorityOption, priorityIndex) => (
+            <MenuItem value={priorityOption} key={priorityIndex}>
+              {priorityOption}
+            </MenuItem>
+          ))}
+        </Select>
+      </TableCell>
+      <TableCell>
+        <Select
+          value={selectedFinalDecision}
+          onChange={handleFinalDecisionChange}
+          displayEmpty
+        >
+          {finalDecision.map((decisionOption, decisionIndex) => (
+            <MenuItem value={decisionOption} key={decisionIndex}>
+              {decisionOption}
+            </MenuItem>
+          ))}
+        </Select>
+      </TableCell>
       {showGroups && group.map((item, groupIndex) => (
         <TableCell align="right" key={groupIndex}>
           <Select
@@ -105,12 +188,15 @@ const BasicTable = () => {
   const { group, setGroup } = useGroupContext();
   const [showGroups, setShowGroups] = useState(true);
   const [rows, setRows] = useState([]);
+  const [filteredRows, setFilteredRows] = useState([]); // HIGHLIGHTED
   const [finalDecision, setFinalDecision] = useState([]);
   const [quarterDates, setQuarterDates] = useState([]);
   const [requestorNames, setRequestorNames] = useState([]);
-  const [priority, setPriority] = useState([]);
+  const [priorityOptions, setPriorityOptions] = useState([]);
   const [descriptions, setDescriptions] = useState([]);
   const [status, setStatus] = useState([]);
+  const [filterRequestorGroup, setFilterRequestorGroup] = useState([]); // HIGHLIGHTED
+  const [filterRequestorName, setFilterRequestorName] = useState([]); // HIGHLIGHTED
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,10 +218,11 @@ const BasicTable = () => {
 
         const descriptionsData = await getDescriptions();
         setDescriptions(descriptionsData);
-        setRows(descriptionsData); // Update the state with the fetched data
+        setRows(descriptionsData);
+        setFilteredRows(descriptionsData); // HIGHLIGHTED
 
         const priorityData = await getPriority();
-        setPriority(priorityData);
+        setPriorityOptions(priorityData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -154,21 +241,78 @@ const BasicTable = () => {
     newRows.splice(dragIndex, 1);
     newRows.splice(hoverIndex, 0, dragRow);
     setRows(newRows);
+    setFilteredRows(newRows); // HIGHLIGHTED
   };
+
+  const handleFilterChange = () => {
+    let newFilteredRows = rows;
+    if (filterRequestorGroup.length > 0) {
+      newFilteredRows = newFilteredRows.filter(row => filterRequestorGroup.includes(row.requestorGroup));
+    }
+    if (filterRequestorName.length > 0) {
+      newFilteredRows = newFilteredRows.filter(row => filterRequestorName.includes(row.productmanagername));
+    }
+    setFilteredRows(newFilteredRows); // HIGHLIGHTED
+  };
+
+  useEffect(() => {
+    handleFilterChange();
+  }, [filterRequestorGroup, filterRequestorName]); // HIGHLIGHTED
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div>
-        <Button variant="contained" onClick={toggleGroups}>
+        <Button variant="contained" color="primary" onClick={toggleGroups}>
           {showGroups ? 'Hide Groups' : 'Show Groups'}
         </Button>
+        <div className="filter-container"> {/* HIGHLIGHTED */}
+          <div style={{ marginBottom: '10px' }}> {/* HIGHLIGHTED */}
+            <span style={{ marginRight: '20px' }}>Filter by Requestor Group</span> {/* HIGHLIGHTED */}
+            <span>Filter by Requestor Name</span> {/* HIGHLIGHTED */}
+          </div> {/* HIGHLIGHTED */}
+          <Select
+            multiple
+            value={filterRequestorGroup} // HIGHLIGHTED
+            onChange={(e) => setFilterRequestorGroup(e.target.value)} // HIGHLIGHTED
+            displayEmpty
+            style={{ marginRight: '10px' }}
+            renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED
+          >
+            <MenuItem value="">
+              <em>All Requestor Groups</em>
+            </MenuItem>
+            {group.map((groupOption, groupIndex) => (
+              <MenuItem value={groupOption} key={groupIndex}>
+                <Checkbox checked={filterRequestorGroup.indexOf(groupOption) > -1} /> {/* HIGHLIGHTED */}
+                <ListItemText primary={groupOption} /> {/* HIGHLIGHTED */}
+              </MenuItem>
+            ))}
+          </Select>
+          <Select
+            multiple
+            value={filterRequestorName} // HIGHLIGHTED
+            onChange={(e) => setFilterRequestorName(e.target.value)} // HIGHLIGHTED
+            displayEmpty
+            renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED
+          >
+            <MenuItem value="">
+              <em>All Requestor Names</em>
+            </MenuItem>
+            {requestorNames.map((nameOption, nameIndex) => (
+              <MenuItem value={nameOption} key={nameIndex}>
+                <Checkbox checked={filterRequestorName.indexOf(nameOption) > -1} /> {/* HIGHLIGHTED */}
+                <ListItemText primary={nameOption} /> {/* HIGHLIGHTED */}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell className="highlight-header">Requestor Group</TableCell>
                 <TableCell className="highlight-header" align="right">Requestor Name</TableCell>
-                <TableCell className="highlight-header">Initiative Title</TableCell>
+                <TableCell className="highlight-header">Title</TableCell>
                 <TableCell className="highlight-header" align="right">Planned</TableCell>
                 <TableCell className="highlight-header">Description</TableCell>
                 <TableCell className="highlight-header">Priority</TableCell>
@@ -183,7 +327,7 @@ const BasicTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row, index) => (
+              {filteredRows.map((row, index) => ( // HIGHLIGHTED
                 <DraggableRow
                   key={index}
                   index={index}
@@ -192,6 +336,10 @@ const BasicTable = () => {
                   showGroups={showGroups}
                   group={group}
                   status={status}
+                  priorityOptions={priorityOptions}
+                  quarterDates={quarterDates}
+                  finalDecision={finalDecision}
+                  requestorNames={requestorNames}
                 />
               ))}
             </TableBody>
