@@ -1,9 +1,10 @@
 import { Router } from 'express'
-import { getAllRequst , getAllfilterRequests} from '../controllers/requestController';
+import { getAllRequst , getAllfilterRequests,updateFinalDecision} from '../controllers/requestController';
 
 const router = Router();
 router.get('/descriptions', getAllRequst);
 router.get('/filterRequests', getAllfilterRequests);
+router.get('/updateFinalDecision/:id', updateFinalDecision);
 // router.get('/title',getAllTitles);
  router.get('/comments');
 

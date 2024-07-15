@@ -1,13 +1,13 @@
-import {pool} from '../config/db';
-import {Request} from '../models/requestModel';
-import  {ExtendedRequest}from '../models/extendedRequestModel'
+import { pool } from '../config/db';
+import { Request } from '../models/requestModel';
+import { ExtendedRequest } from '../models/extendedRequestModel'
 import { mapRequestsToGroups } from '../utility/dataMapper';
 import GroupRepo from '../repositories/groupRepo';
 export default class RequestRepo {
-static async getAllRequst(): Promise<ExtendedRequest[]> {
-    try {
-        console.log('Entering getAllRequests method');
-        const result = await pool.query(`
+    static async getAllRequst(): Promise<ExtendedRequest[]> {
+        try {
+            console.log('Entering getAllRequests method');
+            const result = await pool.query(`
             SELECT r.requestgroupid, pr.productmanagername, r.title, r.comment, r.description, r.planned, r.jiralink, p.critical, f.decision 
             FROM finaldecision f
             JOIN request r ON f.id = r.finaldecision 
@@ -15,44 +15,44 @@ static async getAllRequst(): Promise<ExtendedRequest[]> {
             JOIN productmanager pr ON r.productmanagerid = pr.email
             
         `);
-        console.log(' Request Query executed successfully, result:', result.rows);
+            console.log(' Request Query executed successfully, result:', result.rows);
 
-        const requests = result.rows as Request[];
-        const groups = await GroupRepo.getAllGroup();
-console .log('Groups fetched successfully:', groups)
-        const requestsWithGroup = mapRequestsToGroups(requests, groups) as ExtendedRequest[];
-console.log('mapped requests with groups:',requestsWithGroup)
-        return requestsWithGroup;
-    } 
+            const requests = result.rows as Request[];
+            const groups = await GroupRepo.getAllGroup();
+            console.log('Groups fetched successfully:', groups)
+            const requestsWithGroup = mapRequestsToGroups(requests, groups) as ExtendedRequest[];
+            console.log('mapped requests with groups:', requestsWithGroup)
+            return requestsWithGroup;
+        }
         catch (err) {
-        console.error('Error executing query in getAllRequests:', err);
-        throw err;
+            console.error('Error executing query in getAllRequests:', err);
+            throw err;
+        }
     }
-}
 
-   static async getAllfilterRequests(involvedGroup?: string, requestorGroup?: string, requestorName?: string): Promise<Request[]> {
+    static async getAllfilterRequests(involvedGroup?: string, requestorGroup?: string, requestorName?: string): Promise<Request[]> {
         // Initialize the base query
         let query = 'SELECT * FROM request WHERE 1=1';
         let queryParams: any[] = [];
-    
+
         // Add filter for involvedGroup if provided
         if (involvedGroup) {
             queryParams.push(involvedGroup);
             query += ` AND involvedgroupid = $${queryParams.length}`;
         }
-    
+
         // Add filter for requestorGroup if provided
         if (requestorGroup) {
             queryParams.push(requestorGroup);
             query += ` AND requestgroupid = $${queryParams.length}`;
         }
-    
+
         // Add filter for requestorName if provided
         if (requestorName) {
             queryParams.push(requestorName);
             query += ` AND productmanagerid = $${queryParams.length}`;
         }
-    
+
         try {
             const result = await pool.query(query, queryParams);
             return result.rows as Request[];
@@ -61,4 +61,14 @@ console.log('mapped requests with groups:',requestsWithGroup)
             throw err;
         }
     }
+    static async updateFinalDecision(id: number, finalDecision: number): Promise<void> {
+        try {
+            await pool.query('UPDATE request SET finalDecision = $1 WHERE id = $2', [finalDecision, id]);
+        } catch (err) {
+            console.error('Error updating final decision:', err);
+            throw err;
+        }
+    
+        //use automapper and also use models  
+          }
 }

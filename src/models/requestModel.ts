@@ -1,16 +1,16 @@
-import {Group} from './groupModel';
+import { Group } from './groupModel';
 import { Priority } from './priorityModel';
-export interface Request{
-    id:string,
+export interface Request {
+    id: number,
     title: string,
-    requesterGroup?:Group,
-    description:string,
-    priority:Priority,
-    finalDecision:boolean,
-    planned:string,
-    comments:string,
-    date:Date,
-    affectedGroupsList:JSON,
-    JiraLink:string,
-    requestgroupid:number;
+    requesterGroup?: Group,
+    description: string,
+    priority: Priority,
+    finalDecision: number,
+    planned: string,
+    comments: string,
+    date: Date,
+    affectedGroupsList: JSON,
+    JiraLink: string,
+    requestgroupid: number;
 }
