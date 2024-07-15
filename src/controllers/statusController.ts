@@ -22,7 +22,7 @@ export const getAllStatus = async (req: Request, res: Response): Promise<void> =
         const status = await StatusRepo.getAllStatus();
         console.log(status);  
         
-        const statusArray = status.map(item => item.name); // ממיר את מערך האובייקטים למערך של ערכים בלבד
+        const statusArray = status.map(item => item.status); // ממיר את מערך האובייקטים למערך של ערכים בלבד
         console.log(statusArray);
         
         res.json(statusArray);

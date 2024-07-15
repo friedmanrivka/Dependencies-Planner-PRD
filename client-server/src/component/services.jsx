@@ -12,7 +12,7 @@ export const getGroup = async () => {
 };
 export const getDescriptions = async () => {
     try {
-        const response = await axios.get(`${API_URL}/descriptions`);
+        const response = await axios.get(`http://localhost:3001/api/descriptions`);
         return response.data;
     } catch (error) {
         console.error('Error fetching groups:', error);
@@ -49,6 +49,15 @@ export const getQuarterDates = async () => {
 export const getFinalDecision = async () => {
     try {
         const response = await axios.get(`${API_URL}/finalDecision`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching groups:', error);
+        throw error;
+    }
+};
+export const getAllStatus = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/status`);
         return response.data;
     } catch (error) {
         console.error('Error fetching groups:', error);
