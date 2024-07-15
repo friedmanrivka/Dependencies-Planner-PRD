@@ -18,3 +18,10 @@ export const mapRequestsToGroups = (requests: Request[], groups: Group[]): any[]
         };
     });
 };
+export const mapDecisionToId = (decision: string): number | null => {
+    const decisionMapping: { [key: string]: number } = {
+        'In Q': 1,
+        'Not in Q': 2,
+    };
+    return decisionMapping[decision] || null;
+};
