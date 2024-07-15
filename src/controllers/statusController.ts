@@ -1,17 +1,4 @@
-// import StatusRepo from "../repositories/statusRepo";
-//  import { Request, Response } from 'express'
-// export const getAllStatus = async (req: Request, res: Response): Promise<void> => {
-//     console.log('controller');
-//     try {
-//         const status = await StatusRepo.getAllStatus();
-//         console.log(status);  
-      
-//    res.json(status)
-//     } catch (error) {
-//         console.error('Error fetching descriptions:', error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// };
+
 
 import { Request, Response } from 'express';
 import StatusRepo from "../repositories/statusRepo";
