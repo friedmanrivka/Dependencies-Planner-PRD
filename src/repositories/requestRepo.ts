@@ -30,45 +30,4 @@ export default class RequestRepo {
         }
     }
 
-    static async getAllfilterRequests(involvedGroup?: string, requestorGroup?: string, requestorName?: string): Promise<Request[]> {
-        // Initialize the base query
-        let query = 'SELECT * FROM request WHERE 1=1';
-        let queryParams: any[] = [];
-
-        // Add filter for involvedGroup if provided
-        if (involvedGroup) {
-            queryParams.push(involvedGroup);
-            query += ` AND involvedgroupid = $${queryParams.length}`;
-        }
-
-        // Add filter for requestorGroup if provided
-        if (requestorGroup) {
-            queryParams.push(requestorGroup);
-            query += ` AND requestgroupid = $${queryParams.length}`;
-        }
-
-        // Add filter for requestorName if provided
-        if (requestorName) {
-            queryParams.push(requestorName);
-            query += ` AND productmanagerid = $${queryParams.length}`;
-        }
-
-        try {
-            const result = await pool.query(query, queryParams);
-            return result.rows as Request[];
-        } catch (err) {
-            console.error('Error executing query in getAllfilterRequests:', err);
-            throw err;
-        }
-    }
-    static async updateFinalDecision(id: number, finalDecision: number): Promise<void> {
-        try {
-            await pool.query('UPDATE request SET finalDecision = $1 WHERE id = $2', [finalDecision, id]);
-        } catch (err) {
-            console.error('Error updating final decision:', err);
-            throw err;
-        }
-    
-        //use automapper and also use models  
-          }
 }

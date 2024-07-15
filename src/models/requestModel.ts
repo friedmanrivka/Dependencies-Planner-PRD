@@ -1,11 +1,10 @@
-import { Group } from './groupModel';
-import { Priority } from './priorityModel';
+
 export interface Request {
     id: number,
     title: string,
-    requesterGroup?: Group,
+    requesterGroup?: number,
     description: string,
-    priority: Priority,
+    priority: number,
     finalDecision: number,
     planned: string,
     comments: string,
