@@ -1,4 +1,5 @@
 export interface Status{
     id: number,
-    critical: string
+ status: string
+
 }

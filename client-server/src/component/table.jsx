@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useGroupContext } from './groupContext';
-import { getGroup, getFinalDecision, getQuarterDates, getRequestorNames, getPriority, getDescriptions } from './services';
+import { getGroup, getAllStatus, getFinalDecision, getQuarterDates, getRequestorNames, getPriority, getDescriptions } from './services';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,23 +11,16 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const initialRows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbead', 356, 16.0, 49, 3.9),
-];
+import './BasicTable.css'; // Import the CSS file for custom styles
+import { Select, MenuItem } from '@mui/material';
 
 const ItemType = 'ROW';
 
-const DraggableRow = ({ row, index, moveRow, showGroups, group }) => {
-  const ref = React.useRef(null);
+const DraggableRow = ({ row, index, moveRow, showGroups, group, status }) => {
+  const ref = useRef(null);
+  const [selectedStatus, setSelectedStatus] = useState(
+    Array(group.length).fill('Pending Response')
+  );
 
   const [, drop] = useDrop({
     accept: ItemType,
@@ -65,26 +58,45 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group }) => {
 
   drag(drop(ref));
 
+  const handleStatusChange = (value, groupIndex) => {
+    setSelectedStatus((prev) => ({
+      ...prev,
+      [groupIndex]: value,
+    }));
+  };
+
   return (
     <TableRow
       ref={ref}
       style={{ opacity: isDragging ? 0.5 : 1 }}
-      key={row.name}
+      key={index}
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
-      <TableCell component="th" scope="row">
-        {row.name}
-      </TableCell>
-      {showGroups &&
-        group.map((item) => (
-          <TableCell align="right" key={item.id}>
-            {item.name}
-          </TableCell>
-        ))}
-      <TableCell align="right">{row.calories}</TableCell>
-      <TableCell align="right">{row.fat}</TableCell>
-      <TableCell align="right">{row.carbs}</TableCell>
-      <TableCell align="right">{row.protein}</TableCell>
+      <TableCell>{row.requestorGroup}</TableCell>
+      <TableCell align="right">{row.productmanagername}</TableCell>
+      <TableCell>{row.title}</TableCell>
+      <TableCell align="right">{row.planned}</TableCell>
+      <TableCell>{row.description}</TableCell>
+      <TableCell>{row.critical}</TableCell>
+      <TableCell>{row.decision}</TableCell>
+      {showGroups && group.map((item, groupIndex) => (
+        <TableCell align="right" key={groupIndex}>
+          <Select
+            value={selectedStatus[groupIndex] || 'Pending Response'}
+            onChange={(e) => handleStatusChange(e.target.value, groupIndex)}
+            displayEmpty
+            renderValue={(selected) => selected || 'Pending Response'}
+          >
+            {status.map((statusOption, statusIndex) => (
+              <MenuItem value={statusOption} key={statusIndex}>
+                {statusOption}
+              </MenuItem>
+            ))}
+          </Select>
+        </TableCell>
+      ))}
+      <TableCell align="right">{row.comment}</TableCell>
+      <TableCell align="right"><a href={row.jiralink}>Jira Link</a></TableCell>
     </TableRow>
   );
 };
@@ -92,20 +104,21 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group }) => {
 const BasicTable = () => {
   const { group, setGroup } = useGroupContext();
   const [showGroups, setShowGroups] = useState(true);
-  const [rows, setRows] = useState(initialRows);
+  const [rows, setRows] = useState([]);
   const [finalDecision, setFinalDecision] = useState([]);
   const [quarterDates, setQuarterDates] = useState([]);
   const [requestorNames, setRequestorNames] = useState([]);
   const [priority, setPriority] = useState([]);
   const [descriptions, setDescriptions] = useState([]);
+  const [status, setStatus] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const groupData = await getGroup();
         setGroup(groupData);
-       
-        const finalDecisionData = await getFinalDecision();        
+
+        const finalDecisionData = await getFinalDecision();
         setFinalDecision(finalDecisionData);
 
         const quarterDatesData = await getQuarterDates();
@@ -114,12 +127,15 @@ const BasicTable = () => {
         const requestorNamesData = await getRequestorNames();
         setRequestorNames(requestorNamesData);
 
-        const priorityData = await getPriority();
-        setPriority(priorityData);
+        const statusData = await getAllStatus();
+        setStatus(statusData);
 
         const descriptionsData = await getDescriptions();
-        console.log(descriptionsData)
         setDescriptions(descriptionsData);
+        setRows(descriptionsData); // Update the state with the fetched data
+
+        const priorityData = await getPriority();
+        setPriority(priorityData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -150,29 +166,32 @@ const BasicTable = () => {
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
-                <TableCell>Dessert (100g serving)</TableCell>
-                {showGroups &&             
-                  group.map((item,index) => (
-                    <React.Fragment key={index}>
-                      <TableCell align="right">{item}</TableCell>
-                    </React.Fragment>
-                  ))}
-                <TableCell align="right">Calories</TableCell>
-                <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                <TableCell align="right">Protein&nbsp;(g)                
-                </TableCell>
+                <TableCell className="highlight-header">Requestor Group</TableCell>
+                <TableCell className="highlight-header" align="right">Requestor Name</TableCell>
+                <TableCell className="highlight-header">Initiative Title</TableCell>
+                <TableCell className="highlight-header" align="right">Planned</TableCell>
+                <TableCell className="highlight-header">Description</TableCell>
+                <TableCell className="highlight-header">Priority</TableCell>
+                <TableCell className="highlight-header">Final Decision</TableCell>
+                {showGroups && group.map((item, index) => (
+                  <TableCell className="highlight-header" align="right" key={index}>
+                    {item}
+                  </TableCell>
+                ))}
+                <TableCell className="highlight-header" align="right">Comments</TableCell>
+                <TableCell className="highlight-header" align="right">Jira Link</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map((row, index) => (
                 <DraggableRow
-                  key={row.name}
+                  key={index}
                   index={index}
                   row={row}
                   moveRow={moveRow}
                   showGroups={showGroups}
                   group={group}
+                  status={status}
                 />
               ))}
             </TableBody>
@@ -182,4 +201,5 @@ const BasicTable = () => {
     </DndProvider>
   );
 };
+
 export default BasicTable;

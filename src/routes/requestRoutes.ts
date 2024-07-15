@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { getAllDescriptions } from '../controllers/requestController';
+import { getAllRequst , getAllfilterRequests} from '../controllers/requestController';
 
 const router = Router();
-router.get('/descriptions', getAllDescriptions);
+router.get('/descriptions', getAllRequst);
+router.get('/filterRequests', getAllfilterRequests);
 // router.get('/title',getAllTitles);
  router.get('/comments');
 

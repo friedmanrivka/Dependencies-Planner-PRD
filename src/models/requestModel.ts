@@ -12,7 +12,5 @@ export interface Request{
     date:Date,
     affectedGroupsList:JSON,
     JiraLink:string,
-    gtoupid:number;
-
-
+    requestgroupid:number;
 }
