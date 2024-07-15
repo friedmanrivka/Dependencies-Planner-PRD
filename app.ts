@@ -7,6 +7,7 @@ import ProductManageRoutes from './src/routes/productManagerRoutes';
 import quarterDatesRoutes from './src/routes/quarterDatesRoutes';
 import finalDesicion from './src/routes/filnalDesicionRoutes'
 import statusRoutes from './src/routes/statusRoutes'
+import newRequest from './src/routes/newRequestRouter';
 import cors from 'cors';
 
 dotenv.config();
@@ -22,7 +23,8 @@ app.use('/api',priorityRoutes)
 app.use('/api',ProductManageRoutes);
 app.use('/api', quarterDatesRoutes);
 app.use('/api',finalDesicion);
-app.use('/api',statusRoutes)
+app.use('/api',statusRoutes);
+app.use('/api',newRequest)
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 })
