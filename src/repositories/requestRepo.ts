@@ -29,5 +29,36 @@ console.log('mapped requests with groups:',requestsWithGroup)
         throw err;
     }
 }
-}
 
+   static async getAllfilterRequests(involvedGroup?: string, requestorGroup?: string, requestorName?: string): Promise<Request[]> {
+        // Initialize the base query
+        let query = 'SELECT * FROM request WHERE 1=1';
+        let queryParams: any[] = [];
+    
+        // Add filter for involvedGroup if provided
+        if (involvedGroup) {
+            queryParams.push(involvedGroup);
+            query += ` AND involvedgroupid = $${queryParams.length}`;
+        }
+    
+        // Add filter for requestorGroup if provided
+        if (requestorGroup) {
+            queryParams.push(requestorGroup);
+            query += ` AND requestgroupid = $${queryParams.length}`;
+        }
+    
+        // Add filter for requestorName if provided
+        if (requestorName) {
+            queryParams.push(requestorName);
+            query += ` AND productmanagerid = $${queryParams.length}`;
+        }
+    
+        try {
+            const result = await pool.query(query, queryParams);
+            return result.rows as Request[];
+        } catch (err) {
+            console.error('Error executing query in getAllfilterRequests:', err);
+            throw err;
+        }
+    }
+}

@@ -1,3 +1,4 @@
+
 import { Request } from '../models/requestModel';
 import { Group } from '../models/groupModel';
 import { ExtendedRequest } from '../models/extendedRequestModel';
@@ -17,4 +18,3 @@ export const mapRequestsToGroups = (requests: Request[], groups: Group[]): any[]
         };
     });
 };
-

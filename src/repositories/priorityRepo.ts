@@ -1,6 +1,4 @@
 
-
-            
 import {pool} from '../config/db';
 import {Priority} from '../models/priorityModel'
 export default class PriorityRepo {

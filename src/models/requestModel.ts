@@ -13,6 +13,10 @@ export interface Request{
     affectedGroupsList:JSON,
     JiraLink:string,
     requestgroupid:number;
+<<<<<<< HEAD
 
 
 }
+=======
+}
+>>>>>>> origin/main
