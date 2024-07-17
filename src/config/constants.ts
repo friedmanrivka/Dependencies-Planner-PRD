@@ -10,3 +10,7 @@ export {
   quarter3,
   quarter4
 };
+export const submissionPeriod = {
+  start: '2024-07-01',
+  end: '2024-07-31'
+};
