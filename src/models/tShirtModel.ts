@@ -1,4 +1,4 @@
-export interface TSize{
+export interface TShirt{
     id: number,
     size: string
 }

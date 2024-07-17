@@ -2,14 +2,14 @@
 export interface Request {
     id: number,
     title: string,
-    requesterGroup?: number,
     description: string,
-    priority: number,
-    finalDecision: number,
     planned: string,
-    comments: string,
-    date: Date,
-    affectedGroupsList: JSON,
+    datetime: Date,
+    comment: string,
     JiraLink: string,
+    priority_id: number,
+    finalDecision: number,
+   productmanagerid: number,
+    // affectedGroupsList: number,
     requestgroupid: number;
 }

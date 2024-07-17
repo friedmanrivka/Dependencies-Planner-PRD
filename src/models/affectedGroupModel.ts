@@ -1,8 +1,10 @@
-import { Status } from "./statusModel";
-import { TSize } from "./tSizeModel";
-export  default interface AffectedGroupModel {
+
+export   interface AffectedGroup {
     id: number;
-    requestId: number;
-    status: Status;
-    tShirtsize:TSize;
+   status_id: number;
+   requestId: number; 
+   groupId: number;
 }
+   
+
+   

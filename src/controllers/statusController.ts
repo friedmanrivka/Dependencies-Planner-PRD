@@ -43,7 +43,7 @@ export const getAllStatus = async (req: Request, res: Response): Promise<void> =
         const status = await StatusRepo.getAllStatus();
         console.log(status);  
         
-        const statusArray = status.map(item => item.combinedStatus);
+        const statusArray = status.map(item => item.status);
 
         console.log(statusArray);
         
