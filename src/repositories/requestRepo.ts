@@ -82,4 +82,19 @@ export default class RequestRepo {
             throw err;
         }
     }
+    static async updateFinalDecision(requestId: number, finalDecision: string): Promise<void> {
+        try {
+            
+            await pool.query(
+                `UPDATE request r
+                SET finalDecision = (SELECT id FROM finaldecision WHERE decision = $1)
+                WHERE r.id = $2`, 
+                [finalDecision, requestId]);
+        } catch (err) {
+            console.error('Error updating final decision:', err);
+            throw err;
+        }
+    
+        //use automapper and also use models  
+          }
 }

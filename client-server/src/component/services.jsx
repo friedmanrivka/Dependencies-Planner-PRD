@@ -1,6 +1,6 @@
 import axios from 'axios';
-
 const API_URL = 'http://localhost:3001/api';
+
 export const getGroup = async () => {
     try {
         const response = await axios.get(`${API_URL}/requestor-Group`);
@@ -12,7 +12,7 @@ export const getGroup = async () => {
 };
 export const getDescriptions = async () => {
     try {
-        const response = await axios.get(`http://localhost:3001/api/descriptions`);
+        const response = await axios.get(`${API_URL}/requestor-Details`);
         return response.data;
     } catch (error) {
         console.error('Error fetching groups:', error);
@@ -58,6 +58,15 @@ export const getFinalDecision = async () => {
 export const getAllStatus = async () => {
     try {
         const response = await axios.get(`${API_URL}/status`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching groups:', error);
+        throw error;
+    }
+};
+export const updateFinalDecision = async (id,finalDecision) => {
+    try {
+        const response = await axios.get(`${API_URL}/updateFinalDecision/${id}`,finalDecision);
         return response.data;
     } catch (error) {
         console.error('Error fetching groups:', error);
