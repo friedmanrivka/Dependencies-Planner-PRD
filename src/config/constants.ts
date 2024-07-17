@@ -1,8 +1,8 @@
 const currentYear = new Date().getFullYear();
-const quarter1 = new Date(currentYear, 0, 1);
-const quarter2 = new Date(currentYear, 3, 1);
-const quarter3 = new Date(currentYear, 6, 1);
-const quarter4 = new Date(currentYear, 9, 1);
+const quarter1 = `${currentYear} Q1`;
+const quarter2 = `${currentYear} Q2`;
+const quarter3 = `${currentYear} Q3`;
+const quarter4 = `${currentYear} Q4`;
 
 export {
   quarter1,
