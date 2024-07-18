@@ -12,9 +12,8 @@ import Button from '@mui/material/Button';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './BasicTable.css'; // Import the CSS file for custom styles
+import {LinkIcon ,FormatAlignLeftIcon,ExpandCircleDownIcon}from '@mui/icons-material/Link';
 import { Select, MenuItem, TextField, Checkbox, ListItemText } from '@mui/material'; // import { Select, MenuItem, TextField, Checkbox, ListItemText, FormControl, InputLabel, Card, CardActions, CardContent } from '@mui/material';
-
-
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Card from '@mui/material/Card';
@@ -320,6 +319,9 @@ const BasicTable = () => {
               </MenuItem>
             ))}
           </Select>
+
+        </div>
+
           <FormControl >
 <InputLabel id="demo-simple-select-label">Filter by involved Group</InputLabel>
 <Select
@@ -329,8 +331,7 @@ const BasicTable = () => {
   onChange={(e) => setFilterInvolvedName(e.target.value)} // HIGHLIGHTED
   displayEmpty
   style={{ marginRight: '10px' }}
-  renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED
->
+  renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED>
   {group.map((groupOption, groupIndex) => (
     <MenuItem value={groupOption} key={groupIndex}>
       console.console.log();
@@ -342,24 +343,29 @@ const BasicTable = () => {
 
         <Card sx={{ minWidth: 275 }}>
         <CardContent>
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell className="highlight-header" >Requestor Group</TableCell>
-                <TableCell className="highlight-header" align="left">Requestor Name</TableCell>
-                <TableCell className="highlight-header" >Title</TableCell>
-                <TableCell className="highlight-header" >Planned</TableCell>
-                <TableCell className="highlight-header" >Description</TableCell>
-                <TableCell className="highlight-header" >Priority</TableCell>
-                <TableCell className="highlight-header" >Final Decision</TableCell>
+
+                <TableCell className="highlight-header">Requestor Group <ExpandCircleDownIcon /></TableCell>
+                <TableCell className="highlight-header" align="right">Requestor Name <ExpandCircleDownIcon /></TableCell>
+                <TableCell className="highlight-header">Title<FormatAlignLeftIcon/></TableCell>
+                <TableCell className="highlight-header" align="right">Planned <ExpandCircleDownIcon /></TableCell>
+                <TableCell className="highlight-header">Description<FormatAlignLeftIcon/></TableCell>
+                <TableCell className="highlight-header">Priority <ExpandCircleDownIcon /></TableCell>
+                <TableCell className="highlight-header">Final Decision <ExpandCircleDownIcon /></TableCell>
+
                 {showGroups && group.map((item, index) => (
                   <TableCell className="highlight-header" key={index}>
                     {item}
                   </TableCell>
                 ))}
-                <TableCell className="highlight-header"  >Comments</TableCell>
-                <TableCell className="highlight-header" align="right">Jira Link</TableCell>
+
+                <TableCell className="highlight-header" align="right">Comments<FormatAlignLeftIcon/></TableCell>
+                <TableCell className="highlight-header" align="right">Jira Link<LinkIcon/></TableCell>
+
               </TableRow>
             </TableHead>
             <TableBody>
