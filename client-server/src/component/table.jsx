@@ -204,7 +204,7 @@ const BasicTable = () => {
   const [status, setStatus] = useState([]);
   const [filterRequestorGroup, setFilterRequestorGroup] = useState([]); // HIGHLIGHTED
   const [filterRequestorName, setFilterRequestorName] = useState([]); // HIGHLIGHTED
-  const [filterInvolvedName, setFfilterInvolvedName] = useState([]); // HIGHLIGHTED
+  const [filterInvolvedName, setFilterInvolvedName] = useState([]); // HIGHLIGHTED
 
   useEffect(() => {
     const fetchData = async () => {
@@ -270,6 +270,11 @@ const BasicTable = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
+      <div class="header">
+    <h1>Dependencies Planner PRD</h1>
+</div>           
+    <div className="container">
+        <div className="table-wrapper">
       <div>
         <Button variant="contained" color="primary" onClick={toggleGroups}>
           {showGroups ? 'Hide Groups' : 'Show Groups'}
@@ -316,18 +321,16 @@ const BasicTable = () => {
             ))}
           </Select>
           <FormControl >
-
 <InputLabel id="demo-simple-select-label">Filter by involved Group</InputLabel>
 <Select
   multiple
   value={filterRequestorGroup} // HIGHLIGHTED
   label="Filter by Requestor Group"
-  onChange={(e) => setFilterRequestorGroup(e.target.value)} // HIGHLIGHTED
+  onChange={(e) => setFilterInvolvedName(e.target.value)} // HIGHLIGHTED
   displayEmpty
   style={{ marginRight: '10px' }}
   renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED
 >
-
   {group.map((groupOption, groupIndex) => (
     <MenuItem value={groupOption} key={groupIndex}>
       console.console.log();
@@ -336,7 +339,7 @@ const BasicTable = () => {
     </MenuItem>
   ))}
 </Select></FormControl>
-        </div>
+
         <Card sx={{ minWidth: 275 }}>
         <CardContent>
         <TableContainer component={Paper}>
@@ -382,6 +385,9 @@ const BasicTable = () => {
         </TableContainer>
         </CardContent>
         </Card>
+      </div>
+      </div>
+      </div>
       </div>
     </DndProvider>
   );

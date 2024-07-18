@@ -1,6 +1,66 @@
 .highlight-header {
   font-weight: bold;
   background-color: #f0f0f0; /* Light grey background */
-  color: #d32f2f; /* Red text color */
+  color: #3b3333; /* Red text color */
   text-align: center; /* Center text alignment */
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* גובה מינימלי של כל גובה הדף */
+}
+
+.table-wrapper {
+  width: 80%; /* ניתן להתאים את הרוחב לפי הצורך */
+  max-width: 80%; /* רוחב מקסימלי של הטבלה */
+}
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensures the header is above other content */
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.content {
+  margin-top: 60px; /* Adjust this value based on the height of your header */
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  background-color: #f8f8f8;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  color: #333;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
 }
