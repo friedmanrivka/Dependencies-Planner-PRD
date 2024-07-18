@@ -330,6 +330,7 @@ const BasicTable = () => {
 
   {group.map((groupOption, groupIndex) => (
     <MenuItem value={groupOption} key={groupIndex}>
+      console.console.log();
       <Checkbox checked={filterRequestorGroup.indexOf(groupOption) > -1} /> {/* HIGHLIGHTED */}
       <ListItemText primary={groupOption} /> {/* HIGHLIGHTED */}
     </MenuItem>
