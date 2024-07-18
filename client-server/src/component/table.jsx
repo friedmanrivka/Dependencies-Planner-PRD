@@ -12,11 +12,13 @@ import Button from '@mui/material/Button';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './BasicTable.css'; // Import the CSS file for custom styles
-import { Select, MenuItem, TextField, Checkbox, ListItemText } from '@mui/material';
 import {LinkIcon ,FormatAlignLeftIcon,ExpandCircleDownIcon}from '@mui/icons-material/Link';
-
-
-
+import { Select, MenuItem, TextField, Checkbox, ListItemText } from '@mui/material'; // import { Select, MenuItem, TextField, Checkbox, ListItemText, FormControl, InputLabel, Card, CardActions, CardContent } from '@mui/material';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 const ItemType = 'ROW';
 
 const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priorityOptions, quarterDates, finalDecision, requestorNames }) => {
@@ -27,7 +29,6 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
   const [selectedRequestorGroup, setSelectedRequestorGroup] = useState(row.requestorGroup || '');
   const [selectedFinalDecision, setSelectedFinalDecision] = useState(row.decision || '');
   const [selectedRequestorName, setSelectedRequestorName] = useState(row.productmanagername || '');
-
   const [, drop] = useDrop({
     accept: ItemType,
     hover: (item, monitor) => {
@@ -53,7 +54,6 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
       item.index = hoverIndex;
     },
   });
-
   const [{ isDragging }, drag] = useDrag({
     type: ItemType,
     item: { type: ItemType, index },
@@ -61,9 +61,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
       isDragging: monitor.isDragging(),
     }),
   });
-
   drag(drop(ref));
-
   const handleStatusChange = (value, groupIndex) => {
     setSelectedStatus((prev) => ({
       ...prev,
@@ -91,10 +89,15 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
     setSelectedRequestorName(event.target.value);
   };
 
+//         >
+
   return (
     <TableRow
       ref={ref}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
+      style={{ 
+                opacity: isDragging ? 0.5 : 1,
+                cursor: isDragging ? "url('/waving-hand-cursor.png'), auto" : "grab" 
+              }}
       key={index}
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
@@ -111,7 +114,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
           ))}
         </Select>
       </TableCell>
-      <TableCell align="right">
+      <TableCell >
         <Select
           value={selectedRequestorName}
           onChange={handleRequestorNameChange}
@@ -200,6 +203,7 @@ const BasicTable = () => {
   const [status, setStatus] = useState([]);
   const [filterRequestorGroup, setFilterRequestorGroup] = useState([]); // HIGHLIGHTED
   const [filterRequestorName, setFilterRequestorName] = useState([]); // HIGHLIGHTED
+  const [filterInvolvedName, setFilterInvolvedName] = useState([]); // HIGHLIGHTED
 
   useEffect(() => {
     const fetchData = async () => {
@@ -238,6 +242,7 @@ const BasicTable = () => {
     setShowGroups(!showGroups);
   };
 
+
   const moveRow = (dragIndex, hoverIndex) => {
     const dragRow = rows[dragIndex];
     const newRows = [...rows];
@@ -264,26 +269,33 @@ const BasicTable = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
+      <div class="header">
+    <h1>Dependencies Planner PRD</h1>
+</div>           
+    <div className="container">
+        <div className="table-wrapper">
       <div>
         <Button variant="contained" color="primary" onClick={toggleGroups}>
           {showGroups ? 'Hide Groups' : 'Show Groups'}
         </Button>
         <div className="filter-container"> {/* HIGHLIGHTED */}
           <div style={{ marginBottom: '10px' }}> {/* HIGHLIGHTED */}
-            <span style={{ marginRight: '20px' }}>Filter by Requestor Group</span> {/* HIGHLIGHTED */}
-            <span>Filter by Requestor Name</span> {/* HIGHLIGHTED */}
-          </div> {/* HIGHLIGHTED */}
+            <span style={{ marginRight: '20px' }}>Filter by Requestor Group</span> 
+            <span>Filter by Requestor Name</span> 
+          </div> 
+          <FormControl >
+
+          <InputLabel id="demo-simple-select-label">Filter by Requestor Group</InputLabel>
           <Select
             multiple
             value={filterRequestorGroup} // HIGHLIGHTED
+            label="Filter by Requestor Group"
             onChange={(e) => setFilterRequestorGroup(e.target.value)} // HIGHLIGHTED
             displayEmpty
             style={{ marginRight: '10px' }}
             renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED
           >
-            <MenuItem value="">
-              <em>All Requestor Groups</em>
-            </MenuItem>
+
             {group.map((groupOption, groupIndex) => (
               <MenuItem value={groupOption} key={groupIndex}>
                 <Checkbox checked={filterRequestorGroup.indexOf(groupOption) > -1} /> {/* HIGHLIGHTED */}
@@ -291,6 +303,7 @@ const BasicTable = () => {
               </MenuItem>
             ))}
           </Select>
+          filtur </FormControl>involved
           <Select
             multiple
             value={filterRequestorName} // HIGHLIGHTED
@@ -298,9 +311,7 @@ const BasicTable = () => {
             displayEmpty
             renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED
           >
-            <MenuItem value="">
-              <em>All Requestor Names</em>
-            </MenuItem>
+
             {requestorNames.map((nameOption, nameIndex) => (
               <MenuItem value={nameOption} key={nameIndex}>
                 <Checkbox checked={filterRequestorName.indexOf(nameOption) > -1} /> {/* HIGHLIGHTED */}
@@ -308,12 +319,36 @@ const BasicTable = () => {
               </MenuItem>
             ))}
           </Select>
+
         </div>
-        <h1>rivky</h1>
+
+          <FormControl >
+<InputLabel id="demo-simple-select-label">Filter by involved Group</InputLabel>
+<Select
+  multiple
+  value={filterRequestorGroup} // HIGHLIGHTED
+  label="Filter by Requestor Group"
+  onChange={(e) => setFilterInvolvedName(e.target.value)} // HIGHLIGHTED
+  displayEmpty
+  style={{ marginRight: '10px' }}
+  renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED>
+  {group.map((groupOption, groupIndex) => (
+    <MenuItem value={groupOption} key={groupIndex}>
+      console.console.log();
+      <Checkbox checked={filterRequestorGroup.indexOf(groupOption) > -1} /> {/* HIGHLIGHTED */}
+      <ListItemText primary={groupOption} /> {/* HIGHLIGHTED */}
+    </MenuItem>
+  ))}
+</Select></FormControl>
+
+        <Card sx={{ minWidth: 275 }}>
+        <CardContent>
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
+
                 <TableCell className="highlight-header">Requestor Group <ExpandCircleDownIcon /></TableCell>
                 <TableCell className="highlight-header" align="right">Requestor Name <ExpandCircleDownIcon /></TableCell>
                 <TableCell className="highlight-header">Title<FormatAlignLeftIcon/></TableCell>
@@ -321,17 +356,21 @@ const BasicTable = () => {
                 <TableCell className="highlight-header">Description<FormatAlignLeftIcon/></TableCell>
                 <TableCell className="highlight-header">Priority <ExpandCircleDownIcon /></TableCell>
                 <TableCell className="highlight-header">Final Decision <ExpandCircleDownIcon /></TableCell>
+
                 {showGroups && group.map((item, index) => (
-                  <TableCell className="highlight-header" align="right" key={index}>
+                  <TableCell className="highlight-header" key={index}>
                     {item}
                   </TableCell>
                 ))}
+
                 <TableCell className="highlight-header" align="right">Comments<FormatAlignLeftIcon/></TableCell>
                 <TableCell className="highlight-header" align="right">Jira Link<LinkIcon/></TableCell>
+
               </TableRow>
             </TableHead>
             <TableBody>
               {filteredRows.map((row, index) => ( // HIGHLIGHTED
+              
                 <DraggableRow
                   key={index}
                   index={index}
@@ -344,11 +383,17 @@ const BasicTable = () => {
                   quarterDates={quarterDates}
                   finalDecision={finalDecision}
                   requestorNames={requestorNames}
-                />
+                  style={{ cursor: "grab" }}
+                  />
               ))}
             </TableBody>
           </Table>
         </TableContainer>
+        </CardContent>
+        </Card>
+      </div>
+      </div>
+      </div>
       </div>
     </DndProvider>
   );

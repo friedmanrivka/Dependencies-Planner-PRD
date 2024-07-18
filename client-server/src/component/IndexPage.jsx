@@ -21,7 +21,7 @@ const IndexPage = () => {
         New Request
       </Button>
       <MyModal visible={isModalVisible} onClose={handleClose} />
-      <BasicTable />
+      {/* <BasicTable /> */}
     </div>
   );
 };
