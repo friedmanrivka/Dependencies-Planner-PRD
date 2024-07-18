@@ -5,8 +5,8 @@ import BasicTable from '../component/table'
 export const Routing =()=>{
     return(
         <Routes>
-            <Route path="/" element={<IndexPage/>} />
-            <Route path="/addRequest" element={<BasicTable/>} />
+            <Route path="/addRequest" element={<IndexPage/>} />
+            <Route path="/" element={<BasicTable/>} />
         </Routes>
     )
 }

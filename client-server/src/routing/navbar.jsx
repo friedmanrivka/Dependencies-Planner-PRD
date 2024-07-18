@@ -4,7 +4,7 @@ export const Navbar=()=>{
     return(
         <nav>       
                 <Link to="/addRequest">addRequest</Link><br></br>
-                <Link to="/">table</Link><br></br>        
+                <Link to="/">table</Link><br></br>         
         </nav>
     )
 }
