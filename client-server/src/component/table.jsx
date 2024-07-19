@@ -21,14 +21,19 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
+import IconButton from '@mui/material/IconButton';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CardContent from '@mui/material/CardContent';
+
+
 const ItemType = 'ROW';
 
 const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priorityOptions, quarterDates, finalDecision, requestorNames }) => {
   const ref = useRef(null);
   const [selectedStatus, setSelectedStatus] = useState(Array(group.length).fill('Pending Response'));
-  const [selectedPriority, setSelectedPriority] = useState(row.critical || ''); // HIGHLIGHTED
-  const [selectedPlanned, setSelectedPlanned] = useState(row.planned || ''); // HIGHLIGHTED
+  const [selectedPriority, setSelectedPriority] = useState(row.critical || '');
+  const [selectedPlanned, setSelectedPlanned] = useState(row.planned || '');
   const [selectedRequestorGroup, setSelectedRequestorGroup] = useState(row.requestorGroup || '');
   const [selectedFinalDecision, setSelectedFinalDecision] = useState(row.decision || '');
   const [selectedRequestorName, setSelectedRequestorName] = useState(row.productmanagername || '');
@@ -92,8 +97,6 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
     setSelectedRequestorName(event.target.value);
   };
 
-//         >
-
   return (
     <TableRow
       ref={ref}
@@ -133,7 +136,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
       <TableCell>{row.title}</TableCell>
       <TableCell align="right">
         <Select
-          value={selectedPlanned} // HIGHLIGHTED
+          value={selectedPlanned}
           onChange={handlePlannedChange}
           displayEmpty
         >
@@ -147,7 +150,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
       <TableCell>{row.description}</TableCell>
       <TableCell>
         <Select
-          value={selectedPriority} // HIGHLIGHTED
+          value={selectedPriority}
           onChange={handlePriorityChange}
           displayEmpty
         >
@@ -197,16 +200,16 @@ const BasicTable = () => {
   const { group, setGroup } = useGroupContext();
   const [showGroups, setShowGroups] = useState(true);
   const [rows, setRows] = useState([]);
-  const [filteredRows, setFilteredRows] = useState([]); // HIGHLIGHTED
+  const [filteredRows, setFilteredRows] = useState([]);
   const [finalDecision, setFinalDecision] = useState([]);
   const [quarterDates, setQuarterDates] = useState([]);
   const [requestorNames, setRequestorNames] = useState([]);
   const [priorityOptions, setPriorityOptions] = useState([]);
   const [descriptions, setDescriptions] = useState([]);
   const [status, setStatus] = useState([]);
-  const [filterRequestorGroup, setFilterRequestorGroup] = useState([]); // HIGHLIGHTED
-  const [filterRequestorName, setFilterRequestorName] = useState([]); // HIGHLIGHTED
-  const [filterInvolvedName, setFilterInvolvedName] = useState([]); // HIGHLIGHTED
+  const [filterRequestorGroup, setFilterRequestorGroup] = useState([]);
+  const [filterRequestorName, setFilterRequestorName] = useState([]);
+  const [filterInvolvedName, setFilterInvolvedName] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -229,7 +232,7 @@ const BasicTable = () => {
         const descriptionsData = await getDescriptions();
         setDescriptions(descriptionsData);
         setRows(descriptionsData);
-        setFilteredRows(descriptionsData); // HIGHLIGHTED
+        setFilteredRows(descriptionsData);
 
         const priorityData = await getPriority();
         setPriorityOptions(priorityData);
@@ -245,14 +248,13 @@ const BasicTable = () => {
     setShowGroups(!showGroups);
   };
 
-
   const moveRow = (dragIndex, hoverIndex) => {
     const dragRow = rows[dragIndex];
     const newRows = [...rows];
     newRows.splice(dragIndex, 1);
     newRows.splice(hoverIndex, 0, dragRow);
     setRows(newRows);
-    setFilteredRows(newRows); // HIGHLIGHTED
+    setFilteredRows(newRows);
   };
 
   const handleFilterChange = () => {
@@ -263,150 +265,133 @@ const BasicTable = () => {
     if (filterRequestorName.length > 0) {
       newFilteredRows = newFilteredRows.filter(row => filterRequestorName.includes(row.productmanagername));
     }
-    setFilteredRows(newFilteredRows); // HIGHLIGHTED
+    setFilteredRows(newFilteredRows);
   };
 
   useEffect(() => {
     handleFilterChange();
-  }, [filterRequestorGroup, filterRequestorName]); // HIGHLIGHTED
+  }, [filterRequestorGroup, filterRequestorName]);
+
   return (
     <DndProvider backend={HTML5Backend}>
-      <div class="header">
-    <h1>Dependencies Planner PRD</h1>
-</div>           
-    <div className="container">
+      <div className="header">
+        <h1>Dependencies Planner PRD</h1>
+      </div>           
+      <div className="container">
         <div className="table-wrapper">
-      <div>
-        <Button variant="contained" color="primary" onClick={toggleGroups}>
-          {showGroups ? 'Hide Groups' : 'Show Groups'}
-        </Button>
-        <div className="filter-container"> {/* HIGHLIGHTED */}
-          <div style={{ marginBottom: '10px' }}> {/* HIGHLIGHTED */}
-            <span style={{ marginRight: '20px' }}>Filter by Requestor Group</span> 
-            <span>Filter by Requestor Name</span> 
-          </div> 
-          <FormControl >
-
-          <InputLabel id="demo-simple-select-label">Filter by Requestor Group</InputLabel>
-          <Select
-            multiple
-            value={filterRequestorGroup} // HIGHLIGHTED
-            label="Filter by Requestor Group"
-            onChange={(e) => setFilterRequestorGroup(e.target.value)} // HIGHLIGHTED
-            displayEmpty
-            style={{ marginRight: '10px' }}
-            renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED
-          >
-
-
-
-
-            {group.map((groupOption, groupIndex) => (
-              <MenuItem value={groupOption} key={groupIndex}>
-                <Checkbox checked={filterRequestorGroup.indexOf(groupOption) > -1} /> {/* HIGHLIGHTED */}
-                <ListItemText primary={groupOption} /> {/* HIGHLIGHTED */}
-              </MenuItem>
-            ))}
-          </Select>
-          filtur </FormControl>involved
-          <Select
-            multiple
-            value={filterRequestorName} // HIGHLIGHTED
-            onChange={(e) => setFilterRequestorName(e.target.value)} // HIGHLIGHTED
-            displayEmpty
-            renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED
-          >
-
-            {requestorNames.map((nameOption, nameIndex) => (
-              <MenuItem value={nameOption} key={nameIndex}>
-                <Checkbox checked={filterRequestorName.indexOf(nameOption) > -1} /> {/* HIGHLIGHTED */}
-                <ListItemText primary={nameOption} /> {/* HIGHLIGHTED */}
-              </MenuItem>
-            ))}
-          </Select>
-
+          <div>
+            <IconButton onClick={toggleGroups}>
+              {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
+            </IconButton>
+            <div className="filter-container">
+              <div style={{ marginBottom: '10px' }}>
+                <span style={{ marginRight: '20px' }}>Filter by Requestor Group</span> 
+                <span>Filter by Requestor Name</span> 
+              </div> 
+              <FormControl>
+                <InputLabel id="demo-simple-select-label">Filter by Requestor Group</InputLabel>
+                <Select
+                  multiple
+                  value={filterRequestorGroup}
+                  label="Filter by Requestor Group"
+                  onChange={(e) => setFilterRequestorGroup(e.target.value)}
+                  displayEmpty
+                  style={{ marginRight: '10px' }}
+                  renderValue={(selected) => selected.join(', ')}
+                >
+                  {group.map((groupOption, groupIndex) => (
+                    <MenuItem value={groupOption} key={groupIndex}>
+                      <Checkbox checked={filterRequestorGroup.indexOf(groupOption) > -1} />
+                      <ListItemText primary={groupOption} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl>
+                <InputLabel id="demo-simple-select-label">Filter by Requestor Name</InputLabel>
+                <Select
+                  multiple
+                  value={filterRequestorName}
+                  onChange={(e) => setFilterRequestorName(e.target.value)}
+                  displayEmpty
+                  renderValue={(selected) => selected.join(', ')}
+                >
+                  {requestorNames.map((nameOption, nameIndex) => (
+                    <MenuItem value={nameOption} key={nameIndex}>
+                      <Checkbox checked={filterRequestorName.indexOf(nameOption) > -1} />
+                      <ListItemText primary={nameOption} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl>
+                <InputLabel id="demo-simple-select-label">Filter by Involved Group</InputLabel>
+                <Select
+                  multiple
+                  value={filterInvolvedName}
+                  label="Filter by Involved Group"
+                  onChange={(e) => setFilterInvolvedName(e.target.value)}
+                  displayEmpty
+                  style={{ marginRight: '10px' }}
+                  renderValue={(selected) => selected.join(', ')}
+                >
+                  {group.map((groupOption, groupIndex) => (
+                    <MenuItem value={groupOption} key={groupIndex}>
+                      <Checkbox checked={filterInvolvedName.indexOf(groupOption) > -1} />
+                      <ListItemText primary={groupOption} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            <Card sx={{ minWidth: 275 }}>
+              <CardContent>
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell className="highlight-header"><div className='columnName'>Requestor Group</div><ExpandCircleDownIcon /></TableCell>
+                        <TableCell className="highlight-header"><div className='columnName'>Requestor Name</div><ExpandCircleDownIcon /></TableCell>
+                        <TableCell className="highlight-header"><div className='columnName'>Title</div><FormatAlignLeftIcon/></TableCell>
+                        <TableCell className="highlight-header"><div className='columnName'>Planned</div><ExpandCircleDownIcon /></TableCell>
+                        <TableCell className="highlight-header"><div className='columnName'>Description</div><FormatAlignLeftIcon/></TableCell>
+                        <TableCell className="highlight-header"><div className='columnName'>Priority</div><ExpandCircleDownIcon /></TableCell>
+                        <TableCell className="highlight-header"><div className='columnName'>Final Decision</div><ExpandCircleDownIcon /></TableCell>
+                        {showGroups && group.map((item, index) => (
+                          <TableCell className="highlight-header" key={index}>{item}</TableCell>
+                        ))}
+                        <TableCell className="highlight-header"><div className='columnName'>Comments</div><FormatAlignLeftIcon/></TableCell>
+                        <TableCell className="highlight-header"><div className='columnName'>Jira Link</div><LinkIcon/></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {filteredRows.map((row, index) => (
+                        <DraggableRow
+                          key={index}
+                          index={index}
+                          row={row}
+                          moveRow={moveRow}
+                          showGroups={showGroups}
+                          group={group}
+                          status={status}
+                          priorityOptions={priorityOptions}
+                          quarterDates={quarterDates}
+                          finalDecision={finalDecision}
+                          requestorNames={requestorNames}
+                          style={{ cursor: "grab" }}
+                        />
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-
-
-          <FormControl >
-<InputLabel id="demo-simple-select-label">Filter by involved Group</InputLabel>
-<Select
-  multiple
-  value={filterRequestorGroup} // HIGHLIGHTED
-  label="Filter by Requestor Group"
-  onChange={(e) => setFilterInvolvedName(e.target.value)} // HIGHLIGHTED
-  displayEmpty
-  style={{ marginRight: '10px' }}
-  renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED>
- > 
- {group.map((groupOption, groupIndex) => (
-    <MenuItem value={groupOption} key={groupIndex}>
-      <Checkbox checked={filterRequestorGroup.indexOf(groupOption) > -1} /> 
-      <ListItemText primary={groupOption} />
-    </MenuItem>
-  ))
-}
-</Select>
-</FormControl>
-        <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-
-                <TableCell className="highlight-header">Requestor Group <ExpandCircleDownIcon /></TableCell>
-                <TableCell className="highlight-header" align="right">Requestor Name <ExpandCircleDownIcon /></TableCell>
-                <TableCell className="highlight-header">Title<FormatAlignLeftIcon/></TableCell>
-                <TableCell className="highlight-header" align="right">Planned <ExpandCircleDownIcon /></TableCell>
-                <TableCell className="highlight-header">Description<FormatAlignLeftIcon/></TableCell>
-                <TableCell className="highlight-header">Priority <ExpandCircleDownIcon /></TableCell>
-                <TableCell className="highlight-header">Final Decision <ExpandCircleDownIcon /></TableCell>
-
-                {showGroups && group.map((item, index) => (
-                  <TableCell className="highlight-header" key={index}>
-                    {item}
-                  </TableCell>
-                ))}
-
-                <TableCell className="highlight-header" align="right">Comments<FormatAlignLeftIcon/></TableCell>
-                <TableCell className="highlight-header" align="right">Jira Link<LinkIcon/></TableCell>
-
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredRows.map((row, index) => ( // HIGHLIGHTED
-              
-                <DraggableRow
-                  key={index}
-                  index={index}
-                  row={row}
-                  moveRow={moveRow}
-                  showGroups={showGroups}
-                  group={group}
-                  status={status}
-                  priorityOptions={priorityOptions}
-                  quarterDates={quarterDates}
-                  finalDecision={finalDecision}
-                  requestorNames={requestorNames}
-                  style={{ cursor: "grab" }}
-                  />
-              ))}
-              
-            </TableBody>
-          </Table>
-        </TableContainer>
-        </CardContent>
-        </Card>
       </div>
-      </div>
-      </div>
-      {/* </div> */}
     </DndProvider>
   );
 };
 
 export default BasicTable;
-
 

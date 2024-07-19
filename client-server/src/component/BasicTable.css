@@ -2,7 +2,16 @@
   font-weight: bold;
   background-color: #f0f0f0; /* Light grey background */
   color: #3b3333; /* Red text color */
-  text-align: center; /* Center text alignment */
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+  /* Center text alignment */
+
+
+
+.highlight-header svg {
+  margin-left: 8px;
 }
 .container {
   display: flex;
@@ -64,3 +73,29 @@ th {
 tr:hover {
   background-color: #f1f1f1;
 }
+.columnName{
+  font-size: 15px; 
+  font-weight: bold;
+  
+}
+
+
+/* 
+.container2 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.filter-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+} */
