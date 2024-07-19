@@ -12,7 +12,10 @@ import Button from '@mui/material/Button';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './BasicTable.css'; // Import the CSS file for custom styles
-import {LinkIcon ,FormatAlignLeftIcon,ExpandCircleDownIcon}from '@mui/icons-material/Link';
+import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import LinkIcon from '@mui/icons-material/Link';
+// import {FormatAlignLeftIcon,ExpandCircleDownIcon}from '@mui/icons-material/Link';
 import { Select, MenuItem, TextField, Checkbox, ListItemText } from '@mui/material'; // import { Select, MenuItem, TextField, Checkbox, ListItemText, FormControl, InputLabel, Card, CardActions, CardContent } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -266,7 +269,6 @@ const BasicTable = () => {
   useEffect(() => {
     handleFilterChange();
   }, [filterRequestorGroup, filterRequestorName]); // HIGHLIGHTED
-
   return (
     <DndProvider backend={HTML5Backend}>
       <div class="header">
@@ -296,6 +298,9 @@ const BasicTable = () => {
             renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED
           >
 
+
+
+
             {group.map((groupOption, groupIndex) => (
               <MenuItem value={groupOption} key={groupIndex}>
                 <Checkbox checked={filterRequestorGroup.indexOf(groupOption) > -1} /> {/* HIGHLIGHTED */}
@@ -322,6 +327,7 @@ const BasicTable = () => {
 
         </div>
 
+
           <FormControl >
 <InputLabel id="demo-simple-select-label">Filter by involved Group</InputLabel>
 <Select
@@ -332,15 +338,16 @@ const BasicTable = () => {
   displayEmpty
   style={{ marginRight: '10px' }}
   renderValue={(selected) => selected.join(', ')} // HIGHLIGHTED>
-  {group.map((groupOption, groupIndex) => (
+ > 
+ {group.map((groupOption, groupIndex) => (
     <MenuItem value={groupOption} key={groupIndex}>
-      console.console.log();
-      <Checkbox checked={filterRequestorGroup.indexOf(groupOption) > -1} /> {/* HIGHLIGHTED */}
-      <ListItemText primary={groupOption} /> {/* HIGHLIGHTED */}
+      <Checkbox checked={filterRequestorGroup.indexOf(groupOption) > -1} /> 
+      <ListItemText primary={groupOption} />
     </MenuItem>
-  ))}
-</Select></FormControl>
-
+  ))
+}
+</Select>
+</FormControl>
         <Card sx={{ minWidth: 275 }}>
         <CardContent>
 
@@ -386,6 +393,7 @@ const BasicTable = () => {
                   style={{ cursor: "grab" }}
                   />
               ))}
+              
             </TableBody>
           </Table>
         </TableContainer>
@@ -394,9 +402,11 @@ const BasicTable = () => {
       </div>
       </div>
       </div>
-      </div>
+      {/* </div> */}
     </DndProvider>
   );
 };
 
 export default BasicTable;
+
+
