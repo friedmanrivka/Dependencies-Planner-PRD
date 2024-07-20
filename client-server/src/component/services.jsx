@@ -1,6 +1,14 @@
 import axios from 'axios';
 const API_URL = 'http://localhost:3001/api';
-
+export const checkEmailExists = async (email) => {
+    try {
+        const response = await axios.post(`${API_URL}/check-email`, { email });
+        return response.data.exists;
+    } catch (error) {
+        console.error('Error checking email:', error);
+        throw error;
+    }
+};
 export const getGroup = async () => {
     try {
         const response = await axios.get(`${API_URL}/requestor-Group`);
