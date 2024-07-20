@@ -99,3 +99,14 @@ tr:hover {
   align-items: center;
   gap: 10px;
 } */
+ /* #sumbit{
+  color: #58D64D;
+ } */
+ #header{
+  color:  #00C2FF;
+  ;
+ }
+ .avatar{
+  background-color: #00C2FF !important;
+  margin: 8px;
+ }
