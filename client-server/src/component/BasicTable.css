@@ -1,54 +1,49 @@
 .highlight-header {
   font-weight: bold;
   background-color: #f0f0f0; /* Light grey background */
-  color: #3b3333; /* Red text color */
+  color: #3b3333; /* Text color */
   text-align: center;
   display: flex;
   align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px; /* Adjust padding as needed */
+  font-size: 0.9rem; /* Smaller font size */
 }
-  /* Center text alignment */
 
-
-
-.highlight-header svg {
-  margin-left: 8px;
-}
 .container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh; /* גובה מינימלי של כל גובה הדף */
+  align-items: flex-start; /* Align items to the top */
 }
 
 .table-wrapper {
-  width: 80%; /* ניתן להתאים את הרוחב לפי הצורך */
-  max-width: 80%; /* רוחב מקסימלי של הטבלה */
+  width: calc(100% - 250px); /* Adjust width to fit with the sidebar */
+  max-width: calc(100% - 250px); /* Max width of the table */
+  margin-left: 0; /* Adjust margin to reduce the gap */
 }
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
 
 .header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
-  color: white;
   text-align: center;
   padding: 15px 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: black; /* Changed text color */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000; /* Ensures the header is above other content */
 }
 
 .header h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .content {
   margin-top: 60px; /* Adjust this value based on the height of your header */
-  padding: 20px;
+  padding: 10px; /* Smaller padding */
 }
 
 table {
@@ -56,46 +51,41 @@ table {
   border-collapse: collapse;
   margin: 0 auto;
   background-color: #f8f8f8;
+  font-size: 0.8rem; /* Smaller font size */
 }
 
 th, td {
-  padding: 12px;
+  padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  vertical-align: middle;
 }
 
-th {
-  background-color: #f2f2f2;
-  color: #333;
-  font-weight: bold;
+.table-header-icon {
+  display: none; /* Hide header icons */
 }
 
-tr:hover {
-  background-color: #f1f1f1;
-}
-.columnName{
-  font-size: 15px; 
-  font-weight: bold;
-  
-}
-
-
-/* 
-.container2 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+.sidebar {
+  width: 250px; /* Adjusted width */
+  position: relative;
+  height: auto;
+  max-height: 80vh; /* Make the sidebar shorter */
+  overflow-y: auto; /* Add scroll if the content is too long */
 }
 
-.filter-controls {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 20px;
+.sidebar .MuiButton-root {
+  background-color: #58D64D
+  ; /* Green background */
+  color: white; /* White text */
+  width: 100%; /* Make buttons full width */
 }
 
-.filter-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-} */
+.sidebar .MuiButton-root:hover {
+  background-color: #58D64D
+  ; /* Darker green on hover */
+}
+
+.sidebar .MuiFormControl-root {
+  margin-bottom: 16px;
+  width: 100%; /* Make form controls full width */
+}
