@@ -199,7 +199,43 @@ export default class RequestRepo {
         }
 
     }
+
+
+ static async updateDescription(requestId: number, description: string): Promise<void> {
+        try {
+            await pool.query(
+                `UPDATE request SET description = $1 WHERE id = $2`, 
+                [description, requestId]
+            );
+        } catch (err) {
+            console.error('Error updating description:', err);
+            throw err;
+        }
+    }
+    static async updateRequestTitle(requestId: number, title: string): Promise<void> {
+        try {
+            await pool.query(
+                `UPDATE request SET title = $1 WHERE id = $2`, 
+                [title, requestId]
+            );
+            console.log('Repository: Title updated successfully');
+        } catch (err) {
+            console.error('Repository: Error updating title:', err);
+            throw err;
+        }
+    }
+    static async updateRequestComment(requestId: number, comment: string): Promise<void> {
+        try {
+            console.log('u[date comment')
+            await pool.query(
+                `UPDATE request SET comment = $1 WHERE id = $2`, 
+                [comment, requestId]
+            );
+            console.log('Repository: Comment updated successfully');
+        } catch (err) {
+            console.error('Repository: Error updating comment:', err);
+            throw err;
+        }
+    }
 }
 
-
-           

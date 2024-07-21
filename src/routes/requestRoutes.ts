@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { getAllRequest,updateFinalDecision } from '../controllers/requestController';
+import { updateDescription,getAllRequest,updateFinalDecision ,updateRequestTitle,updateRequestComment} from '../controllers/requestController';
 
 
 const router = Router();
@@ -12,6 +12,8 @@ router.put('/updateIdDrag/:id/:id', updateIdDrag);
 // router.get('/title',getAllTitles);
  router.get('/comments');
 
-
+ router.put('/update-title', updateRequestTitle);
+ router.put('/update-description', updateDescription);
+ router.put('/update-comment', updateRequestComment); 
 export default router;
 
