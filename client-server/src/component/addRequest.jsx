@@ -1,14 +1,13 @@
-// src/components/MyModal.js
 import React from 'react';
 import { useGroupContext } from './groupContext';
 import { useEffect, useState } from 'react';
-import { getFinalDecision, getQuarterDates, getRequestorNames, getPriority, getDescriptions } from './services';
+import { getFinalDecision, getQuarterDates, getRequestorNames, getPriority, getDescriptions, addNewRequest } from './services';
 import { Modal, Form, Input, Select } from 'antd';
 import QuartersComponent from './qcomponent';
 
 const { Option } = Select;
-const MyModal = ({ visible, onClose }) => {
 
+const MyModal = ({ visible, onClose }) => {
   const { group } = useGroupContext();
   const [finalDecision, setFinalDecision] = useState([]);
   const [quarterDates, setQuarterDates] = useState([]);
@@ -32,24 +31,28 @@ const MyModal = ({ visible, onClose }) => {
         setPriority(priorityData);
 
         const descriptionsData = await getDescriptions();
-        console.log(descriptionsData)
         setDescriptions(descriptionsData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchData();
-  }, [setPriority]);
+  }, []);
 
   const [form] = Form.useForm();
   const handleOk = () => {
     form
       .validateFields()
-      .then(values => {
+      .then(async (values) => {
         console.log('Form Values:', values);
-        onClose();
+        try {
+          await addNewRequest(values); // Call the server function here
+          onClose(); // Close the modal after successful submission
+        } catch (error) {
+          console.error('Error adding new request:', error);
+        }
       })
-      .catch(info => {
+      .catch((info) => {
         console.log('Validate Failed:', info);
       });
   };
@@ -57,51 +60,46 @@ const MyModal = ({ visible, onClose }) => {
   return (
     <Modal title="New Request" visible={visible} onCancel={onClose} onOk={handleOk}>
       <Form form={form} layout="vertical">
-        <Form.Item name="" label="Title" rules={[{ required: true, message: 'Please input Title' }]}>
+        <Form.Item name="title" label="Title" rules={[{ required: true, message: 'Please input Title' }]}>
           <Input />
         </Form.Item>
-        
-        <Form.Item name="RequestorGroup" label="Requestor Group" rules={[{ required: true, message: 'Please choose group' }]}>
+        <Form.Item name="requestorGroup" label="Requestor Group" rules={[{ required: true, message: 'Please choose group' }]}>
           <Select placeholder="Select a group">
             {group.map((item, index) => (
-              <Option value="option1" key={index}>{item}</Option>
+              <Option value={item} key={index}>{item}</Option>
             ))}
           </Select>
         </Form.Item>
-
-        <Form.Item name="RequstorName" label="Requestor Name" rules={[{ required: true, message: 'Please choose group' }]}>
-          <Select placeholder="Select a group">
+        <Form.Item name="requestorName" label="Requestor Name" rules={[{ required: true, message: 'Please choose name' }]}>
+          <Select placeholder="Select a name">
             {requestorNames.map((item, index) => (
-              <Option value="option1" key={index}>{item}</Option>
+              <Option value={item} key={index}>{item}</Option>
             ))}
           </Select>
         </Form.Item>
-        <Form.Item name="field2" label="Description" rules={[{ required: true, message: 'Please input Description' }]}>
+        <Form.Item name="description" label="Description" rules={[{ required: true, message: 'Please input Description' }]}>
           <Input />
         </Form.Item>
-
-        <Form.Item name="priority" label="priority" rules={[{ required: true, message: 'Please input priority' }]}>
-          <Select placeholder="Select an option">
+        <Form.Item name="priority" label="Priority" rules={[{ required: true, message: 'Please input priority' }]}>
+          <Select placeholder="Select a priority">
             {priority.map((item, index) => (
-              <Option value="option1" key={index}>{item}</Option>
+              <Option value={item} key={index}>{item}</Option>
             ))}
           </Select>
         </Form.Item>
-
-        <Form.Item name="Jira" label="Jira link" rules={[{ required: true, message: 'Please input link' }]}>
+        <Form.Item name="jiraLink" label="Jira Link" rules={[{ required: true, message: 'Please input link' }]}>
           <Input />
         </Form.Item>
-        <Form.Item name="DependecyGroup" label="Dependecy Group" rules={[{ required: true, message: 'Please choose Groups' }]}>
-          <Select mode="multiple" placeholder="Select an option">
+        <Form.Item name="dependencyGroup" label="Dependency Group" rules={[{ required: true, message: 'Please choose Groups' }]}>
+          <Select mode="multiple" placeholder="Select groups">
             {group.map((item, index) => (
-              <Option value="option1" key={index}>{item}</Option>
+              <Option value={item} key={index}>{item}</Option>
             ))}
           </Select>
         </Form.Item>
-       
-        <Form.Item name="selectField" label="Select Field" rules={[{ required: true, message: 'Please select an option!' }]}>
+        {/* <Form.Item name="selectField" label="Select Field" rules={[{ required: true, message: 'Please select an option!' }]}>
           <QuartersComponent />
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </Modal>
   );
