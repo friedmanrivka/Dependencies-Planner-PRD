@@ -112,3 +112,6 @@ th, td {
   margin-bottom: 16px;
   width: 100%; /* Make form controls full width */
 }
+.columnName{
+  font-weight: bold;
+}

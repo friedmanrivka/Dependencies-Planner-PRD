@@ -90,6 +90,19 @@ export const updateRequestComment = async (req: Request, res: Response): Promise
         res.status(500).send('Internal Server Error');
     }
 };
+export const updateRequestJira = async (req: Request, res: Response): Promise<void> => {
+    console.log('Controller: Entering updateRequestJira method');
+    const { requestId, jira } = req.body;
+
+    try {
+        await RequestRepo.updateRequestJira(requestId, jira);
+        console.log('Controller: jira updated successfully');
+        res.status(200).json({ message: 'Jira updated successfully' });
+    } catch (error) {
+        console.error('Controller: Error updating jira:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
 
 
 // export const updateIdDrag = async (req: Request, res: Response): Promise<void> => {

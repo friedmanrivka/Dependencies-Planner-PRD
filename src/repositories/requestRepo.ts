@@ -226,7 +226,7 @@ export default class RequestRepo {
     }
     static async updateRequestComment(requestId: number, comment: string): Promise<void> {
         try {
-            console.log('u[date comment')
+            console.log('update comment')
             await pool.query(
                 `UPDATE request SET comment = $1 WHERE id = $2`, 
                 [comment, requestId]
@@ -234,6 +234,19 @@ export default class RequestRepo {
             console.log('Repository: Comment updated successfully');
         } catch (err) {
             console.error('Repository: Error updating comment:', err);
+            throw err;
+        }
+    }
+    static async updateRequestJira(requestId: number, jira: string): Promise<void> {
+        try {
+            console.log('update jira')
+            await pool.query(
+                `UPDATE request SET jiralink = $1 WHERE id = $2`, 
+                [jira, requestId]
+            );
+            console.log('Repository: jira updated successfully');
+        } catch (err) {
+            console.error('Repository: Error updating jira:', err);
             throw err;
         }
     }
