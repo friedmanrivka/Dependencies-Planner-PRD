@@ -224,6 +224,7 @@ export default class RequestRepo {
     }
     static async updateRequestComment(requestId: number, comment: string): Promise<void> {
         try {
+            console.log('u[date comment')
             await pool.query(
                 `UPDATE request SET comment = $1 WHERE id = $2`, 
                 [comment, requestId]
