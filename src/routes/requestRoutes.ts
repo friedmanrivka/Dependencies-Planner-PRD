@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { getAllRequst,updateFinalDecision } from '../controllers/requestController';
+import { getAllRequest,updateFinalDecision } from '../controllers/requestController';
 
 const router = Router();
-router.get('/requestor-Details', getAllRequst);
+router.get('/requestor-Details', getAllRequest);
 router.put('/updateFinalDecision/:id', updateFinalDecision);
 // router.get('/filterRequests', getAllfilterRequests);
 // router.get('/updateFinalDecision/:id', updateFinalDecision);
