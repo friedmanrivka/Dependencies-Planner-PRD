@@ -6,7 +6,7 @@ import { updateDescription,getAllRequest,updateFinalDecision ,updateRequestTitle
 const router = Router();
 router.get('/requestor-Details', getAllRequest);
 router.put('/updateFinalDecision/:id', updateFinalDecision);
-router.put('/updateIdDrag/:id/:id', updateIdDrag);
+// router.put('/updateIdDrag/:id/:id', updateIdDrag);
 // router.get('/filterRequests', getAllfilterRequests);
 // router.get('/updateFinalDecision/:id', updateFinalDecision);
 // router.get('/title',getAllTitles);

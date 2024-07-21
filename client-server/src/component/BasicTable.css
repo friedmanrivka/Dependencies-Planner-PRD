@@ -9,6 +9,7 @@
   justify-content: center;
   padding: 8px; /* Adjust padding as needed */
   font-size: 0.9rem; /* Smaller font size */
+
 }
 tr:hover {
   background-color: #f1f1f1;
@@ -19,7 +20,7 @@ tr:hover {
 }
 
 .table-wrapper {
-  margin-top: 1%;
+  margin-top: 7%;
   width: calc(100% - 250px); /* Adjust width to fit with the sidebar */
   max-width: calc(100% - 250px); /* Max width of the table */
   margin-left: 0; /* Adjust margin to reduce the gap */
