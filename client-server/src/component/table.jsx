@@ -584,7 +584,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
 
 const BasicTable = () => {
   const { group, setGroup } = useGroupContext();
-  const [showGroups, setShowGroups] = useState(true);
+  const [showGroups, setShowGroups] = useState(false);
   const [rows, setRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
   const [finalDecision, setFinalDecision] = useState([]);
