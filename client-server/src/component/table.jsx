@@ -17,7 +17,13 @@ import { Select, MenuItem, Checkbox, ListItemText, List, ListItem, Divider, Icon
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-// import { Avatar, Button, CssBaseline, TextField, Box, Grid, Typography } from '@mui/material';
+import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import LinkIcon from '@mui/icons-material/Link';
+import MyModal from './addRequest';
+
+
+
 const ItemType = 'ROW';
 const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priorityOptions, quarterDates, finalDecision, requestorNames }) => {
   const ref = useRef(null);
@@ -207,6 +213,8 @@ const BasicTable = () => {
   const [filterRequestorGroup, setFilterRequestorGroup] = useState([]);
   const [filterRequestorName, setFilterRequestorName] = useState([]);
   const [filterInvolvedName, setFilterInvolvedName] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -270,10 +278,14 @@ const BasicTable = () => {
     handleFilterChange();
   }, [filterRequestorGroup, filterRequestorName]);
 
-  const addRequestHandler = () => {
-    // Functionality of the addRequest button
-    alert("Add Request button clicked!");
+  const showModal = () => {
+    setModalVisible(true);
   };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -287,10 +299,12 @@ const BasicTable = () => {
             color="primary"
             startIcon={<AddCircleOutlineIcon />}
             style={{ backgroundColor: '#58D64D', marginRight: '10px' }}
-            onClick={addRequestHandler}
+            onClick={showModal}
+
           >
+             
             Add Request
-          </Button>
+          </Button><MyModal/> 
           <IconButton onClick={toggleGroups} color="inherit">
           {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </IconButton>
@@ -369,25 +383,25 @@ const BasicTable = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Requestor Group</div>
+                        <div className='columnName'>Requestor Group</div><ExpandCircleDownIcon className="table-header-icon" />
                       </TableCell>
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Requestor Name</div>
+                        <div className='columnName'>Requestor Name</div><ExpandCircleDownIcon className="table-header-icon" />
                       </TableCell>
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Title</div>
+                        <div className='columnName'>Title</div><FormatAlignLeftIcon className="table-header-icon" />
                       </TableCell>
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Planned</div>
+                        <div className='columnName'>Planned</div><FormatAlignLeftIcon className="table-header-icon" />
                       </TableCell>
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Description</div>
+                        <div className='columnName'>Description</div><FormatAlignLeftIcon className="table-header-icon" />
                       </TableCell>
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Priority</div>
+                        <div className='columnName'>Priority</div><ExpandCircleDownIcon className="table-header-icon" />
                       </TableCell>
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Final Decision</div>
+                        <div className='columnName'>Final Decision</div><ExpandCircleDownIcon className="table-header-icon" />
                       </TableCell>
                       <TableCell className="highlight-header"><div className='columnName'>
                       <IconButton onClick={toggleGroups} color="inherit">
@@ -397,14 +411,14 @@ const BasicTable = () => {
                       </TableCell>
                       {showGroups && group.map((item, index) => (
                         <TableCell className="highlight-header" key={index}>
-                          <div className='columnName'>{item}</div>
+                          <div className='columnName'>{item}</div><ExpandCircleDownIcon className="table-header-icon" />
                         </TableCell>
                       ))}
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Comments</div>
+                        <div className='columnName'>Comments</div><FormatAlignLeftIcon className="table-header-icon" />
                       </TableCell>
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Jira Link</div>
+                        <div className='columnName'>Jira Link</div><LinkIcon className="table-header-icon" />
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -432,6 +446,7 @@ const BasicTable = () => {
           </Card>
         </div>
       </div>
+      <MyModal visible={modalVisible} onClose={closeModal} />
     </DndProvider>
   );
 };

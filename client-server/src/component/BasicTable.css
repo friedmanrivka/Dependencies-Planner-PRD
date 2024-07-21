@@ -66,6 +66,7 @@ th, td {
 
 .table-header-icon {
   display: none; /* Hide header icons */
+    margin-top: 4px;
 }
 
 .sidebar {
