@@ -197,7 +197,9 @@ export default class RequestRepo {
             console.error('Error updating final decision:', err);
             throw err;
         }
+
     }
+
 
  static async updateDescription(requestId: number, description: string): Promise<void> {
         try {
@@ -236,3 +238,4 @@ export default class RequestRepo {
         }
     }
 }
+

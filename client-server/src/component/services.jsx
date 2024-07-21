@@ -83,4 +83,13 @@ export const updateFinalDecision = async (id,finalDecision) => {
         throw error;
     }
 };
+export const addNewRequest = async (newRequest) => {
+    try{
+     const response = await axios.post(`${API_URL}/requestor-Details`, newRequest);
+     return response.data;
+    } catch (error){
+        console.error('Error adding request:', error);
+        throw error;
+    }
+}
 

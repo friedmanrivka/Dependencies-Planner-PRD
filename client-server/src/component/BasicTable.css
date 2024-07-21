@@ -10,13 +10,16 @@
   padding: 8px; /* Adjust padding as needed */
   font-size: 0.9rem; /* Smaller font size */
 }
-
+tr:hover {
+  background-color: #f1f1f1;
+}
 .container {
   display: flex;
   align-items: flex-start; /* Align items to the top */
 }
 
 .table-wrapper {
+  margin-top: 1%;
   width: calc(100% - 250px); /* Adjust width to fit with the sidebar */
   max-width: calc(100% - 250px); /* Max width of the table */
   margin-left: 0; /* Adjust margin to reduce the gap */
@@ -63,6 +66,7 @@ th, td {
 
 .table-header-icon {
   display: none; /* Hide header icons */
+    margin-top: 4px;
 }
 
 .sidebar {

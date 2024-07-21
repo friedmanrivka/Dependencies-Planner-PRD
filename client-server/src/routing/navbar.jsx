@@ -5,7 +5,7 @@ export const Navbar=()=>{
         <nav>       
                 {/* <Link to="/addRequest">addRequest</Link><br></br>
                 <Link to="/table">table</Link><br></br>          */}
-                <Link to="/">Check Email</Link>
+                {/* <Link to="/">Check Email</Link> */}
         </nav>
     )
 }
