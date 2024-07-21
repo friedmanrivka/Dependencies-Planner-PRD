@@ -93,3 +93,12 @@ export const addNewRequest = async (newRequest) => {
     }
 }
 
+// export const updateDescription = async (id,) => {
+//     try{
+//      const response = await axios.post(`${API_URL}/requestor-Details`, newRequest);
+//      return response.data;
+//     } catch (error){
+//         console.error('Error adding request:', error);
+//         throw error;
+//     }
+// }
