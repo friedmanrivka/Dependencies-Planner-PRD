@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { updateDescription,getAllRequest,updateFinalDecision ,updateRequestTitle,updateRequestComment} from '../controllers/requestController';
+import { updateDescription,getAllRequest,updateFinalDecision ,updateRequestTitle,updateRequestComment,updateRequestJira} from '../controllers/requestController';
 
 
 const router = Router();
@@ -15,5 +15,6 @@ router.put('/updateFinalDecision/:id', updateFinalDecision);
  router.put('/update-title', updateRequestTitle);
  router.put('/update-description', updateDescription);
  router.put('/update-comment', updateRequestComment); 
+ router.put('/update-jira', updateRequestJira); 
 export default router;
 
