@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGroupContext } from './groupContext';
 import { useEffect, useState } from 'react';
-import { getFinalDecision, getQuarterDates, getRequestorNames, getPriority, getDescriptions, addNewRequest } from './services';
+import { getFinalDecision, getQuarterDates, getRequestorNames, getProductEmail,getPriority, getDescriptions, addNewRequest } from './services';
 import { Modal, Form, Input, Select } from 'antd';
 
 const { Option } = Select;
@@ -15,12 +15,13 @@ const MyModal = ({ visible, onClose }) => {
     requestorGroup: '',
     description: '',
     JiraLink: '',
-    productmanageremail: 'new.manager@example5.com',
+    productmanageremail: '',
     priority: '',
     affectedGroupList: []
   });
 
   const [finalDecision, setFinalDecision] = useState([]);
+  const [productEmail, setProductEmail] = useState([]);
   const [quarterDates, setQuarterDates] = useState([]);
   const [requestorNames, setRequestorNames] = useState([]);
   const [priority, setPriority] = useState([]);
@@ -32,6 +33,9 @@ const MyModal = ({ visible, onClose }) => {
         const finalDecisionData = await getFinalDecision();
         setFinalDecision(finalDecisionData);
 
+        const productEmailData = await getProductEmail();
+        setProductEmail(productEmailData);
+        
         const quarterDatesData = await getQuarterDates();
         setQuarterDates(quarterDatesData);
 
@@ -98,9 +102,9 @@ const MyModal = ({ visible, onClose }) => {
         >
           <Select
             placeholder="Select a name"
-            // onChange={(value) => handleChange('productmanageremail', value)}
+            onChange={(value) => handleChange('productmanageremail', value)}
           >
-            {requestorNames.map((item, index) => (
+            {productEmail.map((item, index) => (
               <Option value={item} key={index}>{item}</Option>
             ))}
           </Select>

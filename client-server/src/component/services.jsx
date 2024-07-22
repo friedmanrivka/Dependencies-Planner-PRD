@@ -38,6 +38,15 @@ export const getPriority = async () => {
         throw error;
     }
 };
+export const getProductEmail = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/requestor-email`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching ProductEmail:', error);
+        throw error;
+    }
+};
 export const getRequestorNames = async () => {
     try {
         const response = await axios.get(`${API_URL}/requestor-names`);
