@@ -871,11 +871,13 @@ const BasicTable = () => {
                       <TableCell className="highlight-header">
                         <div className='columnName'>Final Decision</div><ExpandCircleDownIcon className="table-header-icon" />
                       </TableCell>
+
                       <TableCell className="highlight-header"><div className='columnName'>
                         <IconButton onClick={toggleGroups} color="inherit">
                           {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
                         </IconButton>
                       </div></TableCell>
+
                       {showGroups && group.map((item, index) => (
                         <TableCell className="highlight-header" key={index}>
                           <div className='columnName'>{item}</div><ExpandCircleDownIcon className="table-header-icon" />
