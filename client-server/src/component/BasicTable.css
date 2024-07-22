@@ -1,4 +1,4 @@
-/* .highlight-header {
+.highlight-header {
   font-weight: bold;
   background-color: #f0f0f0; 
   color: #3b3333; 
@@ -7,7 +7,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  padding: 8px; 
+  padding: 8px;
   font-size: 0.9rem; 
 
 }
@@ -35,125 +35,9 @@ body {
   text-align: center;
   padding: 15px 0;
   background-color: rgba(0, 0, 0, 0.1);
-  color: black; 
+  color: black;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000; 
-}
-
-.header h1 {
-  margin: 0;
-  font-size: 20px;
-}
-
-.content {
-  margin-top: 60px;
-  padding: 10px; 
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 0 auto;
-  background-color: #f8f8f8;
-  font-size: 0.8rem; 
-}
-
-th, td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  vertical-align: middle;
-}
-
-.table-header-icon {
-  display: none; 
-    margin-top: 4px;
-}
-
-.sidebar {
-  width: 250px; 
-  position: relative;
-  height: auto;
-  max-height: 80vh; 
-  overflow-y: auto; 
-  padding-top: 80px;
-}
-
-.sidebar .MuiButton-root {
-  background-color: #58D64D
-  ; 
-  color: white; 
-  width: 100%; 
-}
-
-.sidebar .MuiButton-root:hover {
-  background-color: #58D64D
-  ; 
-}
-
-
-.filter-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-} 
- 
- #header{
-  color:  #00C2FF;
-  ;
- }
- .avatar{
-  background-color: #00C2FF !important;
-  margin: 8px;
- }
-
-.sidebar .MuiFormControl-root {
-  margin-bottom: 16px;
-  width: 100%; 
-}
-.columnName{
-  font-weight: bold;
-} */
-.highlight-header {
-  font-weight: bold;
-  background-color: #f0f0f0; /* Light grey background */
-  color: #3b3333; /* Text color */
-  text-align: center;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  padding: 8px; /* Adjust padding as needed */
-  font-size: 0.9rem; /* Smaller font size */
-
-}
-tr:hover {
-  background-color: #f1f1f1;
-}
-.container {
-  display: flex;
-  align-items: flex-start; /* Align items to the top */
-}
-
-.table-wrapper {
-  margin-top: 7%;
-  width: calc(100% - 250px); /* Adjust width to fit with the sidebar */
-  max-width: calc(100% - 250px); /* Max width of the table */
-  margin-left: 0; /* Adjust margin to reduce the gap */
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-
-.header {
-  text-align: center;
-  padding: 15px 0;
-  background-color: rgba(0, 0, 0, 0.1);
-  color: black; /* Changed text color */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* Ensures the header is above other content */
 }
 
 .header h1 {
@@ -171,8 +55,8 @@ table {
   border-collapse: collapse;
   margin: 0 auto;
   background-color: #f8f8f8;
-  font-size: 0.8rem; /* Smaller font size */
-}
+  font-size: 0.8rem;
+  }
 
 th, td {
   padding: 8px;
