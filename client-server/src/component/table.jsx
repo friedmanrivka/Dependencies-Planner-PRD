@@ -723,6 +723,25 @@ const BasicTable = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
+                  {filteredRows.map((row, index) => ( // HIGHLIGHTED
+              
+              <DraggableRow
+                key={index}
+                index={index}
+                row={row}
+                moveRow={moveRow}
+                showGroups={showGroups}
+                group={group}
+                status={status}
+                priorityOptions={priorityOptions}
+                quarterDates={quarterDates}
+                finalDecision={finalDecision}
+                requestorNames={requestorNames}
+                style={{ cursor: "grab" }}
+                />
+            ))}
+
+
                     {filteredRows.map((row, index) => {
                       const finalDecisionBackgroundColor = row.decision === 'inQ' ? '#b7cab8' : row.decision === 'notInQ' ? '#d4c0bd' : 'transparent';
                       const priorityBackgroundColor = row.critical==='low' ? '#e6ffe6' : row.critical==='high' ? '#ffd9b3' :row.critical==='medium' ? '#ffffb3':row.critical==='critical' ? '#ffcccc' : 'transparent';
@@ -860,16 +879,4 @@ const BasicTable = () => {
 };
 
 export default BasicTable;
-
-
-
-
-
-
-
-
-
-
-
-
 
