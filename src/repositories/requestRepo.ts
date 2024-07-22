@@ -111,7 +111,9 @@ export default class RequestRepo {
 
             const result = await pool.query(`
                 SELECT
-                    r.requestgroupid,
+                  
+                r.id,  
+                r.requestgroupid,
                     pr.productmanagername,
                     r.title,
                     r.comment, 
