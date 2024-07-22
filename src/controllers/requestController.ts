@@ -104,6 +104,19 @@ export const updateRequestJira = async (req: Request, res: Response): Promise<vo
     }
 };
 
+// export const updateRequestProductManager = async (req: Request, res: Response): Promise<void> => {
+//     console.log('Controller: Entering updateRequestProductManager method');
+//     const { requestId, productManagerName } = req.body;
+
+//     try {
+//         await RequestRepo.updateRequestProductManager(requestId, productManagerName);
+//         console.log('Controller: Product Manager updated successfully');
+//         res.status(200).json({ message: 'Product Manager updated successfully' });
+//     } catch (error) {
+//         console.error('Controller: Error updating Product Manager:', error);
+//         res.status(500).send('Internal Server Error');
+//     }
+// };
 
 // export const updateIdDrag = async (req: Request, res: Response): Promise<void> => {
 //     try {

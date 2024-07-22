@@ -100,7 +100,7 @@
 //     }
 // }
 
-import { pool } from '../config/db';
+import { pool ,pool2} from '../config/db';
 import GroupRepo from './groupRepo';
 import { ExtendedRequest } from '../models/extendedRequestModel';
 
@@ -250,5 +250,47 @@ export default class RequestRepo {
             throw err;
         }
     }
+    // static async updateRequestProductManager(requestId: number, productManagerName: string): Promise<void> {
+    //     try {
+    //         const productManagerResult = await pool.query(
+    //             `SELECT id FROM productmanager WHERE productmanagername = $1`, 
+    //             [productManagerName]
+    //         );
+    //         if (productManagerResult.rows.length === 0) {
+    //             throw new Error('Product Manager not found');
+    //         }
+    //         const productManagerId = productManagerResult.rows[0].id;
+
+    //         await pool.query(
+    //             `UPDATE request SET productmanagerid = $1 WHERE id = $2`, 
+    //             [productManagerId, requestId]
+    //         );
+    //         console.log('Repository: Product Manager updated successfully');
+    //     } catch (err) {
+    //         console.error('Repository: Error updating Product Manager:', err);
+    //         throw err;
+    //     }
+    // }
+    // static async updateRequestGroup(requestId: number, groupName: string): Promise<void> {
+    //     try {
+    //         const groupResult = await pool2.query(
+    //             `SELECT id FROM group WHERE productmanagername = $1`, 
+    //             [productManagerName]
+    //         );
+    //         if (productManagerResult.rows.length === 0) {
+    //             throw new Error('Product Manager not found');
+    //         }
+    //         const productManagerId = productManagerResult.rows[0].id;
+
+    //         await pool.query(
+    //             `UPDATE request SET productmanagerid = $1 WHERE id = $2`, 
+    //             [productManagerId, requestId]
+    //         );
+    //         console.log('Repository: Product Manager updated successfully');
+    //     } catch (err) {
+    //         console.error('Repository: Error updating Product Manager:', err);
+    //         throw err;
+    //     }
+    // }
 }
 

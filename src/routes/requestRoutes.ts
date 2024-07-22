@@ -16,5 +16,6 @@ router.put('/updateFinalDecision/:id', updateFinalDecision);
  router.put('/update-description', updateDescription);
  router.put('/update-comment', updateRequestComment); 
  router.put('/update-jira', updateRequestJira); 
+//  router.put('/update-product-manager', updateRequestProductManager);
 export default router;
 

@@ -12,6 +12,19 @@ export default class ProductManagerRepo {
             throw err;
         }
     }
+    static async getAllProductManagerEmails(): Promise<ProductManager[]> {
+        try {
+            console.log('Entering getAllProductManagerEmails method');
+            const result = await pool.query('SELECT email FROM productmanager');
+          
+            return result.rows as ProductManager[];
+        } catch (err) {
+            console.error('Error executing query in getAllProductManagerNames:', err);
+            throw err;
+        }
+    }
 }
+
+
 
 

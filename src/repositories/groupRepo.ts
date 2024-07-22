@@ -1,4 +1,3 @@
-
 import {pool2} from '../config/db';
 import {Group} from '../models/groupModel'
 export default class GroupRepo {
@@ -14,4 +13,5 @@ export default class GroupRepo {
             throw err;
         }
     }
+   
 }
