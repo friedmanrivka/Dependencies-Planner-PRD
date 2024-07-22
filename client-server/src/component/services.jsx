@@ -84,12 +84,16 @@ export const updateFinalDecision = async (id,finalDecision) => {
     }
 };
 export const addNewRequest = async (newRequest) => {
-    try{
-     const response = await axios.post(`${API_URL}/requestor-Details`, newRequest);
-     return response.data;
-    } catch (error){
+    try {
+        const response = await axios.post(`${API_URL}/requestor-Details`, newRequest, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
+    } catch (error) {
         console.error('Error adding request:', error);
         throw error;
     }
-}
+};
 
