@@ -100,7 +100,7 @@
 //     }
 // }
 
-import { pool } from '../config/db';
+import { pool ,pool2} from '../config/db';
 import GroupRepo from './groupRepo';
 import { ExtendedRequest } from '../models/extendedRequestModel';
 
@@ -199,7 +199,7 @@ export default class RequestRepo {
         }
 
     }
-    
+
     static async updateIdDrag(idDrag1: number, idDrag2: number): Promise<void> {
         // try {
             
@@ -257,4 +257,96 @@ export default class RequestRepo {
 }
 
 
-           
+ static async updateDescription(requestId: number, description: string): Promise<void> {
+        try {
+            await pool.query(
+                `UPDATE request SET description = $1 WHERE id = $2`, 
+                [description, requestId]
+            );
+        } catch (err) {
+            console.error('Error updating description:', err);
+            throw err;
+        }
+    }
+    static async updateRequestTitle(requestId: number, title: string): Promise<void> {
+        try {
+            await pool.query(
+                `UPDATE request SET title = $1 WHERE id = $2`, 
+                [title, requestId]
+            );
+            console.log('Repository: Title updated successfully');
+        } catch (err) {
+            console.error('Repository: Error updating title:', err);
+            throw err;
+        }
+    }
+    static async updateRequestComment(requestId: number, comment: string): Promise<void> {
+        try {
+            console.log('update comment')
+            await pool.query(
+                `UPDATE request SET comment = $1 WHERE id = $2`, 
+                [comment, requestId]
+            );
+            console.log('Repository: Comment updated successfully');
+        } catch (err) {
+            console.error('Repository: Error updating comment:', err);
+            throw err;
+        }
+    }
+    static async updateRequestJira(requestId: number, jira: string): Promise<void> {
+        try {
+            console.log('update jira')
+            await pool.query(
+                `UPDATE request SET jiralink = $1 WHERE id = $2`, 
+                [jira, requestId]
+            );
+            console.log('Repository: jira updated successfully');
+        } catch (err) {
+            console.error('Repository: Error updating jira:', err);
+            throw err;
+        }
+    }
+    // static async updateRequestProductManager(requestId: number, productManagerName: string): Promise<void> {
+    //     try {
+    //         const productManagerResult = await pool.query(
+    //             `SELECT id FROM productmanager WHERE productmanagername = $1`, 
+    //             [productManagerName]
+    //         );
+    //         if (productManagerResult.rows.length === 0) {
+    //             throw new Error('Product Manager not found');
+    //         }
+    //         const productManagerId = productManagerResult.rows[0].id;
+
+    //         await pool.query(
+    //             `UPDATE request SET productmanagerid = $1 WHERE id = $2`, 
+    //             [productManagerId, requestId]
+    //         );
+    //         console.log('Repository: Product Manager updated successfully');
+    //     } catch (err) {
+    //         console.error('Repository: Error updating Product Manager:', err);
+    //         throw err;
+    //     }
+    // }
+    // static async updateRequestGroup(requestId: number, groupName: string): Promise<void> {
+    //     try {
+    //         const groupResult = await pool2.query(
+    //             `SELECT id FROM group WHERE productmanagername = $1`, 
+    //             [productManagerName]
+    //         );
+    //         if (productManagerResult.rows.length === 0) {
+    //             throw new Error('Product Manager not found');
+    //         }
+    //         const productManagerId = productManagerResult.rows[0].id;
+
+    //         await pool.query(
+    //             `UPDATE request SET productmanagerid = $1 WHERE id = $2`, 
+    //             [productManagerId, requestId]
+    //         );
+    //         console.log('Repository: Product Manager updated successfully');
+    //     } catch (err) {
+    //         console.error('Repository: Error updating Product Manager:', err);
+    //         throw err;
+    //     }
+    // }
+}
+
