@@ -9,6 +9,7 @@ export default class RequestRepo {
 
             const result = await pool.query(`
                 SELECT
+                r.id,
                     r.requestgroupid,
                     pr.productmanagername,
                     r.title,
@@ -47,7 +48,7 @@ export default class RequestRepo {
 
             const requests = result.rows;
             const groups = await GroupRepo.getAllGroup();
-
+            console.log(requests);
             console.log('Groups fetched successfully:', JSON.stringify(groups, null, 2));
 
 

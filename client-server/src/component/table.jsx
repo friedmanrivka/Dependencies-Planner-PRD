@@ -412,10 +412,11 @@ import { Select, MenuItem, Checkbox, ListItemText, List, ListItem, Divider, Icon
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DeleteComponent from './deleteReq'
 
 const ItemType = 'ROW';
 
-const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priorityOptions, quarterDates, finalDecision, requestorNames }) => {
+const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priorityOptions, quarterDates, finalDecision, requestorNames,onDeleteSuccess }) => {
   const ref = useRef(null);
   const [selectedStatus, setSelectedStatus] = useState(Array(group.length).fill('Pending Response'));
   const [selectedPriority, setSelectedPriority] = useState(row.critical || '');
@@ -482,6 +483,8 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
   const handleRequestorNameChange = (event) => {
     setSelectedRequestorName(event.target.value);
   };
+
+  console.log(row);
 
   return (
     <TableRow
@@ -578,6 +581,8 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
       ))}
       <TableCell align="right">{row.comment}</TableCell>
       <TableCell align="right"><a href={row.jiralink}>Jira Link</a></TableCell>
+      <TableCell><DeleteComponent id={row.id} onDeleteSuccess={onDeleteSuccess}/></TableCell>
+      
     </TableRow>
   );
 };
@@ -661,6 +666,10 @@ const BasicTable = () => {
   const addRequestHandler = () => {
     // Functionality of the addRequest button
     alert("Add Request button clicked!");
+  };
+  const handleDeleteSuccess = (id) => {
+    setRows(rows.filter(row => row.id !== id));
+    setFilteredRows(filteredRows.filter(row => row.id !== id));
   };
 
   return (
@@ -788,6 +797,10 @@ const BasicTable = () => {
                       <TableCell className="highlight-header">
                         <div className='columnName'>Jira Link</div>
                       </TableCell>
+                      <TableCell className="highlight-header">
+                        <div className='columnName'>Delete Request</div>
+                      </TableCell>
+                      
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -804,6 +817,7 @@ const BasicTable = () => {
                         quarterDates={quarterDates}
                         finalDecision={finalDecision}
                         requestorNames={requestorNames}
+                        onDeleteSuccess={() => handleDeleteSuccess(row.id)}
                         style={{ cursor: "grab" }}
                       />
                     ))}

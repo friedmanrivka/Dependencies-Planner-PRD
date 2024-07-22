@@ -9,6 +9,7 @@ import finalDesicion from './src/routes/filnalDesicionRoutes'
 import statusRoutes from './src/routes/statusRoutes'
 //import newRequest from './src/routes/newRequestRouter';';
 import AuthenticationRoutes  from './src/routes/AuthenticationRoutes'
+import deleteRouter from './src/routes/deleteRouter'
 import cors from 'cors';
 
 dotenv.config();
@@ -17,7 +18,7 @@ const port = process.env.EXPRESS_PORT || 3001
 app.use(cors());
 
 app.use(express.json());
-
+app.use('/api', deleteRouter);
 app.use('/api', requestRoutes);
 app.use('/api',groupRoutes);
 app.use('/api',priorityRoutes)
