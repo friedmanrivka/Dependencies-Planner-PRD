@@ -1,3 +1,119 @@
+/* .highlight-header {
+  font-weight: bold;
+  background-color: #f0f0f0; 
+  color: #3b3333; 
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px; 
+  font-size: 0.9rem; 
+
+}
+tr:hover {
+  background-color: #f1f1f1;
+}
+.container {
+  display: flex;
+  align-items: flex-start; 
+}
+
+.table-wrapper {
+  margin-top: 7%;
+  width: calc(100% - 250px); 
+  max-width: calc(100% - 250px); 
+  margin-left: 0; 
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  text-align: center;
+  padding: 15px 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: black; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; 
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.content {
+  margin-top: 60px;
+  padding: 10px; 
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  background-color: #f8f8f8;
+  font-size: 0.8rem; 
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.table-header-icon {
+  display: none; 
+    margin-top: 4px;
+}
+
+.sidebar {
+  width: 250px; 
+  position: relative;
+  height: auto;
+  max-height: 80vh; 
+  overflow-y: auto; 
+  padding-top: 80px;
+}
+
+.sidebar .MuiButton-root {
+  background-color: #58D64D
+  ; 
+  color: white; 
+  width: 100%; 
+}
+
+.sidebar .MuiButton-root:hover {
+  background-color: #58D64D
+  ; 
+}
+
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+} 
+ 
+ #header{
+  color:  #00C2FF;
+  ;
+ }
+ .avatar{
+  background-color: #00C2FF !important;
+  margin: 8px;
+ }
+
+.sidebar .MuiFormControl-root {
+  margin-bottom: 16px;
+  width: 100%; 
+}
+.columnName{
+  font-weight: bold;
+} */
 .highlight-header {
   font-weight: bold;
   background-color: #f0f0f0; /* Light grey background */
@@ -46,8 +162,8 @@ body {
 }
 
 .content {
-  margin-top: 60px; /* Adjust this value based on the height of your header */
-  padding: 10px; /* Smaller padding */
+  margin-top: 60px; 
+  padding: 10px; 
 }
 
 table {
@@ -66,28 +182,31 @@ th, td {
 }
 
 .table-header-icon {
-  display: none; /* Hide header icons */
+  display: none;
     margin-top: 4px;
 }
 
 .sidebar {
-  width: 250px; /* Adjusted width */
+  padding-top: 100px;
+  width: 200px; 
   position: relative;
   height: auto;
-  max-height: 80vh; /* Make the sidebar shorter */
-  overflow-y: auto; /* Add scroll if the content is too long */
+  max-height: 60vh;
+  overflow-y: auto; 
 }
 
 .sidebar .MuiButton-root {
   background-color: #58D64D
-  ; /* Green background */
-  color: white; /* White text */
-  width: 100%; /* Make buttons full width */
+;
+  color: white; 
+  width: 100%; 
+  font-size: 0.8rem; 
+
 }
 
 .sidebar .MuiButton-root:hover {
   background-color: #58D64D
-  ; /* Darker green on hover */
+  ; 
 }
 
 
@@ -96,9 +215,7 @@ th, td {
   align-items: center;
   gap: 10px;
 } */
- /* #sumbit{
-  color: #58D64D;
- } */
+ 
  #header{
   color:  #00C2FF;
   ;
@@ -108,10 +225,6 @@ th, td {
   margin: 8px;
  }
 
-.sidebar .MuiFormControl-root {
-  margin-bottom: 16px;
-  width: 100%; /* Make form controls full width */
-}
-.columnName{
-  font-weight: bold;
+.sidebar .MuiInputBase-input {
+  font-size: 0.8rem; 
 }
