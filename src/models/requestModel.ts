@@ -1,4 +1,3 @@
-
 export interface Request {
     id: number,
     title: string,
@@ -10,6 +9,6 @@ export interface Request {
     priority_id: number,
     finalDecision: number,
    productmanagerid: number,
-    // affectedGroupsList: number,
+    affectedGroupList: number[],
     requestgroupid: number;
 }

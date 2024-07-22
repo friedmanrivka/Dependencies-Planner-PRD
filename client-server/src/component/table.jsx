@@ -104,6 +104,21 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
         return 'transparent';
     }
   };
+  const getPriorityBackgroundColor = (priority) => {
+    switch (priority) {
+      case 'critical':
+        return '#ffcccc';
+      case 'high':
+        return '#ffd9b3';
+      case 'medium':
+        return '#ffffb3';
+      case 'low':
+        return '#e6ffe6';
+      default:
+        return 'transparent';
+    }
+  };
+  const groupBackgroundColor = '#d3d3d3';
 
   return (
     <TableRow
@@ -122,7 +137,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
           displayEmpty
         >
           {group.map((groupOption, groupIndex) => (
-            <MenuItem value={groupOption} key={groupIndex}>
+            <MenuItem value={groupOption} key={groupIndex} style={{ backgroundColor: groupBackgroundColor }}>
               {groupOption}
             </MenuItem>
           ))}
@@ -133,6 +148,14 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
           value={selectedRequestorName}
           onChange={handleRequestorNameChange}
           displayEmpty
+          style={{ backgroundColor: '#d3d3d3' }}
+          MenuProps={{
+            PaperProps: {
+              style: {
+                backgroundColor:'#d3d3d3',
+              }
+            }
+          }}
         >
           {requestorNames.map((nameOption, nameIndex) => (
             <MenuItem value={nameOption} key={nameIndex}>
@@ -147,6 +170,15 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
           value={selectedPlanned}
           onChange={handlePlannedChange}
           displayEmpty
+          style={{ backgroundColor: '#d3d3d3' }}
+          MenuProps={{
+            PaperProps: {
+              style: {
+                backgroundColor:'#d3d3d3',
+              }
+            }
+          }}
+         
         >
           {quarterDates.map((dateOption, dateIndex) => (
             <MenuItem value={dateOption} key={dateIndex}>
@@ -161,6 +193,14 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
           value={selectedPriority}
           onChange={handlePriorityChange}
           displayEmpty
+          style={{ backgroundColor: getPriorityBackgroundColor(selectedPriority), padding: '0.2em' }}
+          MenuProps={{
+            PaperProps: {
+              style: {
+                backgroundColor: getPriorityBackgroundColor(selectedPriority),
+              }
+            }
+          }}
         >
           {priorityOptions.map((priorityOption, priorityIndex) => (
             <MenuItem value={priorityOption} key={priorityIndex}>
@@ -191,7 +231,8 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
         </Select>
       </TableCell>
       {showGroups && group.map((item, groupIndex) => (
-        <TableCell align="right" key={groupIndex}>
+        <TableCell align="right" key={groupIndex} 
+>
           <Select
             value={selectedStatus[groupIndex]?.statusname || 'Pending Response'}
             onChange={(e) => handleStatusChange(e.target.value, groupIndex)}
@@ -435,6 +476,7 @@ const BasicTable = () => {
                   <TableBody>
                     {filteredRows.map((row, index) => {
                       const finalDecisionBackgroundColor = row.decision === 'inQ' ? '#b7cab8' : row.decision === 'notInQ' ? '#d4c0bd' : 'transparent';
+                      const priorityBackgroundColor = row.critical==='low' ? '#e6ffe6' : row.critical==='high' ? '#ffd9b3' :row.critical==='medium' ? '#ffffb3':row.critical==='critical' ? '#ffcccc' : 'transparent';
 
                       return (
                         <TableRow
@@ -445,6 +487,14 @@ const BasicTable = () => {
                             <Select
                               value={row.requestorGroup}
                               displayEmpty
+                              style={{ backgroundColor: '#d3d3d3', padding: '0.2em' }}
+                              MenuProps={{
+                                PaperProps: {
+                                  style: {
+                                    backgroundColor: '#d3d3d3',
+                                  }
+                                }
+                              }}
                             >
                               {group.map((groupOption, groupIndex) => (
                                 <MenuItem value={groupOption} key={groupIndex}>
@@ -457,6 +507,7 @@ const BasicTable = () => {
                             <Select
                               value={row.productmanagername}
                               displayEmpty
+
                             >
                               {requestorNames.map((nameOption, nameIndex) => (
                                 <MenuItem value={nameOption} key={nameIndex}>
@@ -470,6 +521,14 @@ const BasicTable = () => {
                             <Select
                               value={row.planned}
                               displayEmpty
+                              style={{ backgroundColor: '#d3d3d3', padding: '0.2em' }}
+                              MenuProps={{
+                                PaperProps: {
+                                  style: {
+                                    backgroundColor:'#d3d3d3', 
+                                  }
+                                }
+                              }}
                             >
                               {quarterDates.map((dateOption, dateIndex) => (
                                 <MenuItem value={dateOption} key={dateIndex}>
@@ -483,6 +542,14 @@ const BasicTable = () => {
                             <Select
                               value={row.critical}
                               displayEmpty
+                              style={{ backgroundColor: priorityBackgroundColor, padding: '0.2em' }}
+                              MenuProps={{
+                                PaperProps: {
+                                  style: {
+                                    backgroundColor: priorityBackgroundColor,
+                                  }
+                                }
+                              }}
                             >
                               {priorityOptions.map((priorityOption, priorityIndex) => (
                                 <MenuItem value={priorityOption} key={priorityIndex}>

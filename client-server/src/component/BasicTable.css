@@ -71,10 +71,11 @@ th, td {
 }
 
 .sidebar {
-  width: 250px; /* Adjusted width */
+  padding-top: 80px;
+  width: 200px; /* Adjusted width */
   position: relative;
   height: auto;
-  max-height: 80vh; /* Make the sidebar shorter */
+  max-height: 60vh; /* Make the sidebar shorter */
   overflow-y: auto; /* Add scroll if the content is too long */
 }
 
@@ -83,6 +84,8 @@ th, td {
   ; /* Green background */
   color: white; /* White text */
   width: 100%; /* Make buttons full width */
+  font-size: 0.8rem; /* Smaller font size for the input text */
+
 }
 
 .sidebar .MuiButton-root:hover {
@@ -108,9 +111,8 @@ th, td {
   margin: 8px;
  }
 
-.sidebar .MuiFormControl-root {
-  margin-bottom: 16px;
-  width: 100%; /* Make form controls full width */
+.sidebar .MuiInputBase-input {
+  font-size: 0.8rem; /* Smaller font size for the input text */
 }
 .columnName{
   font-weight: bold;
