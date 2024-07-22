@@ -49,6 +49,15 @@ export const getPriority = async () => {
         throw error;
     }
 };
+export const getProductEmail = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/requestor-email`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching ProductEmail:', error);
+        throw error;
+    }
+};
 export const getRequestorNames = async () => {
     try {
         const response = await axios.get(`${API_URL}/requestor-names`);
@@ -87,11 +96,61 @@ export const getAllStatus = async () => {
 };
 export const updateFinalDecision = async (id,finalDecision) => {
     try {
-        const response = await axios.get(`${API_URL}/updateFinalDecision/${id}`,finalDecision);
+        const response = await axios.put(`${API_URL}/updateFinalDecision/${id}`,finalDecision);
         return response.data;
     } catch (error) {
         console.error('Error fetching groups:', error);
         throw error;
     }
 };
+export const addNewRequest = async (newRequest) => {
+    try {
+        const response = await axios.post(`${API_URL}/requestor-Details`, newRequest, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error adding request:', error);
+        throw error;
+    }
+};
 
+export const updateDescription = async (id,description) => {
+    try{
+     const response = await axios.put(`${API_URL}/update-description`, {id,description});
+     return response.data;
+    } catch (error){
+        console.error('Error update request:', error);
+        throw error;
+    }
+};
+
+export const updateTitle = async (id,title) => {
+    try{
+     const response = await axios.put(`${API_URL}/update-title`,{id,title} );
+     return response.data;
+    } catch (error){
+        console.error('Error update request:', error);
+        throw error;
+    }
+};
+export const updateJira= async (id,jira) => {
+    try{
+     const response = await axios.put(`${API_URL}/update-jira`,{id,jira} );
+     return response.data;
+    } catch (error){
+        console.error('Error update jira in  request:', error);
+        throw error;
+    }
+};
+export const updateComment= async (id,comment) => {
+    try{
+     const response = await axios.put(`${API_URL}/update-comment`, {id,comment});
+     return response.data;
+    } catch (error){
+        console.error('Error update jira in  request:', error);
+        throw error;
+    }
+};

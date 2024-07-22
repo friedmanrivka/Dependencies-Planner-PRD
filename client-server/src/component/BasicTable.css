@@ -9,14 +9,18 @@
   justify-content: center;
   padding: 8px; /* Adjust padding as needed */
   font-size: 0.9rem; /* Smaller font size */
-}
 
+}
+tr:hover {
+  background-color: #f1f1f1;
+}
 .container {
   display: flex;
   align-items: flex-start; /* Align items to the top */
 }
 
 .table-wrapper {
+  margin-top: 7%;
   width: calc(100% - 250px); /* Adjust width to fit with the sidebar */
   max-width: calc(100% - 250px); /* Max width of the table */
   margin-left: 0; /* Adjust margin to reduce the gap */
@@ -63,13 +67,15 @@ th, td {
 
 .table-header-icon {
   display: none; /* Hide header icons */
+    margin-top: 4px;
 }
 
 .sidebar {
-  width: 250px; /* Adjusted width */
+  padding-top: 80px;
+  width: 200px; /* Adjusted width */
   position: relative;
   height: auto;
-  max-height: 80vh; /* Make the sidebar shorter */
+  max-height: 60vh; /* Make the sidebar shorter */
   overflow-y: auto; /* Add scroll if the content is too long */
 }
 
@@ -78,6 +84,8 @@ th, td {
   ; /* Green background */
   color: white; /* White text */
   width: 100%; /* Make buttons full width */
+  font-size: 0.8rem; /* Smaller font size for the input text */
+
 }
 
 .sidebar .MuiButton-root:hover {
@@ -103,7 +111,9 @@ th, td {
   margin: 8px;
  }
 
-.sidebar .MuiFormControl-root {
-  margin-bottom: 16px;
-  width: 100%; /* Make form controls full width */
+.sidebar .MuiInputBase-input {
+  font-size: 0.8rem; /* Smaller font size for the input text */
+}
+.columnName{
+  font-weight: bold;
 }

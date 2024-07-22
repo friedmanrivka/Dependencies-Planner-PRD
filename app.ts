@@ -7,10 +7,12 @@ import ProductManageRoutes from './src/routes/productManagerRoutes';
 import quarterDatesRoutes from './src/routes/quarterDatesRoutes';
 import finalDesicion from './src/routes/filnalDesicionRoutes'
 import statusRoutes from './src/routes/statusRoutes'
+import newRequest from './src/routes/newRequestRouter'
 //import newRequest from './src/routes/newRequestRouter';';
 import AuthenticationRoutes  from './src/routes/AuthenticationRoutes'
 import deleteRouter from './src/routes/deleteRouter'
 import cors from 'cors';
+import newRequest from './src/routes/newRequestRouter';
 
 dotenv.config();
 const app = express();
@@ -27,6 +29,7 @@ app.use('/api', quarterDatesRoutes);
 app.use('/api',finalDesicion);
 app.use('/api',statusRoutes);
 app.use('/api',AuthenticationRoutes);
+app.use('/api',newRequest);
 
 
 app.listen(port, () => {

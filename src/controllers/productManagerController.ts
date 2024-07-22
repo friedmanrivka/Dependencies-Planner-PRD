@@ -15,3 +15,15 @@ export const getRequestorNames = async (req: Request, res: Response): Promise<vo
       res.status(500).send('Internal Server Error');
     }
   };
+  export const getProductManagerEmails = async (req: Request, res: Response): Promise<void> => {
+    console.log('controller')
+    try {
+      const productManagerEmails = await ProductManagerRepo.getAllProductManagerEmails();
+      console.log(productManagerEmails)
+      const emailsArray = productManagerEmails.map(pm => pm.email);
+      res.json(emailsArray);
+    } catch (error) {
+      console.error('Error fetching requestor emails:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
