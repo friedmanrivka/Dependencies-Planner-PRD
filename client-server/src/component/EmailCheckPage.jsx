@@ -170,7 +170,7 @@ const EmailCheckPage = () => {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    setErrorMessage(''); // Clear the error message when the user starts typing
+    setErrorMessage('');
   };
 
   const validateEmail = (email) => {
@@ -188,7 +188,7 @@ const EmailCheckPage = () => {
     try {
       const exists = await checkEmailExists(email);
       if (exists) {
-        navigate('/table'); // Navigate to the table page if email exists
+        navigate('/table');
       } else {
         setErrorMessage('Email not found');
       }
@@ -233,13 +233,13 @@ const EmailCheckPage = () => {
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
-                      borderColor: '#58D64D', // Border color
+                      borderColor: '#58D64D', 
                     },
                     '&:hover fieldset': {
-                      borderColor: '#58D64D', // Border color on hover
+                      borderColor: '#58D64D', 
                     },
                     '&.Mui-focused fieldset': {
-                      borderColor: '#58D64D', // Border color on focus
+                      borderColor: '#58D64D', 
                     },
                   },
                 }}
@@ -258,7 +258,7 @@ const EmailCheckPage = () => {
                   src={appsflyerLogo}
                   alt="Appsflyer Logo"
                   style={{
-                    width: '300px', // Adjust the width as needed
+                    width: '300px', 
                     height: 'auto',
                     marginTop:'100px',
                     marginRight:'50px'
@@ -299,7 +299,7 @@ const EmailCheckPage = () => {
               style={{
                 width: '1000px', // Adjust the width as needed
                 height: 'auto',
-               marginTop:'30%'
+                marginTop: '100px',
               }}
             />
           </Box>
