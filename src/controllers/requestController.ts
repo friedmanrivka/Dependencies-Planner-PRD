@@ -32,61 +32,61 @@ export const updateFinalDecision = async (req: Request, res: Response): Promise<
     
 };
 
-export const updateDescription = async (req: Request, res: Response): Promise<void> => {
-    console.log('Controller: Entering updateDescription method');
-    const { requestId, description } = req.body;
+// export const updateDescription = async (req: Request, res: Response): Promise<void> => {
+//     console.log('Controller: Entering updateDescription method');
+//     const { requestId, description } = req.body;
 
-    try {
-        await RequestRepo.updateDescription(requestId, description);
-        console.log('Controller: Description updated successfully');
-        res.status(200).json({ message: 'Description updated successfully' });
-    } catch (error) {
-        console.error('Controller: Error updating description:', error);
-        res.status(500).send('Internal Server Error');
-    }
-};
-export const updateRequestTitle = async (req: Request, res: Response): Promise<void> => {
-    console.log('Controller: Entering updateRequestTitle method');
-    const { requestId, title } = req.body;
+//     try {
+//         await RequestRepo.updateDescription(requestId, description);
+//         console.log('Controller: Description updated successfully');
+//         res.status(200).json({ message: 'Description updated successfully' });
+//     } catch (error) {
+//         console.error('Controller: Error updating description:', error);
+//         res.status(500).send('Internal Server Error');
+//     }
+// // };
+// export const updateRequestTitle = async (req: Request, res: Response): Promise<void> => {
+//     console.log('Controller: Entering updateRequestTitle method');
+//     const { requestId, title } = req.body;
 
-    try {
-        await RequestRepo.updateRequestTitle(requestId, title);
-        console.log('Controller: Title updated successfully');
-        res.status(200).json({ message: 'Title updated successfully' });
-    } catch (error) {
-        console.error('Controller: Error updating title:', error);
-        res.status(500).send('Internal Server Error');
-    }
-};
+//     try {
+//         await RequestRepo.updateRequestTitle(requestId, title);
+//         console.log('Controller: Title updated successfully');
+//         res.status(200).json({ message: 'Title updated successfully' });
+//     } catch (error) {
+//         console.error('Controller: Error updating title:', error);
+//         res.status(500).send('Internal Server Error');
+//     }
+// };
 
 
 
-export const updateRequestComment = async (req: Request, res: Response): Promise<void> => {
-    console.log('Controller: Entering updateRequestComment method');
-    const { requestId, comment } = req.body;
+// export const updateRequestComment = async (req: Request, res: Response): Promise<void> => {
+//     console.log('Controller: Entering updateRequestComment method');
+//     const { requestId, comment } = req.body;
 
-    try {
-        await RequestRepo.updateRequestComment(requestId, comment);
-        console.log('Controller: Comment updated successfully');
-        res.status(200).json({ message: 'Comment updated successfully' });
-    } catch (error) {
-        console.error('Controller: Error updating comment:', error);
-        res.status(500).send('Internal Server Error');
-    }
-};
-export const updateRequestJira = async (req: Request, res: Response): Promise<void> => {
-    console.log('Controller: Entering updateRequestJira method');
-    const { requestId, jira } = req.body;
+//     try {
+//         await RequestRepo.updateRequestComment(requestId, comment);
+//         console.log('Controller: Comment updated successfully');
+//         res.status(200).json({ message: 'Comment updated successfully' });
+//     } catch (error) {
+//         console.error('Controller: Error updating comment:', error);
+//         res.status(500).send('Internal Server Error');
+//     }
+// };
+// export const updateRequestJira = async (req: Request, res: Response): Promise<void> => {
+//     console.log('Controller: Entering updateRequestJira method');
+//     const { requestId, jira } = req.body;
 
-    try {
-        await RequestRepo.updateRequestJira(requestId, jira);
-        console.log('Controller: jira updated successfully');
-        res.status(200).json({ message: 'Jira updated successfully' });
-    } catch (error) {
-        console.error('Controller: Error updating jira:', error);
-        res.status(500).send('Internal Server Error');
-    }
-};
+//     try {
+//         await RequestRepo.updateRequestJira(requestId, jira);
+//         console.log('Controller: jira updated successfully');
+//         res.status(200).json({ message: 'Jira updated successfully' });
+//     } catch (error) {
+//         console.error('Controller: Error updating jira:', error);
+//         res.status(500).send('Internal Server Error');
+//     }
+// };
 
 // export const updateRequestProductManager = async (req: Request, res: Response): Promise<void> => {
 //     console.log('Controller: Entering updateRequestProductManager method');

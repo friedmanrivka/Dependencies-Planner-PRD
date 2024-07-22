@@ -202,56 +202,112 @@ export default class RequestRepo {
 
     }
 
+    static async updateIdDrag(idDrag1: number, idDrag2: number): Promise<void> {
+        // try {
+            
+        //     await pool.query(`UPDATE request
+        // SET idDrag = 'temp_id'
+        // WHERE idDrag = idDrag1;
+    
+        // -- עדכון הערך של idDrag ברשומה שנייה לערך של רשומה ראשונה
+        // UPDATE request
+        // SET idDrag = idDrag1
+        // WHERE idDrag = idDrag2;
+    
+        // -- עדכון הערך של idDrag ברשומה הראשונה לערך של רשומה השנייה
+        // UPDATE request
+        // SET idDrag = idDrag2
+        // WHERE idDrag = 'temp_id';`);
+        // try {
+        //     const queryText = `
+        //         UPDATE request
+        //         SET idDrag = CASE
+        //             WHEN idDrag = $1 THEN $2
+        //             WHEN idDrag = $3 THEN $1
+        //             ELSE idDrag
+        //         END
+        //         WHERE idDrag IN ($1, $2);
+        //     `;
+            
+        //     await pool.query(queryText, [idDrag1, idDrag2]);
+        try {
+            const queryText = `
+                DO $$
+                BEGIN
+                    UPDATE request
+                    SET idDrag = $1
+                    WHERE idDrag = $2;
+    
+                    UPDATE request
+                    SET idDrag = $2
+                    WHERE idDrag = $3;
+    
+                    UPDATE request
+                    SET idDrag = $3
+                    WHERE idDrag = $1;
+                END $$;
+            `;
+            
+            await pool.query(queryText, [idDrag2, idDrag1, 'temp_id']);
+        } catch (err) {
+            console.error('Error updating final decision:', err);
+            throw err;
+        }
+    }
+    
+    
+}
 
- static async updateDescription(requestId: number, description: string): Promise<void> {
-        try {
-            await pool.query(
-                `UPDATE request SET description = $1 WHERE id = $2`, 
-                [description, requestId]
-            );
-        } catch (err) {
-            console.error('Error updating description:', err);
-            throw err;
-        }
-    }
-    static async updateRequestTitle(requestId: number, title: string): Promise<void> {
-        try {
-            await pool.query(
-                `UPDATE request SET title = $1 WHERE id = $2`, 
-                [title, requestId]
-            );
-            console.log('Repository: Title updated successfully');
-        } catch (err) {
-            console.error('Repository: Error updating title:', err);
-            throw err;
-        }
-    }
-    static async updateRequestComment(requestId: number, comment: string): Promise<void> {
-        try {
-            console.log('update comment')
-            await pool.query(
-                `UPDATE request SET comment = $1 WHERE id = $2`, 
-                [comment, requestId]
-            );
-            console.log('Repository: Comment updated successfully');
-        } catch (err) {
-            console.error('Repository: Error updating comment:', err);
-            throw err;
-        }
-    }
-    static async updateRequestJira(requestId: number, jira: string): Promise<void> {
-        try {
-            console.log('update jira')
-            await pool.query(
-                `UPDATE request SET jiralink = $1 WHERE id = $2`, 
-                [jira, requestId]
-            );
-            console.log('Repository: jira updated successfully');
-        } catch (err) {
-            console.error('Repository: Error updating jira:', err);
-            throw err;
-        }
-    }
+
+//  static async updateDescription(requestId: number, description: string): Promise<void> {
+//         try {
+//             await pool.query(
+//                 `UPDATE request SET description = $1 WHERE id = $2`, 
+//                 [description, requestId]
+//             );
+//         } catch (err) {
+//             console.error('Error updating description:', err);
+//             throw err;
+//         }
+//     }
+//     static async updateRequestTitle(requestId: number, title: string): Promise<void> {
+//         try {
+//             await pool.query(
+//                 `UPDATE request SET title = $1 WHERE id = $2`, 
+//                 [title, requestId]
+//             );
+//             console.log('Repository: Title updated successfully');
+//         } catch (err) {
+//             console.error('Repository: Error updating title:', err);
+//             throw err;
+//         }
+//     }
+//     static async updateRequestComment(requestId: number, comment: string): Promise<void> {
+//         try {
+//             console.log('update comment')
+//             await pool.query(
+//                 `UPDATE request SET comment = $1 WHERE id = $2`, 
+//                 [comment, requestId]
+//             );
+//             console.log('Repository: Comment updated successfully');
+//         } catch (err) {
+//             console.error('Repository: Error updating comment:', err);
+//             throw err;
+//         }
+//     }
+    // static async updateRequestJira(requestId: number, jira: string): Promise<void> {
+    //     try {
+    //         console.log('update jira')
+    //         await pool.query(
+    //             `UPDATE request SET jiralink = $1 WHERE id = $2`, 
+    //             [jira, requestId]
+    //         );
+    //         console.log('Repository: jira updated successfully');
+    //     } catch (err) {
+    //         console.error('Repository: Error updating jira:', err);
+    //         throw err;
+    //     }
+    // }
     // static async updateRequestProductManager(requestId: number, productManagerName: string): Promise<void> {
     //     try {
     //         const productManagerResult = await pool.query(
@@ -294,5 +350,5 @@ export default class RequestRepo {
     //         throw err;
     //     }
     // }
-}
+
 
