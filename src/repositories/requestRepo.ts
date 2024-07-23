@@ -114,8 +114,7 @@ export default class RequestRepo {
                 `UPDATE request SET title = $1 WHERE id = $2`, 
                 [title, requestId]
             );
-            console.log('Repository: Title updated successfully');
-        } catch (err) {
+           } catch (err) {
             console.error('Repository: Error updating title:', err);
             throw err;
         }
