@@ -56,11 +56,7 @@ export default class RequestRepo {
 
                 const group = groups.find((g: any) => g.id === request.requestgroupid);
                 const requestorGroup = group ? group.name : 'Unknown Group';
-
-                // Create a map for quick lookup of affected groups
                 const affectedGroupsMap = new Map(request.affectedgroupslist.map((ag: any) => [ag.groupid, ag.statusname]));
-
-                // Create the full affected groups list
                 const affectedGroupsList = groups.map((g: any) => ({
                     groupname: g.name,
                     statusname: affectedGroupsMap.get(g.id) || 'Not Required'
@@ -217,12 +213,5 @@ export default class RequestRepo {
             throw err;
         }
     }
-
-
-   
-   
-
-
-
 }
 
