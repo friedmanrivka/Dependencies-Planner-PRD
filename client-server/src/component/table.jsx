@@ -35,6 +35,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
   const [selectedRequestorGroup, setSelectedRequestorGroup] = useState(row.requestorGroup || '');
   const [selectedFinalDecision, setSelectedFinalDecision] = useState(row.decision || '');
   const [selectedRequestorName, setSelectedRequestorName] = useState(row.productmanagername || '');
+  const[title,setTitile]=useState();
 
   const [, drop] = useDrop({
     accept: ItemType,
