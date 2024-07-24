@@ -20,6 +20,9 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import LinkIcon from '@mui/icons-material/Link';
+import { Link } from 'react-router-dom';
+import EditComponent from './Edit';
+import DeleteComponent from './deleteReq'
 import MyModal from './addRequest';
 
 const ItemType = 'ROW';
@@ -31,6 +34,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
   const [selectedRequestorGroup, setSelectedRequestorGroup] = useState(row.requestorGroup || '');
   const [selectedFinalDecision, setSelectedFinalDecision] = useState(row.decision || '');
   const [selectedRequestorName, setSelectedRequestorName] = useState(row.productmanagername || '');
+  const[title,setTitile]=useState();
   const [, drop] = useDrop({
     accept: ItemType,
     hover: (item, monitor) => {
@@ -249,6 +253,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
       ))}
       <TableCell align="right">{row.comment}</TableCell>
       <TableCell align="right"><a href={row.jiralink}>Jira Link</a></TableCell>
+        <TableCell align="right"><DeleteComponent id={row.id}/></TableCell>
     </TableRow>
   );
 };
@@ -298,7 +303,6 @@ const BasicTable = () => {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchData();
   }, [setGroup]);
 
@@ -318,14 +322,12 @@ const BasicTable = () => {
   const handleFilterChange = () => {
     let newFilteredRows = rows;
     if (filterRequestorGroup.length > 0) {
-      // newFilteredRows = newFilteredRows?.filter(row => row.requestorGroup.includes(filterRequestorGroup));
       newFilteredRows = newFilteredRows?.filter(item => filterRequestorGroup.includes(item.requestorGroup))
     }
     if (filterRequestorName.length > 0) {
       newFilteredRows = newFilteredRows?.filter(item => filterRequestorName.includes(item.productmanagername));
     }
     if (filterInvolvedName.length > 0) {
-      // newFilteredRows = newFilteredRows?.filter(item => filterInvolvedName.includes(item.affectedGroupsList.map(item2 => item2.statusname!='Not Requird').groupname));
       newFilteredRows = newFilteredRows?.filter(item => {
         // סינון הרשימה הפנימית לפי התנאי
         const filteredGroups = item.affectedGroupsList.filter(item2 => item2.statusname !== 'Not Required');
@@ -335,7 +337,6 @@ const BasicTable = () => {
         return groupNames.some(groupname => filterInvolvedName.includes(groupname));
       });
       console.log("newFilteredRows" + newFilteredRows)
-    }
     setFilteredRows(newFilteredRows);
   };
 
@@ -482,6 +483,9 @@ const BasicTable = () => {
                       <TableCell className="highlight-header">
                         <div className='columnName'>Jira Link</div><LinkIcon className="table-header-icon" />
                       </TableCell>
+                      <TableCell className="highlight-header">
+                        <div className='columnName'>Delete Request</div>
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -506,133 +510,128 @@ const BasicTable = () => {
 
                     {filteredRows.map((row, index) => {
                       const finalDecisionBackgroundColor = row.decision === 'inQ' ? '#b7cab8' : row.decision === 'notInQ' ? '#d4c0bd' : 'transparent';
-                      const priorityBackgroundColor = row.critical === 'low' ? '#e6ffe6' : row.critical === 'high' ? '#ffd9b3' : row.critical === 'medium' ? '#ffffb3' : row.critical === 'critical' ? '#ffcccc' : 'transparent';
+                      const priorityBackgroundColor = row.critical==='low' ? '#e6ffe6' : row.critical==='high' ? '#ffd9b3' :row.critical==='medium' ? '#ffffb3':row.critical==='critical' ? '#ffcccc' : 'transparent';
 
-                      //                     return (
-                      //                       <TableRow
-                      //                         key={index}
-                      //                         style={{ cursor: "grab" }}
-                      //                       >
-                      //                         <TableCell>
-                      //                           <Select
-                      //                             value={row.requestorGroup}
-                      //                             displayEmpty
-                      //                             style={{ backgroundColor: '#d3d3d3', padding: '0.2em' }}
-                      //                             MenuProps={{
-                      //                               PaperProps: {
-                      //                                 style: {
-                      //                                   backgroundColor: '#d3d3d3',
-                      //                                 }
-                      //                               }
-                      //                             }}
-                      //                           >
-                      //                             {group.map((groupOption, groupIndex) => (
-                      //                               <MenuItem value={groupOption} key={groupIndex}>
-                      //                                 {groupOption}
-                      //                               </MenuItem>
-                      //                             ))}
-                      //                           </Select>
-                      //                         </TableCell>
-                      //                         <TableCell>
-                      //                           <Select
-                      //                             value={row.productmanagername}
-                      //                             displayEmpty
+                      return (
+                        <TableRow
+                          key={index}
+                          style={{ cursor: "grab" }}
+                        >
+                          <TableCell>
+                            <Select
+                              value={row.requestorGroup}
+                              displayEmpty
+                              style={{ backgroundColor: '#d3d3d3', padding: '0.2em' }}
+                              MenuProps={{
+                                PaperProps: {
+                                  style: {
+                                    backgroundColor: '#d3d3d3',
+                                  }
+                                }
+                              }}
+                            >
+                              {group.map((groupOption, groupIndex) => (
+                                <MenuItem value={groupOption} key={groupIndex}>
+                                  {groupOption}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </TableCell>
+                          <TableCell>
+                            <Select
+                              value={row.productmanagername}
+                              displayEmpty
 
-                      //                           >
-                      //                             {requestorNames.map((nameOption, nameIndex) => (
-                      //                               <MenuItem value={nameOption} key={nameIndex}>
-                      //                                 {nameOption}
-                      //                               </MenuItem>
-                      //                             ))}
-                      //                           </Select>
-                      //                         </TableCell>
-                      //                         <TableCell>{row.title}</TableCell>
-                      //                         <TableCell align="right">
-                      //                           <Select
-                      //                             value={row.planned}
-                      //                             displayEmpty
-                      //                             style={{ backgroundColor: '#d3d3d3', padding: '0.2em' }}
-                      //                             MenuProps={{
-                      //                               PaperProps: {
-                      //                                 style: {
-                      //                                   backgroundColor: '#d3d3d3',
-                      //                                 }
-                      //                               }
-                      //                             }}
-                      //                           >
-                      //                             {quarterDates.map((dateOption, dateIndex) => (
-                      //                               <MenuItem value={dateOption} key={dateIndex}>
-                      //                                 {dateOption}
-                      //                               </MenuItem>
-                      //                             ))}
-                      //                           </Select>
-                      //                         </TableCell>
-                      //                         <TableCell>{row.description}</TableCell>
-                      //                         <TableCell>
-                      //                           <Select
-                      //                             value={row.critical}
-                      //                             displayEmpty
-                      //                             style={{ backgroundColor: priorityBackgroundColor, padding: '0.2em' }}
-                      //                             MenuProps={{
-                      //                               PaperProps: {
-                      //                                 style: {
-                      //                                   backgroundColor: priorityBackgroundColor,
-                      //                                 }
-                      //                               }
-                      //                             }}
-                      //                           >
-                      //                             {priorityOptions.map((priorityOption, priorityIndex) => (
-                      //                               <MenuItem value={priorityOption} key={priorityIndex}>
-                      //                                 {priorityOption}
-                      //                               </MenuItem>
-                      //                             ))}
-                      //                           </Select>
-                      //                         </TableCell>
-                      //                         <TableCell>
-                      //                           <Select
-                      //                             value={row.decision}
-                      //                             displayEmpty
-                      //                             style={{ backgroundColor: finalDecisionBackgroundColor, padding: '0.2em' }}
-                      //                             MenuProps={{
-                      //                               PaperProps: {
-                      //                                 style: {
-                      //                                   backgroundColor: finalDecisionBackgroundColor,
-                      //                                 }
-                      //                               }
-                      //                             }}
-                      //                           >
-                      //                             {finalDecision.map((decisionOption, decisionIndex) => (
-                      //                               <MenuItem value={decisionOption} key={decisionIndex}>
-                      //                                 {decisionOption}
-                      //                               </MenuItem>
-                      //                             ))}
-                      //                           </Select>
-                      //                         </TableCell>
-                      //                         {showGroups && group.map((item, index) => (
-                      //                       <TableCell className="highlight-header" key={index}>
-                      //                         <div className='columnName'>{item}</div>
-                      //                       </TableCell>
-                      //                     ))} 
-
-                      //                         {showGroups && group.map((item, groupIndex) => (
-                      //                           <TableCell align="right" key={groupIndex}>
-                      //                             <Select
-                      //                               value={row.affectedGroupsList[groupIndex]?.statusname || 'Pending Response'}
-                      //                               displayEmpty
-                      //                               renderValue={(selected) => selected || 'Pending Response'}
-                      //                             >
-                      //                               {status.map((statusOption, statusIndex) => (
-                      //                                 <MenuItem value={statusOption} key={statusIndex}>
-                      //                                   {statusOption}
-                      //                                 </MenuItem>
-                      //                               ))}
-                      //                             </Select>
-                      //                           </TableCell>
-                      //                         ))}
-                      //                         <TableCell align="right">{row.comment}</TableCell>
-                      //                         <TableCell align="right"><a href={row.jiralink}>Jira Link</a></TableCell>
-                      //                       </TableRow>
-                      //                     );
+                            >
+                              {requestorNames.map((nameOption, nameIndex) => (
+                                <MenuItem value={nameOption} key={nameIndex}>
+                                  {nameOption}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </TableCell>
+                          <TableCell>{row.title}</TableCell>
+                          <TableCell align="right">
+                            <Select
+                              value={row.planned}
+                              displayEmpty
+                              style={{ backgroundColor: '#d3d3d3', padding: '0.2em' }}
+                              MenuProps={{
+                                PaperProps: {
+                                  style: {
+                                    backgroundColor:'#d3d3d3', 
+                                  }
+                                }
+                              }}
+                            >
+                              {quarterDates.map((dateOption, dateIndex) => (
+                                <MenuItem value={dateOption} key={dateIndex}>
+                                  {dateOption}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </TableCell>
+                          <TableCell>{row.description}</TableCell>
+                          <TableCell>
+                            <Select
+                              value={row.critical}
+                              displayEmpty
+                              style={{ backgroundColor: priorityBackgroundColor, padding: '0.2em' }}
+                              MenuProps={{
+                                PaperProps: {
+                                  style: {
+                                    backgroundColor: priorityBackgroundColor,
+                                  }
+                                }
+                              }}
+                            >
+                              {priorityOptions.map((priorityOption, priorityIndex) => (
+                                <MenuItem value={priorityOption} key={priorityIndex}>
+                                  {priorityOption}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </TableCell>
+                          <TableCell>
+                            <Select
+                              value={row.decision}
+                              displayEmpty
+                              style={{ backgroundColor: finalDecisionBackgroundColor, padding: '0.2em' }}
+                              MenuProps={{
+                                PaperProps: {
+                                  style: {
+                                    backgroundColor: finalDecisionBackgroundColor,
+                                  }
+                                }
+                              }}
+                            >
+                              {finalDecision.map((decisionOption, decisionIndex) => (
+                                <MenuItem value={decisionOption} key={decisionIndex}>
+                                  {decisionOption}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </TableCell>
+                          {showGroups && group.map((item, groupIndex) => (
+                            <TableCell align="right" key={groupIndex}>
+                              <Select
+                                value={row.affectedGroupsList[groupIndex]?.statusname || 'Pending Response'}
+                                displayEmpty
+                                renderValue={(selected) => selected || 'Pending Response'}
+                              >
+                                {status.map((statusOption, statusIndex) => (
+                                  <MenuItem value={statusOption} key={statusIndex}>
+                                    {statusOption}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </TableCell>
+                          ))}
+                          <TableCell align="right">{row.comment}</TableCell>
+                          <TableCell align="right"><a href={row.jiralink}>Jira Link</a></TableCell>
+                          <TableCell><DeleteComponent id={row.id}/></TableCell>
+                        </TableRow>
+                      );
                     })}
                   </TableBody>
                 </Table>
@@ -645,5 +644,5 @@ const BasicTable = () => {
     </DndProvider>
   );
 };
-
 export default BasicTable;
+
