@@ -5,7 +5,10 @@ export default class ProductManagerRepo {
     static async deleteRequestById(id: number): Promise<void> {
         const client = await pool.connect();
         try {
+
+
             await client.query('BEGIN');
+            await client.query('DELETE FROM affectedgroups WHERE requestid = $1', [id]);
             console.log(`Deleting affected groups with requestId: ${id}`);
             await client.query('DELETE FROM request_affected_groups WHERE request_id = $1', [id]);
             console.log(`Deleting request with id: ${id}`);

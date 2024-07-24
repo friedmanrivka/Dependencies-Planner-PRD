@@ -20,6 +20,8 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import LinkIcon from '@mui/icons-material/Link';
+import { Link } from 'react-router-dom';
+import EditComponent from './Edit';
 import DeleteComponent from './deleteReq'
 import MyModal from './addRequest';
 
@@ -252,6 +254,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
       ))}
       <TableCell align="right">{row.comment}</TableCell>
       <TableCell align="right"><a href={row.jiralink}>Jira Link</a></TableCell>
+      <TableCell align="right"><DeleteComponent id={row.id}/></TableCell>
       <TableCell align="right"><DeleteComponent id={row.id}/></TableCell>
     </TableRow>
   );
