@@ -9,6 +9,7 @@ import finalDesicion from './src/routes/filnalDesicionRoutes'
 import statusRoutes from './src/routes/statusRoutes'
 import newRequest from './src/routes/newRequestRouter';
 import AuthenticationRoutes  from './src/routes/AuthenticationRoutes'
+import exportRoutes from './src/routes/exportRoutes'; 
 import cors from 'cors';
 
 dotenv.config();
@@ -27,7 +28,7 @@ app.use('/api',finalDesicion);
 app.use('/api',statusRoutes);
 app.use('/api',AuthenticationRoutes);
 app.use('/api',newRequest);
-
+app.use('/api',exportRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

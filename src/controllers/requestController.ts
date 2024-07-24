@@ -173,6 +173,18 @@ export const updatePriority= async (req: Request, res: Response): Promise<void> 
     }
 };
 
+export const updateAffectedGroup = async (req: Request, res: Response): Promise<void> => {
+    const { requestId, groupName, statusName } = req.body;
+  
+    try {
+      await RequestRepo.updateAffectedGroup(requestId, groupName, statusName);
+      res.status(200).json({ message: 'Affected group updated successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+
+
 // export const updateIdDrag = async (req: Request, res: Response): Promise<void> => {
 //     try {
 //         const id = parseInt(req.params.id, 10); // Ensure id is parsed as a number

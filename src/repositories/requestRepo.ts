@@ -56,11 +56,7 @@ export default class RequestRepo {
 
                 const group = groups.find((g: any) => g.id === request.requestgroupid);
                 const requestorGroup = group ? group.name : 'Unknown Group';
-
-                // Create a map for quick lookup of affected groups
                 const affectedGroupsMap = new Map(request.affectedgroupslist.map((ag: any) => [ag.groupid, ag.statusname]));
-
-                // Create the full affected groups list
                 const affectedGroupsList = groups.map((g: any) => ({
                     groupname: g.name,
                     statusname: affectedGroupsMap.get(g.id) || 'Not Required'
@@ -206,7 +202,6 @@ export default class RequestRepo {
                 throw new Error('prioruty not found');
             }
             const priorityId = priorityResult.rows[0].id;
-
             await pool.query(
                 `UPDATE request SET priority_id = $1 WHERE id = $2`, 
                 [priorityId, requestId]
@@ -217,10 +212,138 @@ export default class RequestRepo {
             throw err;
         }
     }
+    // static async updateAffectedGroups(requestId: number, groupName: string): Promise<void> {
+    //     try {
+    //         const groupResult = await pool.query('SELECT id FROM groups WHERE name = $1', [groupName]);
+    //         if (groupResult.rows.length === 0) {
+    //             throw new Error(`Group with name ${groupName} not found`);
+    //         }
+    //         const groupId = groupResult.rows[0].id;
+    //         await pool.query('UPDATE request SET affectedgroupslist = array_append(affectedgroupslist, $1) WHERE id = $2', [groupId, requestId]);
+    //         const affectedGroupResult = await pool.query('SELECT id FROM affectedgroups WHERE requestid = $1 AND groupid = $2', [requestId, groupId]);
+    //         if (affectedGroupResult.rows.length > 0) {
+    //             await pool.query('UPDATE affectedgroups SET status_id = 2 WHERE requestid = $1 AND groupid = $2', [requestId, groupId]);
+    //         } else {
+    //             await pool.query('INSERT INTO affectedgroups (requestid, groupid, status_id) VALUES ($1, $2, 2)', [requestId, groupId]);
+    //         }
+    //      console.log(`Affected groups updated successfully for request ID ${requestId}`);
+    //     } catch (err) {
+    //         console.error('Error updating affected groups:', err);
+    //         throw err;
+    //     }
+    // }
+    
 
 
-   
-   
+    static async updateAffectedGroup(requestId: number, groupName: string, statusName: string): Promise<void> {
+        try {
+          // Begin a transaction
+          await pool.query('BEGIN');
+      
+          // Get the group ID from the group name
+          const groupResult = await pool2.query(
+            `SELECT id FROM "group" WHERE name = $1`,
+            [groupName]
+          );
+      
+          if (groupResult.rows.length === 0) {
+            throw new Error(`Group ${groupName} not found`);
+          }
+      
+          const groupId = groupResult.rows[0].id;
+      
+          // Get the status ID from the status name
+          const statusResult = await pool.query(
+            `SELECT id FROM status WHERE status = $1`,
+            [statusName]
+          );
+      
+          if (statusResult.rows.length === 0) {
+            throw new Error(`Status ${statusName} not found`);
+          }
+      
+          const statusId = statusResult.rows[0].id;
+      
+          // Update the affected group status
+          await pool.query(
+            `UPDATE affectedgroups SET status_id = $1 WHERE requestid = $2 AND groupid = $3`,
+            [statusId, requestId, groupId]
+          );
+      
+          // Commit the transaction
+          await pool.query('COMMIT');
+        } catch (err) {
+          // Rollback the transaction in case of an error
+          await pool.query('ROLLBACK');
+          console.error('Error updating affected group:', err);
+          throw err;
+        }
+      }
+      
+
+
+
+//     static async updateAffectedGroup(requestId: number, groupName: string, statusName: string): Promise<void> {
+//         try {
+//           // Begin a transaction
+//           await pool.query('BEGIN');
+    
+//           // Get the group ID from the group name
+//           const groupResult = await pool2.query(
+//             `SELECT id FROM "group" WHERE name = $1`,
+//             [groupName]
+//           );
+    
+//           if (groupResult.rows.length === 0) {
+//             throw new Error(`Group ${groupName} not found`);
+//           }
+    
+//           const groupId = groupResult.rows[0].id;
+    
+//           // Get the status ID from the status name
+//           const statusResult = await pool.query(
+//             `SELECT id FROM status WHERE critical = $1`,
+//             [statusName]
+//           );
+    
+//           if (statusResult.rows.length === 0) {
+//             throw new Error(`Status ${statusName} not found`);
+//           }
+    
+//           const statusId = statusResult.rows[0].id;
+    
+//           // Update the affected group status
+//           await pool.query(
+//             `UPDATE affectedgroups SET status_id = $1 WHERE requestid = $2 AND groupid = $3`,
+//             [statusId, requestId, groupId]
+//           );
+    
+//           // Commit the transaction
+//           await pool.query('COMMIT');
+//         } catch (err) {
+//           // Rollback the transaction in case of an error
+//           await pool.query('ROLLBACK');
+//           console.error('Error updating affected group:', err);
+//           throw err;
+//         }
+//       }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
