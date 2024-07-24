@@ -81,18 +81,58 @@ export default class RequestRepo {
             throw err;
         }
     }
-    static async updateFinalDecision(requestId: number, finalDecision: string): Promise<void> {
-        try {
-            await pool.query(
-                `UPDATE request SET finaldecision = (SELECT id FROM finaldecision WHERE decision = $1) WHERE id = $2`, 
-                [finalDecision, requestId]
-            );
-        } catch (err) {
-            console.error('Error updating final decision:', err);
-            throw err;
+    // static async updateFinalDecision(requestId: number, finalDecision: string,jiraLinkOrComment:string): Promise<void> {
+    //     try {
+    //         console.log(requestId);
+    //         console.log(finalDecision);
+    //         console.log(jiraLinkOrComment);
+    //         if(finalDecision.toLowerCase()==='inq'){
+    //             console.log('jk')
+    //             await pool.query(
+    //                 `UPDATE request SET finaldecision = (SELECT id FROM finaldecision WHERE decision = $2),jiralink= $3 WHERE id = $1`, 
+    //                 [finalDecision, requestId,jiraLinkOrComment]
+               
+    //             );
+                
+    //           }
+    //         else if(finalDecision .toLowerCase()==='notinq')
+             
+    //         {
+    //             console.log('update jira');
+    //             await pool.query(
+    //             `UPDATE request SET finaldecision = (SELECT id FROM finaldecision WHERE decision = $2) ,comment = $3 WHERE id = $1`, 
+    //             [finalDecision, requestId,jiraLinkOrComment]
+    //             )
+    //             console.log('update comment');
+    //         }
+    //     } catch (err) {
+    //         console.error('Error updating final decision:', err);
+    //         throw err;
+    //     }
+    // }
+   
+        static async updateFinalDecision(requestId: number, finalDecision: string, jiraLinkOrComment: string): Promise<void> {
+            try {
+                if (finalDecision.toLowerCase() === 'inq') {
+                    await pool.query(
+                        `UPDATE request SET finaldecision = (SELECT id FROM finaldecision WHERE decision = $2), jiralink = $3 WHERE id = $1`, 
+                        [requestId, finalDecision, jiraLinkOrComment]
+                    );
+                    console.log('update jira');
+                } else if (finalDecision.toLowerCase() === 'notinq') {
+                    await pool.query(
+                        `UPDATE request SET finaldecision = (SELECT id FROM finaldecision WHERE decision = $2), comment = $3 WHERE id = $1`, 
+                        [requestId, finalDecision, jiraLinkOrComment]
+                    );
+                    console.log('update comment');
+                } else {
+                    throw new Error('Invalid final decision');
+                }
+            } catch (err) {
+                console.error('Error updating final decision:', err);
+                throw err;
+            }
         }
-    }
-
  static async updateDescription(requestId: number, description: string): Promise<void> {
         try {
             await pool.query(
@@ -212,26 +252,7 @@ export default class RequestRepo {
             throw err;
         }
     }
-    // static async updateAffectedGroups(requestId: number, groupName: string): Promise<void> {
-    //     try {
-    //         const groupResult = await pool.query('SELECT id FROM groups WHERE name = $1', [groupName]);
-    //         if (groupResult.rows.length === 0) {
-    //             throw new Error(`Group with name ${groupName} not found`);
-    //         }
-    //         const groupId = groupResult.rows[0].id;
-    //         await pool.query('UPDATE request SET affectedgroupslist = array_append(affectedgroupslist, $1) WHERE id = $2', [groupId, requestId]);
-    //         const affectedGroupResult = await pool.query('SELECT id FROM affectedgroups WHERE requestid = $1 AND groupid = $2', [requestId, groupId]);
-    //         if (affectedGroupResult.rows.length > 0) {
-    //             await pool.query('UPDATE affectedgroups SET status_id = 2 WHERE requestid = $1 AND groupid = $2', [requestId, groupId]);
-    //         } else {
-    //             await pool.query('INSERT INTO affectedgroups (requestid, groupid, status_id) VALUES ($1, $2, 2)', [requestId, groupId]);
-    //         }
-    //      console.log(`Affected groups updated successfully for request ID ${requestId}`);
-    //     } catch (err) {
-    //         console.error('Error updating affected groups:', err);
-    //         throw err;
-    //     }
-    // }
+   
     
 
 
