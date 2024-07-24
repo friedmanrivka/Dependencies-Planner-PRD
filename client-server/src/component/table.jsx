@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
-import { useGroupContext } from './groupContext';
+import { useDataContext } from './Contexts/DataContext';
 import { getGroup, getAllStatus, getFinalDecision, getQuarterDates, getRequestorNames, getPriority, getDescriptions } from './services';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -35,7 +35,6 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
   const [selectedFinalDecision, setSelectedFinalDecision] = useState(row.decision || '');
   const [selectedRequestorName, setSelectedRequestorName] = useState(row.productmanagername || '');
   const[title,setTitile]=useState();
-
   const [, drop] = useDrop({
     accept: ItemType,
     hover: (item, monitor) => {
@@ -128,9 +127,9 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
   return (
     <TableRow
       ref={ref}
-      style={{ 
+      style={{
         opacity: isDragging ? 0.5 : 1,
-        cursor: isDragging ? "url('/waving-hand-cursor.png'), auto" : "grab" 
+        cursor: isDragging ? "url('/waving-hand-cursor.png'), auto" : "grab"
       }}
       key={index}
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -157,7 +156,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
           MenuProps={{
             PaperProps: {
               style: {
-                backgroundColor:'#d3d3d3',
+                backgroundColor: '#d3d3d3',
               }
             }
           }}
@@ -179,11 +178,11 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
           MenuProps={{
             PaperProps: {
               style: {
-                backgroundColor:'#d3d3d3',
+                backgroundColor: '#d3d3d3',
               }
             }
           }}
-         
+
         >
           {quarterDates.map((dateOption, dateIndex) => (
             <MenuItem value={dateOption} key={dateIndex}>
@@ -236,8 +235,8 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
         </Select>
       </TableCell>
       {showGroups && group.map((item, groupIndex) => (
-        <TableCell align="right" key={groupIndex} 
->
+        <TableCell align="right" key={groupIndex}
+        >
           <Select
             value={selectedStatus[groupIndex]?.statusname || 'Pending Response'}
             onChange={(e) => handleStatusChange(e.target.value, groupIndex)}
@@ -254,14 +253,13 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
       ))}
       <TableCell align="right">{row.comment}</TableCell>
       <TableCell align="right"><a href={row.jiralink}>Jira Link</a></TableCell>
-      <TableCell align="right"><DeleteComponent id={row.id}/></TableCell>
-      <TableCell align="right"><DeleteComponent id={row.id}/></TableCell>
+        <TableCell align="right"><DeleteComponent id={row.id}/></TableCell>
     </TableRow>
   );
 };
 
 const BasicTable = () => {
-  const { group, setGroup } = useGroupContext();
+  const { group, setGroup } = useDataContext();
   const [showGroups, setShowGroups] = useState(false);
   const [rows, setRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
@@ -305,7 +303,6 @@ const BasicTable = () => {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchData();
   }, [setGroup]);
 
@@ -325,17 +322,27 @@ const BasicTable = () => {
   const handleFilterChange = () => {
     let newFilteredRows = rows;
     if (filterRequestorGroup.length > 0) {
-      newFilteredRows = newFilteredRows.filter(row => filterRequestorGroup.includes(row.requestorGroup));
+      newFilteredRows = newFilteredRows?.filter(item => filterRequestorGroup.includes(item.requestorGroup))
     }
     if (filterRequestorName.length > 0) {
-      newFilteredRows = newFilteredRows.filter(row => filterRequestorName.includes(row.productmanagername));
+      newFilteredRows = newFilteredRows?.filter(item => filterRequestorName.includes(item.productmanagername));
     }
+    if (filterInvolvedName.length > 0) {
+      newFilteredRows = newFilteredRows?.filter(item => {
+        // סינון הרשימה הפנימית לפי התנאי
+        const filteredGroups = item.affectedGroupsList.filter(item2 => item2.statusname !== 'Not Required');
+        // הוצאת שמות הקבוצות מהרשימה המסוננת
+        const groupNames = filteredGroups.map(item2 => item2.groupname);
+        // בדיקה אם אחד מהשמות נמצא בתוך filterInvolvedName
+        return groupNames.some(groupname => filterInvolvedName.includes(groupname));
+      });
+      console.log("newFilteredRows" + newFilteredRows)
     setFilteredRows(newFilteredRows);
   };
 
   useEffect(() => {
     handleFilterChange();
-  }, [filterRequestorGroup, filterRequestorName]);
+  }, [filterRequestorGroup, filterRequestorName, filterInvolvedName]);
 
   const showModal = () => {
     setModalVisible(true);
@@ -347,13 +354,13 @@ const BasicTable = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <AppBar position="static" style={{backgroundColor: '#00C2FF'}}>
+      <AppBar position="static" style={{ backgroundColor: '#00C2FF' }}>
         <Toolbar>
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             Dependencies Planner PRD
           </Typography>
-          <Button 
-            variant="contained" 
+          <Button
+            variant="contained"
             color="primary"
             startIcon={<AddCircleOutlineIcon />}
             style={{ backgroundColor: '#58D64D', marginRight: '10px' }}
@@ -361,7 +368,7 @@ const BasicTable = () => {
           >
             Add Request
           </Button>
-          <MyModal /> 
+          <MyModal />
           <IconButton onClick={toggleGroups} color="inherit">
             {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </IconButton>
@@ -482,23 +489,23 @@ const BasicTable = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                  {filteredRows.map((row, index) => ( // HIGHLIGHTED
-              
-              <DraggableRow
-                key={index}
-                index={index}
-                row={row}
-                moveRow={moveRow}
-                showGroups={showGroups}
-                group={group}
-                status={status}
-                priorityOptions={priorityOptions}
-                quarterDates={quarterDates}
-                finalDecision={finalDecision}
-                requestorNames={requestorNames}
-                style={{ cursor: "grab" }}
-                />
-            ))}
+                    {filteredRows.map((row, index) => ( // HIGHLIGHTED
+
+                      <DraggableRow
+                        key={index}
+                        index={index}
+                        row={row}
+                        moveRow={moveRow}
+                        showGroups={showGroups}
+                        group={group}
+                        status={status}
+                        priorityOptions={priorityOptions}
+                        quarterDates={quarterDates}
+                        finalDecision={finalDecision}
+                        requestorNames={requestorNames}
+                        style={{ cursor: "grab" }}
+                      />
+                    ))}
 
 
                     {filteredRows.map((row, index) => {
@@ -637,5 +644,5 @@ const BasicTable = () => {
     </DndProvider>
   );
 };
-
 export default BasicTable;
+

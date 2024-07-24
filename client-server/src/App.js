@@ -1,18 +1,18 @@
 import './App.css';
 import { Navbar } from './routing/navbar';
 import { Routing } from './routing/routing';
-import { GroupProvider } from './component/groupContext';
+import { DataProvider } from './component/Contexts/DataContext'
 import { BrowserRouter as Router } from 'react-router-dom';
 function App() {
   return (
     <div >
      <Router>      
-      <GroupProvider>
+      <DataProvider>
       <div> 
         <Navbar />
         <Routing />
       </div> 
-      </GroupProvider>
+      </DataProvider>
     </Router>
     </div>
   );

@@ -1,14 +1,14 @@
 import React from 'react';
-import { useGroupContext } from './groupContext';
+import { useDataContext } from './Contexts/DataContext';
 import { useEffect, useState } from 'react';
-import { getFinalDecision, getQuarterDates, getRequestorNames, getProductEmail,getPriority, getDescriptions, addNewRequest } from './services';
+import { getFinalDecision, getQuarterDates, getRequestorNames, getProductEmail, getPriority, getDescriptions, addNewRequest } from './services';
 import { Modal, Form, Input, Select } from 'antd';
 
 const { Option } = Select;
 
 const MyModal = ({ visible, onClose }) => {
   const [form] = Form.useForm();
-  const { group } = useGroupContext();
+  const { group } = useDataContext();
 
   const [request, setRequest] = useState({
     title: '',
@@ -35,7 +35,7 @@ const MyModal = ({ visible, onClose }) => {
 
         const productEmailData = await getProductEmail();
         setProductEmail(productEmailData);
-        
+
         const quarterDatesData = await getQuarterDates();
         setQuarterDates(quarterDatesData);
 
