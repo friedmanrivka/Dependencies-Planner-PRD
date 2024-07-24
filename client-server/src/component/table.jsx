@@ -339,6 +339,7 @@ const BasicTable = () => {
       console.log("newFilteredRows" + newFilteredRows)
     setFilteredRows(newFilteredRows);
   };
+  }
 
   useEffect(() => {
     handleFilterChange();
@@ -644,5 +645,5 @@ const BasicTable = () => {
     </DndProvider>
   );
 };
-export default BasicTable;
 
+export default BasicTable;
