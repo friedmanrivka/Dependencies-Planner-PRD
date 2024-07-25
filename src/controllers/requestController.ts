@@ -13,66 +13,25 @@ export const getAllRequest = async (req: Request, res: Response): Promise<void> 
         res.status(500).send('Internal Server Error');
     }
 };
-
-// export const updateFinalDecision = async (req: Request, res: Response): Promise<void> => {
-//     try {
-//         const id = parseInt(req.params.id, 10); 
-//         const finalDecision = req.body.finalDecision; 
-//         if (isNaN(id) ) {
-//             res.status(400).send('Invalid id or finalDecision');
-//             return;
-//         }
-//         await RequestRepo.updateFinalDecision(id, finalDecision);
-//         res.status(200).send('Final decision updated successfully');
-//     } catch (error) {
-//         console.error('Error updating final decision:', error);
-//         res.status(500).send('Internal Server Error');
-//     }
-
-    
-// };
-
-
 export const updateFinalDecision = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const id = parseInt(req.params.id, 10); 
-        const finalDecision = req.body.finalDecision; 
-        const jiraLink = req.body.jiraLink; 
-        const comment = req.body.comment; 
+    const { id: requestId } = req.params;
+    const { finalDecision, jiraLinkOrComment } = req.body;
 
-        if (isNaN(id) || !finalDecision) {
-            res.status(400).send('Invalid id or finalDecision');
-            return;
-        }
+    if (!requestId || !finalDecision || !jiraLinkOrComment) {
+        res.status(400).send('Request ID, Final Decision, and Jira Link or Comment are required');
+        return;
+    }
+ try {
+        console.log('Request ID:', requestId);
+        console.log('Final Decision:', finalDecision);
+        console.log('Jira Link or Comment:', jiraLinkOrComment);
 
-        // Validate based on finalDecision
-        if (finalDecision === 'inQ' && !jiraLink) {
-            res.status(400).send('Jira Link is mandatory when final decision is "In Q"');
-            return;
-        }
-
-        if (finalDecision === 'notInQ' && !comment) {
-            res.status(400).send('Comment is required when final decision is "Not in Q"');
-            return;
-        }
-
-        // Perform the update
-        await RequestRepo.updateFinalDecision(id, finalDecision);
-
-        // Update Jira Link if provided
-        if (jiraLink) {
-            await RequestRepo.updateRequestJira(id, jiraLink);
-        }
-
-        // Update comment if provided
-        if (comment) {
-            await RequestRepo.updateRequestComment(id, comment);
-        }
-
+        await RequestRepo.updateFinalDecision(parseInt(requestId, 10), finalDecision, jiraLinkOrComment);
         res.status(200).send('Final decision updated successfully');
     } catch (error) {
-        console.error('Error updating final decision:', error);
-        res.status(500).send('Internal Server Error');
+        const err = error as Error;
+        console.error('Error updating final decision:', err.message);
+        res.status(500).send(err.message);
     }
 };
 
@@ -172,6 +131,18 @@ export const updatePriority= async (req: Request, res: Response): Promise<void> 
         res.status(500).send('Internal Server Error');
     }
 };
+
+export const updateAffectedGroup = async (req: Request, res: Response): Promise<void> => {
+    const { requestId, groupName, statusName } = req.body;
+  
+    try {
+      await RequestRepo.updateAffectedGroup(requestId, groupName, statusName);
+      res.status(200).json({ message: 'Affected group updated successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+
 
 // export const updateIdDrag = async (req: Request, res: Response): Promise<void> => {
 //     try {
