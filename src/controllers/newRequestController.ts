@@ -4,7 +4,7 @@ import GroupRepo from '../repositories/groupRepo';
 import { pool } from '../config/db';
 
 export const CreateDetailsRequest = async (req: Request, res: Response): Promise<void> => {
-    const { title, description, JiraLink, priority, requestorGroup, productmanageremail, affectedGroupList } = req.body;
+    const { title, description, JiraLink, priority, requestorGroup, productmanageremail, affectedGroupList, planned } = req.body;
 
     if (!title) {
         res.status(400).send({ error: 'Title is required' });
@@ -34,9 +34,12 @@ export const CreateDetailsRequest = async (req: Request, res: Response): Promise
         res.status(400).send({ error: 'Affected group list is required and should be a non-empty array' });
         return;
     }
+    if (!planned) {
+        res.status(400).send({ error: 'Planned quarter is required' });
+        return;
+    }
 
     try {
-        // Fetch all groups
         const allGroups = await GroupRepo.getAllGroup();
         const group = allGroups.find(g => g.name === requestorGroup);
 
@@ -45,7 +48,6 @@ export const CreateDetailsRequest = async (req: Request, res: Response): Promise
             return;
         }
 
-        // Fetch product manager by email
         const productManagerResult = await pool.query('SELECT email, productmanagername FROM productmanager WHERE email = $1', [productmanageremail]);
 
         if (productManagerResult.rowCount === 0) {
@@ -56,7 +58,6 @@ export const CreateDetailsRequest = async (req: Request, res: Response): Promise
         const productManagerId = productManagerResult.rows[0].email;
         const productManagerName = productManagerResult.rows[0].productmanagername;
 
-        // Fetch priority by critical value
         const priorityResult = await pool.query('SELECT id FROM priority WHERE critical = $1', [priority]);
 
         if (priorityResult.rowCount === 0) {
@@ -73,10 +74,8 @@ export const CreateDetailsRequest = async (req: Request, res: Response): Promise
             return group.id;
         });
 
-        // Add new request
-        const newRequest = await AddDetails(title, group.id, description, JiraLink, priorityId, productManagerId, affectedGroupIds);
+        const newRequest = await AddDetails(title, group.id, description, JiraLink, priorityId, productManagerId, affectedGroupIds, planned);
 
-        // Include the product manager's name in the response
         res.status(201).json({
             ...newRequest,
             productManagerName: productManagerName,

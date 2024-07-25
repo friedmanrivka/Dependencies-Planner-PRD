@@ -12,7 +12,7 @@ const MyModal = ({ visible, onClose }) => {
     group: [group, setGroup],
     productManager: [productManager, setProductManager],
     finalDecision: [finalDecision, setFinalDecision],
-    quarterDates: [quarterDates, setQuarterDates],
+    quarterDates: [planned, setQuarterDates],
     requestorNames: [requestorNames, setRequestorNames],
     priorityOptions: [priorityOptions, setPriorityOptions],
     descriptions: [descriptions, setDescriptions],
@@ -26,13 +26,14 @@ const MyModal = ({ visible, onClose }) => {
     description: '',
     JiraLink: '',
     priority: '',
-    affectedGroupList: []
+    affectedGroupList: [],
+    planned:''
   });
 
   useEffect(() => {
   }, [group,
     finalDecision,
-    quarterDates,
+    planned,
     requestorNames,
     priorityOptions,
     descriptions,
@@ -47,6 +48,28 @@ const MyModal = ({ visible, onClose }) => {
 
   const handleAddRequest = async () => {
     try {
+        const titleRegex = /[a-zA-Z]/;
+        const descriptionRegex = /[a-zA-Z]/;
+        
+        if (!titleRegex.test(request.title)) {
+          form.setFields([
+            {
+              name: 'title',
+              errors: ['Title must contain characters and not just numbers'],
+            },
+          ]);
+          return;
+        }
+  
+        if (!descriptionRegex.test(request.description)) {
+          form.setFields([
+            {
+              name: 'description',
+              errors: ['Description must contain characters and not just numbers'],
+            },
+          ]);
+          return;
+        }
       const email = localStorage.getItem('userEmail');
       if (!email) {
         console.error('User email not found in localStorage');
@@ -125,6 +148,16 @@ const MyModal = ({ visible, onClose }) => {
             onChange={(value) => handleChange('affectedGroupList', value)}
           >
             {group.map((item, index) => (
+              <Option value={item} key={index}>{item}</Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item name="planned" label="Planned" rules={[{ required: true, message: 'Please select a planned quarter!' }]}>
+          <Select
+            placeholder="Select a planned quarter"
+            onChange={(value) => handleChange('planned', value)}
+          >
+            {planned.map((item, index) => (
               <Option value={item} key={index}>{item}</Option>
             ))}
           </Select>
