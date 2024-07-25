@@ -188,6 +188,7 @@ const EmailCheckPage = () => {
     try {
       const exists = await checkEmailExists(email);
       if (exists) {
+        localStorage.setItem('userEmail', email);
         navigate('/table');
       } else {
         setErrorMessage('Email not found');
