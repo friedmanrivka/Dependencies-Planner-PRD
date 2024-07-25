@@ -36,6 +36,7 @@ const BasicTable = () => {
     productEmail: [productEmail, setProductEmail],
     status: [status, setStatus]
   } = useDataContext();
+  console.log()
   const [showGroups, setShowGroups] = useState(false);
   const [rows, setRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
