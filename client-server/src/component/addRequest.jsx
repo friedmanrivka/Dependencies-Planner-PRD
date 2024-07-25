@@ -7,9 +7,19 @@ import { Modal, Form, Input, Select } from 'antd';
 const { Option } = Select;
 
 const MyModal = ({ visible, onClose }) => {
-  const [form] = Form.useForm();
-  const { group } = useDataContext();
+  const {
+    group: [group, setGroup],
+    productManager: [productManager, setProductManager],
+    finalDecision: [finalDecision, setFinalDecision],
+    quarterDates: [quarterDates, setQuarterDates],
+    requestorNames: [requestorNames, setRequestorNames],
+    priorityOptions: [priorityOptions, setPriorityOptions],
+    descriptions: [descriptions, setDescriptions],
+    productEmail: [productEmail, setProductEmail],
+    status: [status, setStatus]
+  } = useDataContext();
 
+  const [form] = Form.useForm();
   const [request, setRequest] = useState({
     title: '',
     requestorGroup: '',
@@ -20,39 +30,15 @@ const MyModal = ({ visible, onClose }) => {
     affectedGroupList: []
   });
 
-  const [finalDecision, setFinalDecision] = useState([]);
-  const [productEmail, setProductEmail] = useState([]);
-  const [quarterDates, setQuarterDates] = useState([]);
-  const [requestorNames, setRequestorNames] = useState([]);
-  const [priority, setPriority] = useState([]);
-  const [descriptions, setDescriptions] = useState([]);
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const finalDecisionData = await getFinalDecision();
-        setFinalDecision(finalDecisionData);
-
-        const productEmailData = await getProductEmail();
-        setProductEmail(productEmailData);
-
-        const quarterDatesData = await getQuarterDates();
-        setQuarterDates(quarterDatesData);
-
-        const requestorNamesData = await getRequestorNames();
-        setRequestorNames(requestorNamesData);
-
-        const priorityData = await getPriority();
-        setPriority(priorityData);
-
-        const descriptionsData = await getDescriptions();
-        setDescriptions(descriptionsData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    fetchData();
-  }, []);
+  }, [group,
+    finalDecision,
+    quarterDates,
+    requestorNames,
+    priorityOptions,
+    descriptions,
+    productEmail,
+    status]);
 
   const handleChange = (key, value) => {
     setRequest((prevRequest) => ({
@@ -125,7 +111,7 @@ const MyModal = ({ visible, onClose }) => {
             placeholder="Select a priority"
             onChange={(value) => handleChange('priority', value)}
           >
-            {priority.map((item, index) => (
+            {priorityOptions.map((item, index) => (
               <Option value={item} key={index}>{item}</Option>
             ))}
           </Select>

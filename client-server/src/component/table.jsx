@@ -265,9 +265,6 @@ const BasicTable = () => {
     priorityOptions: [priorityOptions, setPriorityOptions],
     descriptions: [descriptions, setDescriptions],
     productEmail: [productEmail, setProductEmail],
-    checkEmailExists: [checkEmailExists, setCheckEmailExists],
-    deleteRequest: [deleteRequest, setDeleteRequest],
-    addNewRequest: [addNewRequest, setAddNewRequest],
     status: [status, setStatus]
   } = useDataContext();
   const [showGroups, setShowGroups] = useState(false);
@@ -282,6 +279,7 @@ const BasicTable = () => {
     const fetchData = async () => {
         setRows(descriptions);
         setFilteredRows(descriptions);
+
     };
     fetchData();
   }, [group,
@@ -291,9 +289,6 @@ const BasicTable = () => {
     priorityOptions,
     descriptions,
     productEmail,
-    checkEmailExists,
-    deleteRequest,
-    addNewRequest,
     status]);
 
   const toggleGroups = () => {

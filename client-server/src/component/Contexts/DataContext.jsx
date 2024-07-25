@@ -26,7 +26,6 @@ export const DataProvider = ({ children }) => {
   const [descriptions, setDescriptions] = useState([]);
   const [productEmail, setProductEmail] = useState([]);
   const [checkEmailExists, setCheckEmailExists] = useState([]);
-  const [deleteRequest, setDeleteRequest] = useState([]);
   const [addNewRequest, setAddNewRequest] = useState([]);
   const [status, setStatus] = useState([]);
 
@@ -55,17 +54,17 @@ export const DataProvider = ({ children }) => {
         const productEmailData = await getProductEmail();
         setProductEmail(productEmailData);
 
+        const allStatusData = await getAllStatus();
+        setStatus(allStatusData);
+
         const checkEmailExistsData = await checkEmailExists();
         setCheckEmailExists(checkEmailExistsData);
 
-        const deleteRequestData = await deleteRequest();
-        setDeleteRequest(deleteRequestData);
 
         const addNewRequestData = await addNewRequest();
         setAddNewRequest(addNewRequestData);
 
-        const allStatusData = await getAllStatus();
-        setStatus(allStatusData);
+
 
  
 
@@ -88,7 +87,6 @@ export const DataProvider = ({ children }) => {
       descriptions: [descriptions, setDescriptions],
       productEmail: [productEmail, setProductEmail],
       checkEmailExists: [checkEmailExists, setCheckEmailExists],
-      deleteRequest: [deleteRequest, setDeleteRequest],
       addNewRequest: [addNewRequest, setAddNewRequest],
       status: [status, setStatus]
     }}>
