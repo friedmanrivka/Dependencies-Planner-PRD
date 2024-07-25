@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { AddDetails } from '../repositories/newRequestRepo';
-import GroupRepo from '../repositories/groupRepo'; // Import the default exported class`
-import { pool } from '../config/db'; // Assuming you have a pool instance configured
+import GroupRepo from '../repositories/groupRepo';
+import { pool } from '../config/db';
 
 export const CreateDetailsRequest = async (req: Request, res: Response): Promise<void> => {
-    const { title, requestgroupid, description, JiraLink, priority, requestorGroup, productmanageremail } = req.body;
+    const { title, description, JiraLink, priority, requestorGroup, productmanageremail, affectedGroupList, planned } = req.body;
 
     if (!title) {
         res.status(400).send({ error: 'Title is required' });
@@ -30,37 +30,56 @@ export const CreateDetailsRequest = async (req: Request, res: Response): Promise
         res.status(400).send({ error: 'Product Manager Email is required' });
         return;
     }
-
-    // Fetch all groups
-    const allGroups = await GroupRepo.getAllGroup(); // Call the static method on the imported class
-
-    // Find the group by name
-    const group = allGroups.find((g: any) => g.name === requestorGroup);
-
-    if (!group) {
-        res.status(400).json({ message: 'Invalid requestor group' });
+    if (!Array.isArray(affectedGroupList) || affectedGroupList.length === 0) {
+        res.status(400).send({ error: 'Affected group list is required and should be a non-empty array' });
         return;
     }
-
-    // Fetch product manager by email
-    const productManagerResult = await pool.query('SELECT email FROM productmanager WHERE email = $1', [productmanageremail]);
-
-    if (productManagerResult.rowCount === 0) {
-        res.status(400).json({ message: 'Invalid product manager email' });
+    if (!planned) {
+        res.status(400).send({ error: 'Planned quarter is required' });
         return;
     }
-    const priorityResult = await pool.query('SELECT id FROM priority WHERE critical = $1', [priority]);
-
-    if (priorityResult.rowCount === 0) {
-        res.status(400).json({ message: 'Invalid priority' });
-        return;
-    }
-
-    const priorityId = priorityResult.rows[0].id;
 
     try {
-        const newRequest = await AddDetails(title, group.id, description, JiraLink, priorityId, productmanageremail);
-        res.status(201).send(newRequest);
+        const allGroups = await GroupRepo.getAllGroup();
+        const group = allGroups.find(g => g.name === requestorGroup);
+
+        if (!group) {
+            res.status(400).json({ message: 'Invalid requestor group' });
+            return;
+        }
+
+        const productManagerResult = await pool.query('SELECT email, productmanagername FROM productmanager WHERE email = $1', [productmanageremail]);
+
+        if (productManagerResult.rowCount === 0) {
+            res.status(400).json({ message: 'Invalid product manager email' });
+            return;
+        }
+
+        const productManagerId = productManagerResult.rows[0].email;
+        const productManagerName = productManagerResult.rows[0].productmanagername;
+
+        const priorityResult = await pool.query('SELECT id FROM priority WHERE critical = $1', [priority]);
+
+        if (priorityResult.rowCount === 0) {
+            res.status(400).json({ message: 'Invalid priority' });
+            return;
+        }
+
+        const priorityId = priorityResult.rows[0].id;
+        const affectedGroupIds = affectedGroupList.map(groupName => {
+            const group = allGroups.find(g => g.name === groupName);
+            if (!group) {
+                throw new Error(`Invalid group name: ${groupName}`);
+            }
+            return group.id;
+        });
+
+        const newRequest = await AddDetails(title, group.id, description, JiraLink, priorityId, productManagerId, affectedGroupIds, planned);
+
+        res.status(201).json({
+            ...newRequest,
+            productManagerName: productManagerName,
+        });
     } catch (error) {
         console.error('Error adding request details:', error);
         res.status(500).send({ error: 'Error adding request details' });

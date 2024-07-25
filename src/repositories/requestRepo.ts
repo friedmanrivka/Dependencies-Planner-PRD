@@ -81,37 +81,7 @@ export default class RequestRepo {
             throw err;
         }
     }
-    // static async updateFinalDecision(requestId: number, finalDecision: string,jiraLinkOrComment:string): Promise<void> {
-    //     try {
-    //         console.log(requestId);
-    //         console.log(finalDecision);
-    //         console.log(jiraLinkOrComment);
-    //         if(finalDecision.toLowerCase()==='inq'){
-    //             console.log('jk')
-    //             await pool.query(
-    //                 `UPDATE request SET finaldecision = (SELECT id FROM finaldecision WHERE decision = $2),jiralink= $3 WHERE id = $1`, 
-    //                 [finalDecision, requestId,jiraLinkOrComment]
-               
-    //             );
-                
-    //           }
-    //         else if(finalDecision .toLowerCase()==='notinq')
-             
-    //         {
-    //             console.log('update jira');
-    //             await pool.query(
-    //             `UPDATE request SET finaldecision = (SELECT id FROM finaldecision WHERE decision = $2) ,comment = $3 WHERE id = $1`, 
-    //             [finalDecision, requestId,jiraLinkOrComment]
-    //             )
-    //             console.log('update comment');
-    //         }
-    //     } catch (err) {
-    //         console.error('Error updating final decision:', err);
-    //         throw err;
-    //     }
-    // }
-   
-        static async updateFinalDecision(requestId: number, finalDecision: string, jiraLinkOrComment: string): Promise<void> {
+     static async updateFinalDecision(requestId: number, finalDecision: string, jiraLinkOrComment: string): Promise<void> {
             try {
                 if (finalDecision.toLowerCase() === 'inq') {
                     await pool.query(
@@ -300,73 +270,4 @@ export default class RequestRepo {
           throw err;
         }
       }
-      
-
-
-
-//     static async updateAffectedGroup(requestId: number, groupName: string, statusName: string): Promise<void> {
-//         try {
-//           // Begin a transaction
-//           await pool.query('BEGIN');
-    
-//           // Get the group ID from the group name
-//           const groupResult = await pool2.query(
-//             `SELECT id FROM "group" WHERE name = $1`,
-//             [groupName]
-//           );
-    
-//           if (groupResult.rows.length === 0) {
-//             throw new Error(`Group ${groupName} not found`);
-//           }
-    
-//           const groupId = groupResult.rows[0].id;
-    
-//           // Get the status ID from the status name
-//           const statusResult = await pool.query(
-//             `SELECT id FROM status WHERE critical = $1`,
-//             [statusName]
-//           );
-    
-//           if (statusResult.rows.length === 0) {
-//             throw new Error(`Status ${statusName} not found`);
-//           }
-    
-//           const statusId = statusResult.rows[0].id;
-    
-//           // Update the affected group status
-//           await pool.query(
-//             `UPDATE affectedgroups SET status_id = $1 WHERE requestid = $2 AND groupid = $3`,
-//             [statusId, requestId, groupId]
-//           );
-    
-//           // Commit the transaction
-//           await pool.query('COMMIT');
-//         } catch (err) {
-//           // Rollback the transaction in case of an error
-//           await pool.query('ROLLBACK');
-//           console.error('Error updating affected group:', err);
-//           throw err;
-//         }
-//       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
-
+      }

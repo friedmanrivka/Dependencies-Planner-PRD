@@ -71,20 +71,28 @@ th, td {
 }
 
 .sidebar {
+
   padding-top: 100px;
   width: 200px; 
   position: relative;
   height: auto;
   max-height: 60vh;
   overflow-y: auto; 
+
+
+
 }
 
 .sidebar .MuiButton-root {
   background-color: #58D64D
+
 ;
   color: white; 
   width: 100%; 
   font-size: 0.8rem; 
+
+  ; 
+
 
 }
 
@@ -110,5 +118,7 @@ th, td {
  }
 
 .sidebar .MuiInputBase-input {
+
   font-size: 0.8rem; 
+
 }

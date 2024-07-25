@@ -1,58 +1,43 @@
 import React from 'react';
-import { useGroupContext } from './groupContext';
+import { useDataContext } from './Contexts/DataContext';
 import { useEffect, useState } from 'react';
-import { getFinalDecision, getQuarterDates, getRequestorNames, getProductEmail,getPriority, getDescriptions, addNewRequest } from './services';
+import { getFinalDecision, getQuarterDates, getRequestorNames, getPriority, getDescriptions, addNewRequest } from './services';
 import { Modal, Form, Input, Select } from 'antd';
 
 const { Option } = Select;
 
-const MyModal = ({ visible, onClose }) => {
-  const [form] = Form.useForm();
-  const { group } = useGroupContext();
 
+const MyModal = ({ visible, onClose }) => {
+  const {
+    group: [group, setGroup],
+    productManager: [productManager, setProductManager],
+    finalDecision: [finalDecision, setFinalDecision],
+    quarterDates: [planned, setQuarterDates],
+    requestorNames: [requestorNames, setRequestorNames],
+    priorityOptions: [priorityOptions, setPriorityOptions],
+    descriptions: [descriptions, setDescriptions],
+    status: [status, setStatus]
+  } = useDataContext();
+
+  const [form] = Form.useForm();
   const [request, setRequest] = useState({
     title: '',
     requestorGroup: '',
     description: '',
     JiraLink: '',
-    productmanageremail: '',
     priority: '',
-    affectedGroupList: []
+    affectedGroupList: [],
+    planned:''
   });
 
-  const [finalDecision, setFinalDecision] = useState([]);
-  const [productEmail, setProductEmail] = useState([]);
-  const [quarterDates, setQuarterDates] = useState([]);
-  const [requestorNames, setRequestorNames] = useState([]);
-  const [priority, setPriority] = useState([]);
-  const [descriptions, setDescriptions] = useState([]);
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const finalDecisionData = await getFinalDecision();
-        setFinalDecision(finalDecisionData);
-
-        const productEmailData = await getProductEmail();
-        setProductEmail(productEmailData);
-        
-        const quarterDatesData = await getQuarterDates();
-        setQuarterDates(quarterDatesData);
-
-        const requestorNamesData = await getRequestorNames();
-        setRequestorNames(requestorNamesData);
-
-        const priorityData = await getPriority();
-        setPriority(priorityData);
-
-        const descriptionsData = await getDescriptions();
-        setDescriptions(descriptionsData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    fetchData();
-  }, []);
+  }, [group,
+    finalDecision,
+    planned,
+    requestorNames,
+    priorityOptions,
+    descriptions,
+    status]);
 
   const handleChange = (key, value) => {
     setRequest((prevRequest) => ({
@@ -63,8 +48,37 @@ const MyModal = ({ visible, onClose }) => {
 
   const handleAddRequest = async () => {
     try {
-      console.log("request", request);
-      await addNewRequest(request);
+        const titleRegex = /[a-zA-Z]/;
+        const descriptionRegex = /[a-zA-Z]/;
+        
+        if (!titleRegex.test(request.title)) {
+          form.setFields([
+            {
+              name: 'title',
+              errors: ['Title must contain characters and not just numbers'],
+            },
+          ]);
+          return;
+        }
+  
+        if (!descriptionRegex.test(request.description)) {
+          form.setFields([
+            {
+              name: 'description',
+              errors: ['Description must contain characters and not just numbers'],
+            },
+          ]);
+          return;
+        }
+      const email = localStorage.getItem('userEmail');
+      if (!email) {
+        console.error('User email not found in localStorage');
+        return;
+      }
+      
+      const newRequest = { ...request, productmanageremail: email }; // Add email to request
+      console.log("Submitting request:", newRequest);
+      await addNewRequest(newRequest);
       onClose(); // Close the modal after successful submission
     } catch (error) {
       console.error('Error adding request:', error);
@@ -96,20 +110,6 @@ const MyModal = ({ visible, onClose }) => {
           </Select>
         </Form.Item>
         <Form.Item
-          name="productmanageremail"
-          label="Requestor Name"
-          rules={[{ required: true, message: 'Please choose name' }]}
-        >
-          <Select
-            placeholder="Select a name"
-            onChange={(value) => handleChange('productmanageremail', value)}
-          >
-            {productEmail.map((item, index) => (
-              <Option value={item} key={index}>{item}</Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item
           name="description"
           label="Description"
           rules={[{ required: true, message: 'Please input Description' }]}
@@ -125,7 +125,7 @@ const MyModal = ({ visible, onClose }) => {
             placeholder="Select a priority"
             onChange={(value) => handleChange('priority', value)}
           >
-            {priority.map((item, index) => (
+            {priorityOptions.map((item, index) => (
               <Option value={item} key={index}>{item}</Option>
             ))}
           </Select>
@@ -148,6 +148,16 @@ const MyModal = ({ visible, onClose }) => {
             onChange={(value) => handleChange('affectedGroupList', value)}
           >
             {group.map((item, index) => (
+              <Option value={item} key={index}>{item}</Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item name="planned" label="Planned" rules={[{ required: true, message: 'Please select a planned quarter!' }]}>
+          <Select
+            placeholder="Select a planned quarter"
+            onChange={(value) => handleChange('planned', value)}
+          >
+            {planned.map((item, index) => (
               <Option value={item} key={index}>{item}</Option>
             ))}
           </Select>
