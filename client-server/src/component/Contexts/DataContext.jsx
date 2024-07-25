@@ -25,8 +25,6 @@ export const DataProvider = ({ children }) => {
   const [priorityOptions, setPriorityOptions] = useState([]);
   const [descriptions, setDescriptions] = useState([]);
   const [productEmail, setProductEmail] = useState([]);
-  const [checkEmailExists, setCheckEmailExists] = useState([]);
-  const [addNewRequest, setAddNewRequest] = useState([]);
   const [status, setStatus] = useState([]);
 
   useEffect(() => {
@@ -57,17 +55,6 @@ export const DataProvider = ({ children }) => {
         const allStatusData = await getAllStatus();
         setStatus(allStatusData);
 
-        const checkEmailExistsData = await checkEmailExists();
-        setCheckEmailExists(checkEmailExistsData);
-
-
-        const addNewRequestData = await addNewRequest();
-        setAddNewRequest(addNewRequestData);
-
-
-
- 
-
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -86,8 +73,6 @@ export const DataProvider = ({ children }) => {
       priorityOptions: [priorityOptions, setPriorityOptions],
       descriptions: [descriptions, setDescriptions],
       productEmail: [productEmail, setProductEmail],
-      checkEmailExists: [checkEmailExists, setCheckEmailExists],
-      addNewRequest: [addNewRequest, setAddNewRequest],
       status: [status, setStatus]
     }}>
       {children}
