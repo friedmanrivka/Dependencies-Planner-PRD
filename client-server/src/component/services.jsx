@@ -31,7 +31,6 @@ export const getDescriptions = async () => {
     try {
 
         const response = await axios.get(`${API_URL}/requestor-Details`);
-
         return response.data;
     } catch (error) {
         console.error('Error fetching groups:', error);

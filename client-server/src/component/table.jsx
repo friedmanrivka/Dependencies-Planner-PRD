@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { useDataContext } from './Contexts/DataContext';
-import { getGroup, getAllStatus, getFinalDecision, getQuarterDates, getRequestorNames, getPriority, getDescriptions } from './services';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -20,8 +19,6 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import LinkIcon from '@mui/icons-material/Link';
-import { Link } from 'react-router-dom';
-import EditComponent from './Edit';
 import DeleteComponent from './deleteReq'
 import MyModal from './addRequest';
 
@@ -259,16 +256,23 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
 };
 
 const BasicTable = () => {
-  const { group, setGroup } = useDataContext();
+  const {
+    group: [group, setGroup],
+    productManager: [productManager, setProductManager],
+    finalDecision: [finalDecision, setFinalDecision],
+    quarterDates: [quarterDates, setQuarterDates],
+    requestorNames: [requestorNames, setRequestorNames],
+    priorityOptions: [priorityOptions, setPriorityOptions],
+    descriptions: [descriptions, setDescriptions],
+    productEmail: [productEmail, setProductEmail],
+    checkEmailExists: [checkEmailExists, setCheckEmailExists],
+    deleteRequest: [deleteRequest, setDeleteRequest],
+    addNewRequest: [addNewRequest, setAddNewRequest],
+    status: [status, setStatus]
+  } = useDataContext();
   const [showGroups, setShowGroups] = useState(false);
   const [rows, setRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
-  const [finalDecision, setFinalDecision] = useState([]);
-  const [quarterDates, setQuarterDates] = useState([]);
-  const [requestorNames, setRequestorNames] = useState([]);
-  const [priorityOptions, setPriorityOptions] = useState([]);
-  const [descriptions, setDescriptions] = useState([]);
-  const [status, setStatus] = useState([]);
   const [filterRequestorGroup, setFilterRequestorGroup] = useState([]);
   const [filterRequestorName, setFilterRequestorName] = useState([]);
   const [filterInvolvedName, setFilterInvolvedName] = useState([]);
@@ -276,35 +280,21 @@ const BasicTable = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const groupData = await getGroup();
-        setGroup(groupData);
-
-        const finalDecisionData = await getFinalDecision();
-        setFinalDecision(finalDecisionData);
-
-        const quarterDatesData = await getQuarterDates();
-        setQuarterDates(quarterDatesData);
-
-        const requestorNamesData = await getRequestorNames();
-        setRequestorNames(requestorNamesData);
-
-        const statusData = await getAllStatus();
-        setStatus(statusData);
-
-        const descriptionsData = await getDescriptions();
-        setDescriptions(descriptionsData);
-        setRows(descriptionsData);
-        setFilteredRows(descriptionsData);
-
-        const priorityData = await getPriority();
-        setPriorityOptions(priorityData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+        setRows(descriptions);
+        setFilteredRows(descriptions);
     };
     fetchData();
-  }, [setGroup]);
+  }, [group,
+    finalDecision,
+    quarterDates,
+    requestorNames,
+    priorityOptions,
+    descriptions,
+    productEmail,
+    checkEmailExists,
+    deleteRequest,
+    addNewRequest,
+    status]);
 
   const toggleGroups = () => {
     setShowGroups(!showGroups);
@@ -491,7 +481,6 @@ const BasicTable = () => {
                   </TableHead>
                   <TableBody>
                     {filteredRows.map((row, index) => ( // HIGHLIGHTED
-
                       <DraggableRow
                         key={index}
                         index={index}
@@ -507,8 +496,6 @@ const BasicTable = () => {
                         style={{ cursor: "grab" }}
                       />
                     ))}
-
-
                     {filteredRows.map((row, index) => {
                       const finalDecisionBackgroundColor = row.decision === 'inQ' ? '#b7cab8' : row.decision === 'notInQ' ? '#d4c0bd' : 'transparent';
                       const priorityBackgroundColor = row.critical==='low' ? '#e6ffe6' : row.critical==='high' ? '#ffd9b3' :row.critical==='medium' ? '#ffffb3':row.critical==='critical' ? '#ffcccc' : 'transparent';
