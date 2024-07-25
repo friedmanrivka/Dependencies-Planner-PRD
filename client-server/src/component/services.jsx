@@ -83,9 +83,11 @@ export const getAllStatus = async () => {
         throw error;
     }
 };
+
+
 export const updateFinalDecision = async (id,finalDecision) => {
     try {
-        const response = await axios.put(`${API_URL}/updateFinalDecision/${id}`,finalDecision);
+        const response = await axios.put(`${API_URL}/updateFinalDecision/${id}`,finalDecision,jiraLinkOrComment);
         return response.data;
     } catch (error) {
         console.error('Error fetching groups:', error);
