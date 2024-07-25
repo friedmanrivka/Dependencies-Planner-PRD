@@ -1,10 +1,11 @@
 import React from 'react';
 import { useDataContext } from './Contexts/DataContext';
 import { useEffect, useState } from 'react';
-import { getFinalDecision, getQuarterDates, getRequestorNames, getProductEmail, getPriority, getDescriptions, addNewRequest } from './services';
+import { getFinalDecision, getQuarterDates, getRequestorNames, getPriority, getDescriptions, addNewRequest } from './services';
 import { Modal, Form, Input, Select } from 'antd';
 
 const { Option } = Select;
+
 
 const MyModal = ({ visible, onClose }) => {
   const {
@@ -15,7 +16,6 @@ const MyModal = ({ visible, onClose }) => {
     requestorNames: [requestorNames, setRequestorNames],
     priorityOptions: [priorityOptions, setPriorityOptions],
     descriptions: [descriptions, setDescriptions],
-    productEmail: [productEmail, setProductEmail],
     status: [status, setStatus]
   } = useDataContext();
 
@@ -25,7 +25,6 @@ const MyModal = ({ visible, onClose }) => {
     requestorGroup: '',
     description: '',
     JiraLink: '',
-    productmanageremail: '',
     priority: '',
     affectedGroupList: []
   });
@@ -37,7 +36,6 @@ const MyModal = ({ visible, onClose }) => {
     requestorNames,
     priorityOptions,
     descriptions,
-    productEmail,
     status]);
 
   const handleChange = (key, value) => {
@@ -49,8 +47,15 @@ const MyModal = ({ visible, onClose }) => {
 
   const handleAddRequest = async () => {
     try {
-      console.log("request", request);
-      await addNewRequest(request);
+      const email = localStorage.getItem('userEmail');
+      if (!email) {
+        console.error('User email not found in localStorage');
+        return;
+      }
+      
+      const newRequest = { ...request, productmanageremail: email }; // Add email to request
+      console.log("Submitting request:", newRequest);
+      await addNewRequest(newRequest);
       onClose(); // Close the modal after successful submission
     } catch (error) {
       console.error('Error adding request:', error);
@@ -77,20 +82,6 @@ const MyModal = ({ visible, onClose }) => {
             onChange={(value) => handleChange('requestorGroup', value)}
           >
             {group.map((item, index) => (
-              <Option value={item} key={index}>{item}</Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item
-          name="productmanageremail"
-          label="Requestor Name"
-          rules={[{ required: true, message: 'Please choose name' }]}
-        >
-          <Select
-            placeholder="Select a name"
-            onChange={(value) => handleChange('productmanageremail', value)}
-          >
-            {productEmail.map((item, index) => (
               <Option value={item} key={index}>{item}</Option>
             ))}
           </Select>
