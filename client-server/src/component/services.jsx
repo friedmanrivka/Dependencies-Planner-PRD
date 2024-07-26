@@ -93,7 +93,7 @@ export const getAllStatus = async () => {
 };
 
 
-export const updateFinalDecision = async (id,finalDecision) => {
+export const updateFinalDecision = async (id,finalDecision,jiraLinkOrComment) => {
     try {
         const response = await axios.put(`${API_URL}/updateFinalDecision/${id}`,finalDecision,jiraLinkOrComment);
         return response.data;
@@ -151,6 +151,15 @@ export const updateComment= async (id,comment) => {
      return response.data;
     } catch (error){
         console.error('Error update jira in  request:', error);
+        throw error;
+    }
+};
+export const exportTable= async () => {
+    try{
+     const response = await axios.get(`${API_URL}/export/csv`);
+     return response.data;
+    } catch (error){
+        console.error('Error export the table:', error);
         throw error;
     }
 };

@@ -1,5 +1,5 @@
-
 import React, { useEffect, useState, useRef } from 'react';
+import {exportTable} from './services'
 import { useDataContext } from './Contexts/DataContext';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,6 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './BasicTable.css';
@@ -85,11 +86,11 @@ const BasicTable = () => {
     }
     if (filterInvolvedName.length > 0) {
       newFilteredRows = newFilteredRows?.filter(item => {
-        // סינון הרשימה הפנימית לפי התנאי
+       
         const filteredGroups = item.affectedGroupsList.filter(item2 => item2.statusname !== 'Not Required');
-        // הוצאת שמות הקבוצות מהרשימה המסוננת
+       
         const groupNames = filteredGroups.map(item2 => item2.groupname);
-        // בדיקה אם אחד מהשמות נמצא בתוך filterInvolvedName
+       
         return groupNames.some(groupname => filterInvolvedName.includes(groupname));
       });
       console.log("newFilteredRows" + newFilteredRows)
@@ -125,6 +126,17 @@ const BasicTable = () => {
           >
             Add Request
           </Button>
+          {/* *************************** */}
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<SaveAltIcon />}
+            style={{ backgroundColor: '#58D64D', marginRight: '10px' }}
+             onClick={exportTable}
+          >
+            Export Table
+          </Button>
+          {/* ******************************* */}
           <MyModal />
           <IconButton onClick={toggleGroups} color="inherit">
             {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
@@ -351,9 +363,10 @@ const BasicTable = () => {
                               value={row.decision}
                               displayEmpty
                               style={{ backgroundColor: finalDecisionBackgroundColor, padding: '0.2em' }}
-                              onChange={(value) => setFinalDecisionChose(value)}
-                              on
-                              MenuProps={{
+                              // onChange={(event) => handleFinalDecisionChange(row.id, event.target.value)}
+                             onChange={(value) => setFinalDecisionChose(value)}
+                            // onChange={(event) => setFinalDecisionChose(event.target.value)}
+                            MenuProps={{
                                 PaperProps: {
                                   style: {
                                     backgroundColor: finalDecisionBackgroundColor,
