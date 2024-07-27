@@ -3,10 +3,7 @@ import { useDataContext } from './Contexts/DataContext';
 import { useEffect, useState } from 'react';
 import { getFinalDecision, getQuarterDates, getRequestorNames, getPriority, getDescriptions, addNewRequest } from './services';
 import { Modal, Form, Input, Select } from 'antd';
-
 const { Option } = Select;
-
-
 const MyModal = ({ visible, onClose }) => {
   const {
     group: [group, setGroup],

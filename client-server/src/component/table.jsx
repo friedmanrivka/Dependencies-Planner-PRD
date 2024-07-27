@@ -126,8 +126,7 @@ const BasicTable = () => {
           >
             Add Request
           </Button>
-          {/* *************************** */}
-          <Button
+        <Button
             variant="contained"
             color="primary"
             startIcon={<SaveAltIcon />}
@@ -136,8 +135,7 @@ const BasicTable = () => {
           >
             Export Table
           </Button>
-          {/* ******************************* */}
-          <MyModal />
+        <MyModal />
           <IconButton onClick={toggleGroups} color="inherit">
             {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </IconButton>
