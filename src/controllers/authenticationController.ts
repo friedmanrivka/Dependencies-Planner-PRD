@@ -7,7 +7,7 @@ export const checkEmail = async (req: Request, res: Response): Promise<void> => 
     try {
         const { email } = req.body;
        const exists = await AuthenticationRepo.getProductManagerByEmail(email);
-        console.log(`Email exists: ${exists}`); // Debugging output
+        console.log(`Email exists: ${exists}`); 
         res.json({ exists });
     } catch (error) {
         console.error('Error checking email:', error);

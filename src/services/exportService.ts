@@ -38,7 +38,6 @@ export const exportToCSV = async (req: Request, res: Response): Promise<void> =>
         decision: request.decision,
         requestgroupid: request.requestgroupid,
       };
-
       const groupStatuses = Array(18).fill('Not Required');
       request.affectedGroupsList.forEach(group => {
         const groupIndex = parseInt(group.groupname.split(' ')[1], 10) - 1;
@@ -46,11 +45,9 @@ export const exportToCSV = async (req: Request, res: Response): Promise<void> =>
           groupStatuses[groupIndex] = group.statusname;
         }
       });
-
       groupStatuses.forEach((status, index) => {
         record[`group${index + 1}`] = status;
       });
-
       return record;
     });
 

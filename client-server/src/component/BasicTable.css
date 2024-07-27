@@ -122,3 +122,13 @@ th, td {
   font-size: 0.8rem; 
 
 }
+#dialog{
+width: 100%;
+}
+.MuiSelect-root {
+  color: black;
+}
+
+.MuiMenuItem-root {
+  color: black;
+}
