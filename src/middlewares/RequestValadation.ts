@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import ProductManagerService from '../service/productManagerService';
+import ProductManagerService from '../services/productManagerService';
 
 export const validateDeleteRequest = async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);

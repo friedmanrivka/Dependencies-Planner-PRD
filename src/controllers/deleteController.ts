@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import ProductManagerService from '../service/productManagerService';
+import ProductManagerService from '../services/productManagerService';
 
 export const deleteRequest = async (req: Request, res: Response): Promise<void> => {
     try {
