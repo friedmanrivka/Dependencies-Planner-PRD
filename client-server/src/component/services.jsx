@@ -93,16 +93,77 @@ export const getAllStatus = async () => {
 };
 
 
-export const updateFinalDecision = async (id,finalDecision,jiraLinkOrComment) => {
+// export const updateFinalDecision = async (id,finalDecision,jiraLinkOrComment) => {
+//     try {
+//         // console.log('url'+`${API_URL}/updateFinalDecision/${id}`,finalDecision,jiraLinkOrComment)
+//         const response = await axios.put(`${API_URL}/updateFinalDecision/${id}`,finalDecision,jiraLinkOrComment);
+//         return response.data;
+//     } catch (error) {
+//         console.error('Error fetching groups:', error);
+//         throw error;
+//     }
+// };
+
+export const updateFinalDecision = async (requestId, finalDecision, jiraLinkOrComment) => {
     try {
-        // console.log('url'+`${API_URL}/updateFinalDecision/${id}`,finalDecision,jiraLinkOrComment)
-        const response = await axios.put(`${API_URL}/updateFinalDecision/${id}`,finalDecision,jiraLinkOrComment);
+      const response = await axios.put(`${API_URL}/updateFinalDecision/${requestId}`, { finalDecision, jiraLinkOrComment });
+      return response.data;
+    } catch (error) {
+      console.error('Error updating final decision:', error);
+      throw error;
+    }
+  };
+
+export const updatePriority = async (requestId, priorityName) => {
+    try {
+        const response = await axios.put(`${API_URL}/update-priority`, {requestId,  priorityName });
         return response.data;
     } catch (error) {
-        console.error('Error fetching groups:', error);
+        console.error('Error updating priority:', error);
         throw error;
     }
 };
+
+export const updateRequestor = async (requestId, productManagerName) => {
+    try {
+        const response = await axios.put(`${API_URL}/update-product-manager`, {requestId,  productManagerName });
+        return response.data;
+    } catch (error) {
+        console.error('Error updating priority:', error);
+        throw error;
+    }
+};
+export const updateRequestorGroup = async (requestId, groupName) => {
+    try {
+        const response = await axios.put(`${API_URL}/update-requestor-group`, {requestId,  groupName });
+        return response.data;
+    } catch (error) {
+        console.error('Error updating priority:', error);
+        throw error;
+    }
+};
+// export const updatePlanned = async (requestId, groupName) => {
+//     try {
+//         const response = await axios.put(`${API_URL}/update-requestor-group`, {requestId,  groupName });
+//         return response.data;
+//     } catch (error) {
+//         console.error('Error updating priority:', error);
+//         throw error;
+//     }
+// };
+export const addProductManager = async (email, productManagerName) => {
+    console.log('try')
+    try {
+        var a=`${API_URL}/addProductManager`;
+        console.log(a)
+      const response = await axios.post(`${API_URL}/addProductManager`, { email, productManagerName });
+      
+      return response.data;
+    } catch (error) {
+      console.error('Error adding product manager:', error);
+      throw error;
+    }
+  };
 export const addNewRequest = async (newRequest) => {
     try {
         console.log('Adding new request')
