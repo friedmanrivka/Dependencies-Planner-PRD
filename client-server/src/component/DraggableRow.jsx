@@ -104,6 +104,8 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
     }
   };
   const groupBackgroundColor = '#d3d3d3';
+  const finalDecisionBackgroundColor = row.decision === 'inQ' ? '#b7cab8' : row.decision === 'notInQ' ? '#d4c0bd' : 'transparent';
+  const priorityBackgroundColor = row.critical === 'low' ? '#e6ffe6' : row.critical === 'high' ? '#ffd9b3' : row.critical === 'medium' ? '#ffffb3' : row.critical === 'critical' ? '#ffcccc' : 'transparent';
 
   return (
     <TableRow
