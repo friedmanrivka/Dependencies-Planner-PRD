@@ -93,9 +93,8 @@ const BasicTable = () => {
        
         return groupNames.some(groupname => filterInvolvedName.includes(groupname));
       });
-      console.log("newFilteredRows" + newFilteredRows)
-      setFilteredRows(newFilteredRows);
     };
+      setFilteredRows(newFilteredRows);   
   }
 
   useEffect(() => {
