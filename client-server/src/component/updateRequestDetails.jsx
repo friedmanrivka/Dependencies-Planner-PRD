@@ -1,9 +1,10 @@
 import {updateFinalDecision} from './services'
-const UdateRquest = ({finalDecisionChose}) => {
-    console.log("finalDecision"+finalDecisionChose)
+const UdateRquest = ({selectedFinalDecision}) => {
+    console.log("finalDecision"+selectedFinalDecision)
     const handleUdateFinalDecision = async () => {
        try{
-        const success=await updateFinalDecision(1,{finalDecisionChose},'dsajf');
+        const success = await updateFinalDecision(223,{selectedFinalDecision},'sucsess update final decision');
+        console.log("success"+success);
    }
     catch (error) {
         console.log('Failed to update the request. Please try again.');
@@ -11,7 +12,7 @@ const UdateRquest = ({finalDecisionChose}) => {
 };
 return (
     <div>
-       
+       <button onClick={handleUdateFinalDecision}>hhh</button>
     </div>
 );
 }

@@ -23,7 +23,6 @@ import LinkIcon from '@mui/icons-material/Link';
 import DeleteComponent from './deleteReq'
 import MyModal from './addRequest';
 import DraggableRow from './DraggableRow';
-import UdateRquest from './updateRequestDetails';
 const ItemType = 'ROW';
 const BasicTable = () => {
   const {
@@ -271,134 +270,6 @@ const BasicTable = () => {
                         style={{ cursor: "grab" }}
                       />
                     ))}
-                    {/* {filteredRows.map((row, index) => {
-                      const finalDecisionBackgroundColor = row.decision === 'inQ' ? '#b7cab8' : row.decision === 'notInQ' ? '#d4c0bd' : 'transparent';
-                      const priorityBackgroundColor = row.critical === 'low' ? '#e6ffe6' : row.critical === 'high' ? '#ffd9b3' : row.critical === 'medium' ? '#ffffb3' : row.critical === 'critical' ? '#ffcccc' : 'transparent';
-
-                      return (
-                        <TableRow
-                          key={index}
-                          style={{ cursor: "grab" }}
-                        >
-                          <TableCell>
-                            <Select
-                              value={row.requestorGroup}
-                              displayEmpty
-                              style={{ backgroundColor: '#d3d3d3', padding: '0.2em' }}
-                              MenuProps={{
-                                PaperProps: {
-                                  style: {
-                                    backgroundColor: '#d3d3d3',
-                                  }
-                                }
-                              }}
-                            >
-                              {group.map((groupOption, groupIndex) => (
-                                <MenuItem value={groupOption} key={groupIndex}>
-                                  {groupOption}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </TableCell>
-                          <TableCell>
-                            <Select
-                              value={row.productmanagername}
-                              displayEmpty
-
-                            >
-                              {requestorNames.map((nameOption, nameIndex) => (
-                                <MenuItem value={nameOption} key={nameIndex}>
-                                  {nameOption}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </TableCell>
-                          <TableCell>{row.title}</TableCell>
-                          <TableCell align="right">
-                            <Select
-                              value={row.planned}
-                              displayEmpty
-                              style={{ backgroundColor: '#d3d3d3', padding: '0.2em' }}
-                              MenuProps={{
-                                PaperProps: {
-                                  style: {
-                                    backgroundColor: '#d3d3d3',
-                                  }
-                                }
-                              }}
-                            >
-                              {quarterDates.map((dateOption, dateIndex) => (
-                                <MenuItem value={dateOption} key={dateIndex}>
-                                  {dateOption}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </TableCell>
-                          <TableCell>{row.description}</TableCell>
-                          <TableCell>
-                            <Select
-                              value={row.critical}
-                              displayEmpty
-                              style={{ backgroundColor: priorityBackgroundColor, padding: '0.2em' }}
-                              MenuProps={{
-                                PaperProps: {
-                                  style: {
-                                    backgroundColor: priorityBackgroundColor,
-                                  }
-                                }
-                              }}
-                            >
-                              {priorityOptions.map((priorityOption, priorityIndex) => (
-                                <MenuItem value={priorityOption} key={priorityIndex}>
-                                  {priorityOption}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </TableCell>
-                          <TableCell>
-                            <Select
-                              value={row.decision}
-                              displayEmpty
-                              style={{ backgroundColor: finalDecisionBackgroundColor, padding: '0.2em' }}
-                              // onChange={(event) => handleFinalDecisionChange(row.id, event.target.value)}
-                             onChange={(value) => setFinalDecisionChose(value)}
-                            // onChange={(event) => setFinalDecisionChose(event.target.value)}
-                            MenuProps={{
-                                PaperProps: {
-                                  style: {
-                                    backgroundColor: finalDecisionBackgroundColor,
-                                  }
-                                }
-                              }}
-                            >
-                              {finalDecision.map((decisionOption, decisionIndex) => (
-                                <MenuItem value={decisionOption} key={decisionIndex}>
-                                  {decisionOption}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </TableCell>
-                          {showGroups && group.map((item, groupIndex) => (
-                            <TableCell align="right" key={groupIndex}>
-                              <Select
-                                value={row.affectedGroupsList[groupIndex]?.statusname || 'Pending Response'}
-                                displayEmpty
-                                renderValue={(selected) => selected || 'Pending Response'}
-                              >
-                                {status.map((statusOption, statusIndex) => (
-                                  <MenuItem value={statusOption} key={statusIndex}>
-                                    {statusOption}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                          ))}
-                          <TableCell align="right">{row.comment}</TableCell>
-                          <TableCell align="right"><a href={row.jiralink}>Jira Link</a></TableCell>
-                          <TableCell><DeleteComponent id={row.id} /></TableCell>
-                        </TableRow>
-                      );
-                    })} */}
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -406,7 +277,7 @@ const BasicTable = () => {
           </Card>
         </div>
       </div>
-      <UdateRquest finalDecisionChose={finalDecisionChose} />
+   
       <MyModal visible={modalVisible} onClose={closeModal} />
     </DndProvider>
   );
