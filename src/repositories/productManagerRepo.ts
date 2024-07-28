@@ -50,11 +50,11 @@ export default class ProductManagerRepo {
             throw err;
         }
     }
-    static async addProductManager( email: string,productmanagername: string,): Promise<void> {
+    static async addProductManager( email: string,productManagerName: string): Promise<void> {
         try {
             await pool.query(
                 `INSERT INTO productmanager (email,productmanagername) VALUES ($1, $2)`,
-                [ email,productmanagername]
+                [ email,productManagerName]
             );
         } catch (err) {
             console.error('Error adding product manager:', err);

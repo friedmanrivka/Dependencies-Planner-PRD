@@ -19,9 +19,9 @@ export default class ProductManagerService {
             throw err;
         }
     }
-    static async addProductManager ( email: string,productmanagername: string): Promise<void> {
+    static async addProductManager ( email: string,productManagerName: string): Promise<void> {
         try {
-            await ProductManagerRepo.addProductManager( email,productmanagername);
+            await ProductManagerRepo.addProductManager( email,productManagerName);
         } catch (err) {
             console.error('Service: Error adding product manager:', err);
             throw err;

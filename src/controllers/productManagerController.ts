@@ -30,10 +30,8 @@ export const getRequestorNames = async (req: Request, res: Response): Promise<vo
 
   export const addProductManagerController = async (req: Request, res: Response): Promise<void> => {
     try {
-       
-        // const { email } = req.query;
-        const {email, productmanagername } = req.body;
-        await ProductManagerService.addProductManager( email as string,productmanagername);
+           const {email, productManagerName } = req.body;
+        await ProductManagerService.addProductManager( email ,productManagerName);
         res.status(201).send('Product manager added successfully');
     } catch (error) {
         console.error('Controller: Error adding product manager:', error);

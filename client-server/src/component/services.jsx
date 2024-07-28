@@ -95,6 +95,7 @@ export const getAllStatus = async () => {
 
 export const updateFinalDecision = async (id,finalDecision,jiraLinkOrComment) => {
     try {
+        console.log(`${API_URL}/updateFinalDecision/${id}`,finalDecision,jiraLinkOrComment)
         const response = await axios.put(`${API_URL}/updateFinalDecision/${id}`,finalDecision,jiraLinkOrComment);
         return response.data;
     } catch (error) {
@@ -163,3 +164,16 @@ export const exportTable= async () => {
         throw error;
     }
 };
+export const addProductManager = async (email, productManagerName) => {
+    console.log('try')
+    try {
+        var a=`${API_URL}/addProductManager`;
+        console.log(a)
+      const response = await axios.post(`${API_URL}/addProductManager`, { email, productManagerName });
+      
+      return response.data;
+    } catch (error) {
+      console.error('Error adding product manager:', error);
+      throw error;
+    }
+  };

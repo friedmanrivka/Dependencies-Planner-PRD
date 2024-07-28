@@ -1,4 +1,5 @@
 import './App.css';
+// import AddProductManager from './component/addProductManager';
 // import ManageRequestButton from './component/stuatus';
 
 import { Navbar } from './routing/navbar';
@@ -17,6 +18,7 @@ function App() {
       </div> 
       </DataProvider>
     </Router>
+    {/* <AddProductManager></AddProductManager> */}
     </div>
   );
 }
