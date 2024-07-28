@@ -95,6 +95,7 @@ export const getAllStatus = async () => {
 
 export const updateFinalDecision = async (id,finalDecision,jiraLinkOrComment) => {
     try {
+        // console.log('url'+`${API_URL}/updateFinalDecision/${id}`,finalDecision,jiraLinkOrComment)
         const response = await axios.put(`${API_URL}/updateFinalDecision/${id}`,finalDecision,jiraLinkOrComment);
         return response.data;
     } catch (error) {

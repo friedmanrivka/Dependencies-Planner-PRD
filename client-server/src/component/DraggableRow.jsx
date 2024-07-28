@@ -5,7 +5,8 @@ import TableRow from '@mui/material/TableRow';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import './BasicTable.css';
 import { Select, MenuItem, Checkbox, ListItemText, List, ListItem, Divider, IconButton, FormControl, InputLabel, Card, CardContent, AppBar, Toolbar, Typography } from '@mui/material';
-import DeleteComponent from './deleteReq'
+import DeleteComponent from './deleteReq';
+import UdateRquest from './updateRequestDetails';
 const ItemType = 'ROW';
 const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priorityOptions, quarterDates, finalDecision, requestorNames }) => {
   const ref = useRef(null);
@@ -237,7 +238,10 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
       <TableCell align="right">{row.comment}</TableCell>
       <TableCell align="right"><a href={row.jiralink}>Jira Link</a></TableCell>
         <TableCell align="right"><DeleteComponent id={row.id}/></TableCell>
+
+        <UdateRquest selectedFinalDecision={selectedFinalDecision} />
     </TableRow>
+       
   );
 };
 export default DraggableRow;
