@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
-import { AddDetails } from '../repositories/newRequestRepo';
-import GroupRepo from '../repositories/groupRepo';
-import { pool } from '../config/db';
+import RequestService from '../services/newRequestService';
 
 export const CreateDetailsRequest = async (req: Request, res: Response): Promise<void> => {
     const { title, description, JiraLink, priority, requestorGroup, productmanageremail, affectedGroupList, planned } = req.body;
@@ -10,14 +8,10 @@ export const CreateDetailsRequest = async (req: Request, res: Response): Promise
         res.status(400).send({ error: 'Title is required' });
         return;
     }
-    if (!description) {
-        res.status(400).send({ error: 'Description is required' });
-        return;
-    }
     if (!JiraLink) {
         res.status(400).send({ error: 'JiraLink is required' });
         return;
-    } 
+    }
     if (!priority) {
         res.status(400).send({ error: 'Priority is required' });
         return;
@@ -40,44 +34,9 @@ export const CreateDetailsRequest = async (req: Request, res: Response): Promise
     }
 
     try {
-        const allGroups = await GroupRepo.getAllGroup();
-        const group = allGroups.find(g => g.name === requestorGroup);
-
-        if (!group) {
-            res.status(400).json({ message: 'Invalid requestor group' });
-            return;
-        }
-
-        const productManagerResult = await pool.query('SELECT email, productmanagername FROM productmanager WHERE email = $1', [productmanageremail]);
-
-        if (productManagerResult.rowCount === 0) {
-            res.status(400).json({ message: 'Invalid product manager email' });
-            return;
-        }
-
-        const productManagerId = productManagerResult.rows[0].email;
-        const productManagerName = productManagerResult.rows[0].productmanagername;
-
-        const priorityResult = await pool.query('SELECT id FROM priority WHERE critical = $1', [priority]);
-
-        if (priorityResult.rowCount === 0) {
-            res.status(400).json({ message: 'Invalid priority' });
-            return;
-        }
-
-        const priorityId = priorityResult.rows[0].id;
-        const affectedGroupIds = affectedGroupList.map(groupName => {
-            const group = allGroups.find(g => g.name === groupName);
-            if (!group) {
-                throw new Error(`Invalid group name: ${groupName}`);
-            }
-            return group.id;
-        });
-
-        const newRequest = await AddDetails(title, group.id, description, JiraLink, priorityId, productManagerId, affectedGroupIds, planned);
-
+        const { request, productManagerName } = await RequestService.createDetailsRequest(title, description, JiraLink, priority, requestorGroup, productmanageremail, affectedGroupList, planned);
         res.status(201).json({
-            ...newRequest,
+            ...request,
             productManagerName: productManagerName,
         });
     } catch (error) {

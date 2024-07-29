@@ -10,5 +10,6 @@ export interface Request {
     finalDecision: number,
    productmanagerid: number,
     affectedGroupList: number[],
-    requestgroupid: number;
+    requestgroupid: number,
+    productManagerName?: string;
 }
