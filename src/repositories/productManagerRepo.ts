@@ -14,8 +14,6 @@ export default class ProductManagerRepo {
            await client.query('BEGIN');
             await client.query('DELETE FROM affectedgroups WHERE requestid = $1', [id]);
             console.log(`Deleting affected groups with requestId: ${id}`);
-            await client.query('DELETE FROM request_affected_groups WHERE request_id = $1', [id]);
-            console.log(`Deleting request with id: ${id}`);
             await client.query('DELETE FROM request WHERE id = $1', [id]);
             await client.query('COMMIT');
             console.log('Deletion successful');
