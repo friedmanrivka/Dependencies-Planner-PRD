@@ -1,7 +1,7 @@
 import {pool2} from '../config/db';
 import {Group} from '../models/groupModel'
-export default class GroupRepo {
-    
+export default class GroupRepo {   
+
     static async getAllGroup(): Promise<Group[]> {
         try {
             console.log('Entering getAllGroup method');
@@ -12,6 +12,6 @@ export default class GroupRepo {
             console.error('Error executing query in getAllGroup:', err);
             throw err;
         }
-    }
-   
+    }  
+    
 }

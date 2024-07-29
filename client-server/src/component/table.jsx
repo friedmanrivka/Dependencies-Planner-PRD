@@ -585,6 +585,8 @@ import MyModal from './addRequest';
 import DraggableRow from './DraggableRow';
 import UdateRquest from './updateRequestDetails';
 
+
+const ItemType = 'ROW';
 const BasicTable = () => {
   const {
     group: [group],
@@ -642,9 +644,10 @@ const BasicTable = () => {
         const groupNames = filteredGroups.map(item2 => item2.groupname);
         return groupNames.some(groupname => filterInvolvedName.includes(groupname));
       });
-    }
-    setFilteredRows(newFilteredRows);
-  };
+
+    };
+      setFilteredRows(newFilteredRows);   
+  }
 
   useEffect(() => {
     handleFilterChange();
@@ -826,6 +829,8 @@ const BasicTable = () => {
       </div>
       <UdateRquest finalDecisionChose={finalDecisionChose} />
       <MyModal visible={modalVisible} onClose={closeModal} onOk={closeModal} onAddRequest={addRequest} />
+   
+
     </DndProvider>
   );
 };
