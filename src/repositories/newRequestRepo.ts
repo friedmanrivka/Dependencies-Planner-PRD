@@ -20,7 +20,7 @@ export const AddDetails = async (
   
   const newRequest = result.rows[0] as Request;
 
-  const statusResult = await pool.query('SELECT status FROM status WHERE id = $1', [4]);
+  const statusResult = await pool.query('SELECT status FROM status WHERE id = $1', [2]);
   if (statusResult.rowCount === 0) {
     throw new Error('Invalid status id');
   }
@@ -29,7 +29,7 @@ export const AddDetails = async (
   for (const groupId of affectedGroupList) {
     await pool.query(
       `INSERT INTO affectedgroups (requestid, groupid, status_id) VALUES ($1, $2, $3)`,
-      [newRequest.id, groupId, 4]
+      [newRequest.id, groupId, 2]
     );
   }
 
