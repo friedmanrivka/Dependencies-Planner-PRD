@@ -3,11 +3,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import StatusSelect from './statusColor';
 import './BasicTable.css';
 import { Select, MenuItem, Checkbox, ListItemText, List, ListItem, Divider, IconButton, FormControl, InputLabel, Card, CardContent, AppBar, Toolbar, Typography } from '@mui/material';
 import DeleteComponent from './deleteReq'
 const ItemType = 'ROW';
-const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priorityOptions, quarterDates, finalDecision, requestorNames }) => {
+const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, priorityOptions, quarterDates, finalDecision, requestorNames }) => {
   const ref = useRef(null);
   const [selectedStatus, setSelectedStatus] = useState(row.affectedGroupsList || '');
   const [selectedPriority, setSelectedPriority] = useState(row.critical || '');
@@ -52,12 +53,15 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
 
   drag(drop(ref));
 
-  const handleStatusChange = (value, groupIndex) => {
-    setSelectedStatus((prev) => ({
-      ...prev,
-      [groupIndex]: value,
-    }));
+  const handleStatusChange = (event, groupIndex) => {
+    setSelectedStatus((prevStatus) => {
+      const newStatus = [...prevStatus];
+      newStatus[groupIndex] = { ...newStatus[groupIndex], statusname: event.target.value };
+      return newStatus;
+    });
   };
+
+
 
   const handlePriorityChange = (event) => {
     setSelectedPriority(event.target.value);
@@ -104,8 +108,6 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
     }
   };
   const groupBackgroundColor = '#d3d3d3';
-  const finalDecisionBackgroundColor = row.decision === 'inQ' ? '#b7cab8' : row.decision === 'notInQ' ? '#d4c0bd' : 'transparent';
-  const priorityBackgroundColor = row.critical === 'low' ? '#e6ffe6' : row.critical === 'high' ? '#ffd9b3' : row.critical === 'medium' ? '#ffffb3' : row.critical === 'critical' ? '#ffcccc' : 'transparent';
 
   return (
     <TableRow
@@ -218,22 +220,15 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, status, priority
         </Select>
       </TableCell>
       {showGroups && group.map((item, groupIndex) => (
-        <TableCell align="right" key={groupIndex}
-        >
-          <Select
-            value={selectedStatus[groupIndex]?.statusname || 'Pending Response'}
-            onChange={(e) => handleStatusChange(e.target.value, groupIndex)}
-            displayEmpty
-            renderValue={(selected) => selected || 'Pending Response'}
-          >
-            {status.map((statusOption, statusIndex) => (
-              <MenuItem value={statusOption} key={statusIndex}>
-                {statusOption}
-              </MenuItem>
-            ))}
-          </Select>
+        <TableCell align="right" key={groupIndex}>
+          <StatusSelect
+            value={row.affectedGroupsList[groupIndex]?.statusname || 'Pending Response'}
+            onChange={(event) => handleStatusChange(event, groupIndex)}
+            options={status}
+          />
         </TableCell>
-      ))}
+))}
+
       <TableCell align="right">{row.comment}</TableCell>
       <TableCell align="right"><a href={row.jiralink}>Jira Link</a></TableCell>
         <TableCell align="right"><DeleteComponent id={row.id}/></TableCell>
