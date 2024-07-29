@@ -285,14 +285,13 @@ import StatusSelect from './statusColor';
 import './BasicTable.css';
 import { Select, MenuItem, Checkbox, ListItemText, List, ListItem, Divider, IconButton, FormControl, InputLabel, Card, CardContent, AppBar, Toolbar, Typography } from '@mui/material';
 import DeleteComponent from './deleteReq'
-const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, priorityOptions, quarterDates, finalDecision, requestorNames }) => {
-
 import { updatePriority, updateRequestor, updateRequestorGroup, updateFinalDecision } from './services'; // Import the update service
 import FinalDecisionDialog from './updateFinalDecision';
 
 const ItemType = 'ROW';
 
 
+const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, priorityOptions, quarterDates, finalDecision, requestorNames }) => {
 
   const ref = useRef(null);
   const [selectedStatus, setSelectedStatus] = useState(row.affectedGroupsList || '');
