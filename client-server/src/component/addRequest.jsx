@@ -435,7 +435,7 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
         <Form.Item
           name="requestorGroup"
           label="Requestor Group"
-          rules={[{ required: true, message: 'Please choose group' }]}
+          rules={[{ required: false }]}
         >
           <Select
             placeholder="Select a group"
