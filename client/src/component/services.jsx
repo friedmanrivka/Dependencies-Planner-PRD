@@ -247,7 +247,8 @@ export const deleteGroup = async (groupName) => {
         return response.data;
     } catch (error) {
         console.error('Error delete group:', error);
-
+    }
+};
 export const updateIdRow = async (id1,id2) => {
     try{
      const response = await axios.put(`http://localhost:3001/api/update-swapIdDrag/${id1}/${id2}`);
