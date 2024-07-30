@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
-import { updateTitle } from './services'; // Import the updateTitle service
+import { updateTitle } from './services'; 
 
 const UpdateTitleDialog = ({ open, onClose, rowId, currentTitle }) => {
   const [newTitle, setNewTitle] = useState(currentTitle);
