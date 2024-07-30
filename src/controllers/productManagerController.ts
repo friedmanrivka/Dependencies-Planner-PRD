@@ -40,3 +40,23 @@ export const getRequestorNames = async (req: Request, res: Response): Promise<vo
         res.status(500).send('Internal Server Error');
     }
 };
+export const deleteProductManagerByEmail = async (req: Request, res: Response): Promise<void> => {
+  try {
+      const email = req.body.email;
+      await ProductManagerService.deleteProductManagerByEmail(email);
+      res.status(200).send('Product manager deleted successfully');
+  } catch (error) {
+      console.error('Controller: Error deleting product manager:', error);
+      res.status(500).send('Internal Server Error');
+  }
+};
+
+export const getAllProductManagers = async (req: Request, res: Response): Promise<void> => {
+  try {
+      const productManagers = await ProductManagerService.getAllProductManagers();
+      res.status(200).json(productManagers);
+  } catch (error) {
+      console.error('Error fetching product managers:', error);
+      res.status(500).send('Internal Server Error');
+  }
+};

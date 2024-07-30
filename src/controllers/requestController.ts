@@ -142,6 +142,7 @@ export const updateAffectedGroup = async (req: Request, res: Response): Promise<
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
+
   export const swapIdDrag = async (req: Request, res: Response): Promise<void> => {
     try {
         const id1 = parseInt(req.params.id1, 10); // Ensure id is parsed as a number
@@ -157,4 +158,5 @@ export const updateAffectedGroup = async (req: Request, res: Response): Promise<
         res.status(500).send('Internal Server Error');
     }
 }
+
 

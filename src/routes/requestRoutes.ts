@@ -15,6 +15,7 @@ router.put('/update-requestor-group', updateRequestorGroup);
 router.put('/update-priority', updatePriority);
 router.put('/update-affected-groups-status', updateAffectedGroup);
 router.put('/update-swapIdDrag/:id1/:id2', swapIdDrag);
+
 // router.put('/update-affected-groups', updateAffectedGroups);
 export default router;
 
