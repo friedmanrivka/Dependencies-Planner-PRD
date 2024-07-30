@@ -8,8 +8,7 @@ export default class RequestRepo {
             console.log('Entering getAllRequests method');
 
             const result = await pool.query(`
-                SELECT
-                  
+                SELECT                 
                 r.id,  
                 r.requestgroupid,
                     pr.productmanagername,
@@ -41,7 +40,8 @@ export default class RequestRepo {
                     r.planned,
                     r.jiralink,
                     p.critical, 
-                    f.decision;
+                    f.decision
+                ORDER BY r.iddrag;
             `);
 
             console.log('Request Query executed successfully, result:', JSON.stringify(result.rows, null, 2));
@@ -223,9 +223,37 @@ export default class RequestRepo {
         }
     }
    
-    
-
-
+    static async swapIdDrag(requestId1: number, requestId2: number): Promise<void> {
+        try {
+            // Get the current iddrag values for both requests
+            const res1 = await pool.query(
+                `SELECT iddrag FROM request WHERE id = $1`,
+                [requestId1]
+            );
+            const res2 = await pool.query(
+                `SELECT iddrag FROM request WHERE id = $1`,
+                [requestId2]
+            );
+            if (res1.rowCount === 0 || res2.rowCount === 0) {
+                throw new Error('One or both request IDs not found');
+            }
+            const idDrag1 = res1.rows[0].iddrag;
+            const idDrag2 = res2.rows[0].iddrag;   
+            // Update iddrag values
+            await pool.query(
+                `UPDATE request SET iddrag = $1 WHERE id = $2`,
+                [idDrag2, requestId1]
+            );
+            await pool.query(
+                `UPDATE request SET iddrag = $1 WHERE id = $2`,
+                [idDrag1, requestId2]
+            );  
+            console.log('Iddrag values swapped successfully');
+        } catch (err) {
+            console.error('Error swapping iddrag values:', err);
+            throw err;
+        }
+    }
     static async updateAffectedGroup(requestId: number, groupName: string, statusName: string): Promise<void> {
         try {
           // Begin a transaction

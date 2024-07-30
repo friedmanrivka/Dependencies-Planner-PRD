@@ -225,3 +225,12 @@ export const exportTable= async () => {
         throw error;
     }
 };
+export const updateIdRow = async (id1,id2) => {
+    try{
+     const response = await axios.put(`http://localhost:3001/api/update-swapIdDrag/${id1}/${id2}`);
+     return response.data;
+    } catch (error){
+        console.error('Error update request:', error);
+        throw error;
+    }
+};

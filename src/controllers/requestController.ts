@@ -142,21 +142,19 @@ export const updateAffectedGroup = async (req: Request, res: Response): Promise<
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
-
-
-// export const updateIdDrag = async (req: Request, res: Response): Promise<void> => {
-//     try {
-//         const id = parseInt(req.params.id, 10); // Ensure id is parsed as a number
-//         const id2 = parseInt(req.params.id, 10); // Ensure id is parsed as a number
-//         if (isNaN(id)|| isNaN(id2)) {
-//             res.status(400).send('Invalid id or updateIdDrag');
-//             return;
-//         }
-//         await RequestRepo.updateIdDrag(id,id2);
-//         res.status(200).send('IdDrag updated successfully');
-//     } catch (error) {
-//         console.error('Error updating IdDrag:', error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// }
+  export const swapIdDrag = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const id1 = parseInt(req.params.id1, 10); // Ensure id is parsed as a number
+        const id2 = parseInt(req.params.id2, 10); // Ensure id is parsed as a number
+        if (isNaN(id1)|| isNaN(id2)) {
+            res.status(400).send('Invalid id or updateIdDrag');
+            return;
+        }
+        await RequestRepo.swapIdDrag(id1,id2);
+        res.status(200).send('IdDrag updated successfully');
+    } catch (error) {
+        console.error('Error updating IdDrag:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
 
