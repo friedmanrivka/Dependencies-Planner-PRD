@@ -91,19 +91,24 @@ export const getAllStatus = async () => {
         throw error;
     }
 };
-
-
-// export const updateFinalDecision = async (id,finalDecision,jiraLinkOrComment) => {
-//     try {
-//         // console.log('url'+`${API_URL}/updateFinalDecision/${id}`,finalDecision,jiraLinkOrComment)
-//         const response = await axios.put(`${API_URL}/updateFinalDecision/${id}`,finalDecision,jiraLinkOrComment);
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error fetching groups:', error);
-//         throw error;
-//     }
-// };
-
+export const getAllGroups = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/group`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching all groups:', error);
+        throw error;
+    }
+};
+export const getAllProductsManager = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/product-managers`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching all product-managers:', error);
+        throw error;
+    }
+};
 export const updateFinalDecision = async (requestId, finalDecision, jiraLinkOrComment) => {
     try {
       const response = await axios.put(`${API_URL}/updateFinalDecision/${requestId}`, { finalDecision, jiraLinkOrComment });
@@ -142,25 +147,33 @@ export const updateRequestorGroup = async (requestId, groupName) => {
         throw error;
     }
 };
-// export const updatePlanned = async (requestId, groupName) => {
-//     try {
-//         const response = await axios.put(`${API_URL}/update-requestor-group`, {requestId,  groupName });
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error updating priority:', error);
-//         throw error;
-//     }
-// };
+export const deleteProductManager = async (email) => {
+    try {
+        const response = await axios.put(`${API_URL}/delete-product-manager`, { email});
+        return response.data;
+    } catch (error) {
+        console.error(' delete Product Manager:', error);
+        throw error;
+    }
+};
+
 export const addProductManager = async (email, productManagerName) => {
     console.log('try')
     try {
-        var a=`${API_URL}/addProductManager`;
-        console.log(a)
-      const response = await axios.post(`${API_URL}/addProductManager`, { email, productManagerName });
-      
-      return response.data;
+       const response = await axios.post(`${API_URL}/addProductManager`, { email, productManagerName });
+       return response.data;
     } catch (error) {
       console.error('Error adding product manager:', error);
+      throw error;
+    }
+  };
+  export const addGroup = async (groupName) => {
+    console.log('Trying to add group');
+    try {
+     const response = await axios.post(`${API_URL}/add-group`, { groupName });
+      return response.data;
+    } catch (error) {
+      console.error('Error adding group:', error);
       throw error;
     }
   };
@@ -222,6 +235,17 @@ export const exportTable= async () => {
      return response.data;
     } catch (error){
         console.error('Error export the table:', error);
+        throw error;
+    }
+};
+
+
+export const deleteGroup = async (groupName) => {
+    try {
+        const response = await axios.put(`${API_URL}/delete-group`, { groupName });
+        return response.data;
+    } catch (error) {
+        console.error('Error delete group:', error);
         throw error;
     }
 };

@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {exportTable} from './services'
 import { useDataContext } from './Contexts/DataContext';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
@@ -20,11 +22,13 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import LinkIcon from '@mui/icons-material/Link';
-import DeleteComponent from './deleteReq'
 import MyModal from './addRequest';
 import DraggableRow from './DraggableRow';
+
 const ItemType = 'ROW';
 const BasicTable = () => {
+  const navigate = useNavigate();
+
   const {
     group: [group, setGroup],
     productManager: [productManager, setProductManager],
@@ -107,6 +111,9 @@ const BasicTable = () => {
   const closeModal = () => {
     setModalVisible(false);
   };
+  const goToAdminPage = () => {
+    navigate('/admin');
+  };
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -132,6 +139,15 @@ const BasicTable = () => {
              onClick={exportTable}
           >
             Export Table
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AdminPanelSettingsIcon  />}
+            style={{ backgroundColor: '#58D64D', marginRight: '10px' }}
+            onClick={goToAdminPage}
+          >
+           Admin Page
           </Button>
         <MyModal />
           <IconButton onClick={toggleGroups} color="inherit">

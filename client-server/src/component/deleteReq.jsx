@@ -1,5 +1,5 @@
 import { deleteRequest } from './services';
-
+import DeleteIcon from '@mui/icons-material/Delete';
 const DeleteComponent = ({id}) => {
     const handleDelete = async () => {
         if (window.confirm('Are you sure you want to delete this request?')) {
@@ -19,7 +19,7 @@ const DeleteComponent = ({id}) => {
 
     return (
         <div>
-            <button onClick={handleDelete}>Delete Request</button>
+            <button onClick={handleDelete}>  <DeleteIcon /></button>
         </div>
     );
 };
