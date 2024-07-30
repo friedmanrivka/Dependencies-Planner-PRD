@@ -1,6 +1,8 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {exportTable} from './services'
+
 import { useDataContext } from './Contexts/DataContext';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,35 +14,40 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './BasicTable.css';
-import { Select, MenuItem, Checkbox, ListItemText, List, ListItem, Divider, IconButton, FormControl, InputLabel, Card, CardContent, AppBar, Toolbar, Typography } from '@mui/material';
+import { Select, MenuItem, Checkbox, ListItemText, List, ListItem, IconButton, FormControl, InputLabel, Card, CardContent, AppBar, Toolbar, Typography } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import LinkIcon from '@mui/icons-material/Link';
+
+import DeleteComponent from './deleteReq';
 import MyModal from './addRequest';
 import DraggableRow from './DraggableRow';
+import UdateRquest from './updateRequestDetails';
+import {updateIdRow} from './services';
+
 
 const ItemType = 'ROW';
 const BasicTable = () => {
   const navigate = useNavigate();
 
   const {
-    group: [group, setGroup],
-    productManager: [productManager, setProductManager],
-    finalDecision: [finalDecision, setFinalDecision],
-    quarterDates: [quarterDates, setQuarterDates],
-    requestorNames: [requestorNames, setRequestorNames],
-    priorityOptions: [priorityOptions, setPriorityOptions],
-    descriptions: [descriptions, setDescriptions],
-    productEmail: [productEmail, setProductEmail],
-    status: [status, setStatus]
+    group: [group],
+    productManager: [,],
+    finalDecision: [finalDecision],
+    quarterDates: [quarterDates],
+    requestorNames: [requestorNames],
+    priorityOptions: [priorityOptions],
+    descriptions: [descriptions],
+    productEmail: [,],
+    status: [status]
   } = useDataContext();
-  console.log()
+
   const [showGroups, setShowGroups] = useState(false);
   const [rows, setRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
@@ -54,52 +61,47 @@ const BasicTable = () => {
     const fetchData = async () => {
       setRows(descriptions);
       setFilteredRows(descriptions);
-
     };
     fetchData();
-  }, [group,
-    finalDecision,
-    quarterDates,
-    requestorNames,
-    priorityOptions,
-    descriptions,
-    productEmail,
-    status]);
+  }, [group, finalDecision, quarterDates, requestorNames, priorityOptions, descriptions, status]);
 
   const toggleGroups = () => {
     setShowGroups(!showGroups);
   };
-
-  const moveRow = (dragIndex, hoverIndex) => {
+  const moveRow = async (dragIndex, hoverIndex) => {
     const dragRow = rows[dragIndex];
+    const hoverRow = rows[hoverIndex];
+  
     const newRows = [...rows];
     newRows.splice(dragIndex, 1);
     newRows.splice(hoverIndex, 0, dragRow);
     setRows(newRows);
     setFilteredRows(newRows);
-  };
-
+  
+    try {
+      await updateIdRow(dragRow.id, hoverRow.id);
+      console.log(`Successfully updated idDrag values for id1: ${dragRow.id} and id2: ${hoverRow.id}`);
+    } catch (error) {
+      console.error(`Error updating idDrag values: ${error} idDrag values for id1: ${dragRow.id} and id2: ${hoverRow.id}`);
+    }
+  }
   const handleFilterChange = () => {
     let newFilteredRows = rows;
     if (filterRequestorGroup.length > 0) {
-      newFilteredRows = newFilteredRows?.filter(item => filterRequestorGroup.includes(item.requestorGroup))
+      newFilteredRows = newFilteredRows.filter(item => filterRequestorGroup.includes(item.requestorGroup));
     }
     if (filterRequestorName.length > 0) {
-      newFilteredRows = newFilteredRows?.filter(item => filterRequestorName.includes(item.productmanagername));
+      newFilteredRows = newFilteredRows.filter(item => filterRequestorName.includes(item.productmanagername));
     }
     if (filterInvolvedName.length > 0) {
-      newFilteredRows = newFilteredRows?.filter(item => {
-       
+      newFilteredRows = newFilteredRows.filter(item => {
         const filteredGroups = item.affectedGroupsList.filter(item2 => item2.statusname !== 'Not Required');
-       
         const groupNames = filteredGroups.map(item2 => item2.groupname);
-       
         return groupNames.some(groupname => filterInvolvedName.includes(groupname));
       });
     };
       setFilteredRows(newFilteredRows);   
   }
-
   useEffect(() => {
     handleFilterChange();
   }, [filterRequestorGroup, filterRequestorName, filterInvolvedName]);
@@ -111,13 +113,20 @@ const BasicTable = () => {
   const closeModal = () => {
     setModalVisible(false);
   };
+
   const goToAdminPage = () => {
     navigate('/admin');
   };
 
+
+  const addRequest = (newRequest) => {
+    setRows((prevRows) => [...prevRows, newRequest]);
+    setFilteredRows((prevRows) => [...prevRows, newRequest]);
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
-      <AppBar position="static" style={{ backgroundColor: '#00C2FF' }}>
+      <AppBar position="sticky" style={{ backgroundColor: '#00C2FF' }}>
         <Toolbar>
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             Dependencies Planner PRD
@@ -131,15 +140,16 @@ const BasicTable = () => {
           >
             Add Request
           </Button>
-        <Button
+          <Button
             variant="contained"
             color="primary"
             startIcon={<SaveAltIcon />}
             style={{ backgroundColor: '#58D64D', marginRight: '10px' }}
-             onClick={exportTable}
+            onClick={exportTable}
           >
             Export Table
           </Button>
+
           <Button
             variant="contained"
             color="primary"
@@ -150,6 +160,7 @@ const BasicTable = () => {
            Admin Page
           </Button>
         <MyModal />
+
           <IconButton onClick={toggleGroups} color="inherit">
             {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </IconButton>
@@ -248,11 +259,6 @@ const BasicTable = () => {
                       <TableCell className="highlight-header">
                         <div className='columnName'>Final Decision</div><ExpandCircleDownIcon className="table-header-icon" />
                       </TableCell>
-                      {/* <TableCell className="highlight-header"><div className='columnName'>
-                        <IconButton onClick={toggleGroups} color="inherit">
-                          {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                        </IconButton>
-                      </div></TableCell> */}
                       {showGroups && group.map((item, index) => (
                         <TableCell className="highlight-header" key={index}>
                           <div className='columnName'>{item}</div><ExpandCircleDownIcon className="table-header-icon" />
@@ -270,7 +276,7 @@ const BasicTable = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {filteredRows.map((row, index) => ( // HIGHLIGHTED
+                    {filteredRows.map((row, index) => (
                       <DraggableRow
                         key={index}
                         index={index}
@@ -283,7 +289,7 @@ const BasicTable = () => {
                         quarterDates={quarterDates}
                         finalDecision={finalDecision}
                         requestorNames={requestorNames}
-                        style={{ cursor: "grab" }}
+                        setRows={setRows}
                       />
                     ))}
                   </TableBody>
@@ -293,10 +299,13 @@ const BasicTable = () => {
           </Card>
         </div>
       </div>
+      <UdateRquest finalDecisionChose={finalDecisionChose} />
+      <MyModal visible={modalVisible} onClose={closeModal} onOk={closeModal} onAddRequest={addRequest} />
    
-      <MyModal visible={modalVisible} onClose={closeModal} />
+
     </DndProvider>
   );
 };
 
 export default BasicTable;
+
