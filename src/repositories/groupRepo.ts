@@ -27,9 +27,9 @@ export default class GroupRepo {
         }
       }
       
-      static async deleteGroupByName(groupName: string): Promise<void> {
+      static async deleteGroup(groupId: number): Promise<void> {
         try {
-            await pool2.query('DELETE FROM "group" WHERE name = $1', [groupName]);
+            await pool2.query('DELETE FROM "group" WHERE id = $1', [groupId]);
         } catch (err) {
             console.error('Error deleting group:', err);
             throw err;

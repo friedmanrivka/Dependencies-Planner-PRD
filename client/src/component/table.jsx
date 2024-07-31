@@ -24,8 +24,6 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import LinkIcon from '@mui/icons-material/Link';
-
-import DeleteComponent from './deleteReq';
 import MyModal from './addRequest';
 import DraggableRow from './DraggableRow';
 import UdateRquest from './updateRequestDetails';

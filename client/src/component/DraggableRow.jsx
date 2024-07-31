@@ -23,8 +23,6 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState('');
   const [dialogValue, setDialogValue] = useState('');
-  const [open, setOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
 
   const [, drop] = useDrop({
     accept: ItemType,
@@ -70,18 +68,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
     });
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedRow(null);
-  };
 
-  const handleTitleUpdate = (rowId, newTitle) => {
-    const updatedRows = row.map(row => 
-      row.id === rowId ? { ...row, title: newTitle } : row
-    );
-    setRows(updatedRows);
-    handleClose();
-  };
 
 
 
@@ -95,10 +82,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
       console.error('Failed to update the priority:', error);
     }
   };
-  const handleOpen = (row) => {
-    setSelectedRow(row);
-    setOpen(true);
-  };
+
   const handlePlannedChange = (event) => {
     setSelectedPlanned(event.target.value);
   };
@@ -222,8 +206,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
             ))}
           </Select>
         </TableCell>
-        <TableCell onDoubleClick={() => handleOpen(row)}></TableCell>
-        {/* <TableCell>{row.title}<UpdateTitleDialog id={row.id}newTitle={row.title}></UpdateTitleDialog></TableCell> */}
+        <TableCell>{row.title}<UpdateTitleDialog id={row.id}newTitle={row.title}></UpdateTitleDialog></TableCell>
         <TableCell align="right">
           <Select
             value={selectedPlanned}
@@ -311,15 +294,6 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
         onChange={setDialogValue}
         onSave={handleDialogSave}
       />
-      {selectedRow && (
-        <UpdateTitleDialog
-          open={open}
-          onClose={handleClose}
-          rowId={selectedRow.id}
-          currentTitle={selectedRow.title}
-          onSave={handleTitleUpdate}
-        />
-      )}
     </>
   );
 };

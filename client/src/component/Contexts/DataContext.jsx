@@ -7,10 +7,12 @@ import {
   getPriority,
   getDescriptions,
   getProductEmail,
-  checkEmailExists,
-  deleteRequest,
-  addNewRequest,
-  getAllStatus
+  // checkEmailExists,
+  // deleteRequest,
+  // addNewRequest,
+  getAllProductsManager,
+  getAllStatus,
+  getAllGroups
 } from '../services';
 
 const DataContext = createContext();
@@ -26,7 +28,8 @@ export const DataProvider = ({ children }) => {
   const [descriptions, setDescriptions] = useState([]);
   const [productEmail, setProductEmail] = useState([]);
   const [status, setStatus] = useState([]);
-
+  const [productManagers, setProductManagers] = useState([]); 
+  const [groups, setGroups] = useState([]); 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -54,7 +57,14 @@ export const DataProvider = ({ children }) => {
 
         const allStatusData = await getAllStatus();
         setStatus(allStatusData);
-
+       
+        const productManagersData = await getAllProductsManager(); 
+        setProductManagers(productManagersData);
+      
+        const groupsData = await getAllGroups();
+        setGroups(groupsData);
+     
+     
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -73,7 +83,9 @@ export const DataProvider = ({ children }) => {
       priorityOptions: [priorityOptions, setPriorityOptions],
       descriptions: [descriptions, setDescriptions],
       productEmail: [productEmail, setProductEmail],
-      status: [status, setStatus]
+      status: [status, setStatus],
+      productManagers: [productManagers, setProductManagers] ,
+      groups:[groups,setGroups]
     }}>
       {children}
     </DataContext.Provider>
