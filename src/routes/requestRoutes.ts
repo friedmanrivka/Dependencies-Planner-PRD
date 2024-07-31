@@ -6,7 +6,7 @@ const router = Router();
 router.get('/requestor-Details', getAllRequest);
 router.put('/updateFinalDecision/:id', updateFinalDecision);
 router.get('/comments');
-router.put('/update-title', updateRequestTitle);
+router.put('/update-title/:id', updateRequestTitle);
 router.put('/update-description', updateDescription);
 router.put('/update-comment', updateRequestComment);
 router.put('/update-jira', updateRequestJira);

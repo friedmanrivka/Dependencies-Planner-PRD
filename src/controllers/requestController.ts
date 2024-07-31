@@ -51,8 +51,9 @@ export const updateDescription = async (req: Request, res: Response): Promise<vo
 };
 export const updateRequestTitle = async (req: Request, res: Response): Promise<void> => {
     console.log('Controller: Entering updateRequestTitle method');
-    const { requestId, title } = req.body;
-
+    const { title } = req.body;
+       const requestId = parseInt(req.params.id, 10);
+console.log(`requestId, ${requestId} title ${title}`)
     try {
         await RequestRepo.updateRequestTitle(requestId, title);
         console.log('Controller: Title updated successfully');

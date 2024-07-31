@@ -204,7 +204,7 @@ export const updateDescription = async (id,description) => {
 
 export const updateTitle = async (id,title) => {
     try{
-     const response = await axios.put(`${API_URL}/update-title`,{id,title} );
+     const response = await axios.put(`${API_URL}/update-title/${id}`,{title} );
      return response.data;
     } catch (error){
         console.error('Error update request:', error);
