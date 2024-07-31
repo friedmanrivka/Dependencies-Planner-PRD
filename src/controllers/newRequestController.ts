@@ -3,7 +3,7 @@ import RequestService from '../services/newRequestService';
 
 export const CreateDetailsRequest = async (req: Request, res: Response): Promise<void> => {
     const { title, description, JiraLink, priority, requestorGroup, productmanageremail, affectedGroupList, planned } = req.body;
-    console.log('Received request data:', req.body); 
+  console.log('try to create request')
     if (!title) {
         res.status(400).send({ error: 'Title is required' });
         return;
