@@ -1,5 +1,4 @@
-
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -23,7 +22,14 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState('');
   const [dialogValue, setDialogValue] = useState('');
-
+  useEffect(() => {
+    setSelectedStatus(row.affectedGroupsList)
+    setSelectedPriority(row.critical)
+    setSelectedPlanned(row.planned)
+    setSelectedRequestorGroup(row.requestorGroup)
+    setSelectedFinalDecision(row.decision)
+    setSelectedRequestorName(row.productmanagername)
+  }, [row])
   const [, drop] = useDrop({
     accept: ItemType,
     hover: (item, monitor) => {
