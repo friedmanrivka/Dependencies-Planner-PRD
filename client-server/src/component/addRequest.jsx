@@ -371,7 +371,7 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
   const handleAddRequest = async () => {
     try {
       const titleRegex = /[a-zA-Z]/;
-      const descriptionRegex = /[a-zA-Z]/;
+      // const descriptionRegex = /[a-zA-Z]/;
 
       if (!titleRegex.test(request.title)) {
         form.setFields([
@@ -383,15 +383,15 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
         return;
       }
 
-      if (!descriptionRegex.test(request.description)) {
-        form.setFields([
-          {
-            name: 'description',
-            errors: ['Description must contain characters and not just numbers'],
-          },
-        ]);
-        return;
-      }
+      // if (!descriptionRegex.test(request.description)) {
+      //   form.setFields([
+      //     {
+      //       name: 'description',
+      //       errors: ['Description must contain characters and not just numbers'],
+      //     },
+      //   ]);
+      //   return;
+      // }
 
       const email = localStorage.getItem('userEmail');
       if (!email) {
@@ -435,7 +435,7 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
         <Form.Item
           name="requestorGroup"
           label="Requestor Group"
-          rules={[{ required: false }]}
+          rules={[{ required: true, message: 'Please input Requestor Group'  }]}
         >
           <Select
             placeholder="Select a group"
@@ -449,7 +449,7 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
         <Form.Item
           name="description"
           label="Description"
-          rules={[{ required: true, message: 'Please input Description' }]}
+          rules={[{ required: false}]}
         >
           <Input onChange={(e) => handleChange('description', e.target.value)} />
         </Form.Item>
