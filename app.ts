@@ -1,7 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import requestRoutes from './src/routes/requestRoutes'
-
 import priorityRoutes from './src/routes/priorityRoutes'
 import ProductManageRoutes from './src/routes/productManagerRoutes';
 import quarterDatesRoutes from './src/routes/quarterDatesRoutes';
@@ -18,7 +17,7 @@ dotenv.config();
 const app = express();
 const port = process.env.EXPRESS_PORT || 3001
 app.use(cors());
-app.use('/api',groupRoutes);
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 })
@@ -33,4 +32,5 @@ app.use('/api',statusRoutes);
 app.use('/api',AuthenticationRoutes);
 app.use('/api',newRequest);
 app.use('/api',exportRoutes);
+app.use('/api',groupRoutes);
 

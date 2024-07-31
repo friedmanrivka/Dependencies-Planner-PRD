@@ -42,7 +42,8 @@ export const getRequestorNames = async (req: Request, res: Response): Promise<vo
 };
 export const deleteProductManagerByEmail = async (req: Request, res: Response): Promise<void> => {
   try {
-      const email = req.body.email;
+    const {email} = req.params;
+     
       await ProductManagerService.deleteProductManagerByEmail(email);
       res.status(200).send('Product manager deleted successfully');
   } catch (error) {

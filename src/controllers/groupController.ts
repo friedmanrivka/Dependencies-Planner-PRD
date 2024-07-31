@@ -35,12 +35,10 @@ import GroupRepo from '../repositories/groupRepo';
       res.status(500).send('Internal Server Error');
     }
   };
-
-
-  export const deleteGroupByName = async (req: Request, res: Response): Promise<void> => {
-    const { groupName } = req.body;
+export const deleteGroup = async (req: Request, res: Response): Promise<void> => {
+   const groupId = parseInt(req.params.id, 10);
     try {
-        await GroupRepo.deleteGroupByName(groupName);
+        await GroupRepo.deleteGroup(groupId);
         res.status(200).send('Group deleted successfully');
     } catch (error) {
         console.error('Controller: Error deleting group:', error);

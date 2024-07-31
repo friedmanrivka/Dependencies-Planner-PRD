@@ -149,7 +149,7 @@ export const updateRequestorGroup = async (requestId, groupName) => {
 };
 export const deleteProductManager = async (email) => {
     try {
-        const response = await axios.put(`${API_URL}/delete-product-manager`, { email});
+        const response = await axios.put(`${API_URL}/delete-product-manager${email}`);
         return response.data;
     } catch (error) {
         console.error(' delete Product Manager:', error);
@@ -241,9 +241,10 @@ export const exportTable= async () => {
 
 
 
-export const deleteGroup = async (groupName) => {
+export const deleteGroup = async (groupId) => {
+  
     try {
-        const response = await axios.put(`${API_URL}/delete-group`, { groupName });
+        const response = await axios.delete(`${API_URL}/delete-group/${groupId}`);
         return response.data;
     } catch (error) {
         console.error('Error delete group:', error);
