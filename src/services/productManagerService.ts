@@ -38,4 +38,20 @@ export default class ProductManagerService {
     static async getAllProductManagers(): Promise<TransformedProductManager[]> {
         return ProductManagerRepo.getAllProductManagers();
     }
+    static async updateProductManagerName(email: string, productManagerName: string): Promise<void> {
+        try {
+          await ProductManagerRepo.updateProductManagerName(email, productManagerName);
+        } catch (err) {
+          console.error('Service: Error updating product manager name:', err);
+          throw err;
+        }
+      }
+      static async addAdmin(email: string, productManagerName: string): Promise<void> {
+        try {
+            await ProductManagerRepo.addAdmin(email, productManagerName);
+        } catch (err) {
+            console.error('Service: Error adding admin:', err);
+            throw err;
+        }
+    }
 }

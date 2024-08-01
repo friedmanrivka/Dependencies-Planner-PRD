@@ -1,31 +1,41 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import React from 'react';
+import EditIcon from '@mui/icons-material/Edit';
+import React, { useState } from 'react';
 import './BasicTable.css';
 import { useDataContext } from './Contexts/DataContext';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Card, CardContent, Button } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Card, CardContent, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import axios from 'axios';
+import { deleteProductManager, updateProductManagerName } from './services'
 
-const API_URL = 'http://localhost:3001/api'; // Replace with your actual API URL
+const API_URL = 'http://localhost:3001/api';
 
 const ProductManagersTable = () => {
   const { productManagers } = useDataContext();
   const [productManagersData, setProductManagersData] = productManagers;
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [currentEmail, setCurrentEmail] = useState('');
+  const [newName, setNewName] = useState('');
 
-  const deleteProductManager = async (email) => {
-    try {
-      const response = await axios.delete(`${API_URL}/delete-product-manager/${email}`);
-      setProductManagersData(prevData => prevData.filter(pm => pm.email !== email));
-      return response.data;
-    } catch (error) {
-      console.error('Error deleting Product Manager:', error);
-      throw error;
-    }
-  };
+  
 
   const handleDelete = (email) => {
-   
-      deleteProductManager(email);
-    
+    deleteProductManager(email);
+  };
+
+  const handleUpdateClick = (email) => {
+    setCurrentEmail(email);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    setCurrentEmail('');
+    setNewName('');
+  };
+
+  const handleUpdate = () => {
+    updateProductManagerName(currentEmail, newName);
+    handleDialogClose();
   };
 
   return (
@@ -54,7 +64,15 @@ const ProductManagersTable = () => {
                       variant="contained" 
                       style={{ backgroundColor: '#58D64D' }} 
                       onClick={() => handleDelete(pm.email)}
-                    ><DeleteIcon></DeleteIcon>
+                    >
+                      <DeleteIcon />
+                    </Button>
+                    <Button 
+                      variant="contained" 
+                      style={{ backgroundColor: '#FFA500', marginLeft: '10px' }} 
+                      onClick={() => handleUpdateClick(pm.email)}
+                    >
+                      <EditIcon />
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -63,8 +81,31 @@ const ProductManagersTable = () => {
           </Table>
         </TableContainer>
       </CardContent>
+      <Dialog open={dialogOpen} onClose={handleDialogClose}>
+        <DialogTitle>Update Product Manager Name</DialogTitle>
+        <DialogContent>
+          <TextField 
+            autoFocus
+            margin="dense"
+            label="New Name"
+            type="text"
+            fullWidth
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleUpdate} color="primary">
+            Update
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };
 
 export default ProductManagersTable;
+
