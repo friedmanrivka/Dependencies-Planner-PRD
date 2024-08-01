@@ -16,11 +16,11 @@ export default function Admin(){
     return(
         <DataProvider>
         <div className="admin-page">
-          <Button style={{ backgroundColor: '#58D64D' }}onClick={toggleTableVisibility}>
+          <Button style={{ backgroundColor: '#58D64D', width: '350px' ,height:'300px'}}onClick={toggleTableVisibility}>
             {showTable ? 'Hide Product Managers Table' : 'Show Product Managers Table'}
           </Button>
           {showTable && <ProductManagersTable />}
-          <Button style={{ backgroundColor: '#58D64D' }} onClick={toggleGroupsTableVisibility} className="toggle-button">
+          <Button style={{ backgroundColor: '#58D64D' , width: '350px' ,height:'300px',marginLeft:'10%'}} onClick={toggleGroupsTableVisibility} className="toggle-button">
           {showGroupsTable ? 'Hide Groups Table' : 'Show Groups Table'}
         </Button>
         {showGroupsTable && <GroupTable />}

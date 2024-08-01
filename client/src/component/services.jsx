@@ -12,7 +12,7 @@ export const deleteRequest = async (id) => {
 export const checkEmailExists = async (email) => {
     try {
         const response = await axios.post(`${API_URL}/check-email`, { email });
-        return response.data.exists;
+        return response.data;
     } catch (error) {
         console.error('Error checking email:', error);
         throw error;
@@ -254,6 +254,16 @@ export const deleteGroup = async (groupId) => {
 export const updateIdRow = async (id1,id2) => {
     try{
      const response = await axios.put(`http://localhost:3001/api/update-swapIdDrag/${id1}/${id2}`);
+     return response.data;
+    } catch (error){
+        console.error('Error update request:', error);
+
+        throw error;
+    }
+};
+export const updateProductManagerName= async (email,productManagerName) => {
+    try{
+     const response = await axios.put(`http://localhost:3001/api/update-product-manager-name/${email}`,productManagerName);
      return response.data;
     } catch (error){
         console.error('Error update request:', error);

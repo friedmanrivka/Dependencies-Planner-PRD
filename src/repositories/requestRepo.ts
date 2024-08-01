@@ -138,12 +138,13 @@ export default class RequestRepo {
             throw err;
         }
     }
-    static async updateRequestJira(requestId: number, jira: string): Promise<void> {
+    static async updateRequestJira(requestId: number, jiralink: string): Promise<void> {
+        console.log(requestId)
         try {
-            console.log('update jira')
+          
             await pool.query(
                 `UPDATE request SET jiralink = $1 WHERE id = $2`, 
-                [jira, requestId]
+                [jiralink, requestId]
             );
             console.log('Repository: jira updated successfully');
         } catch (err) {

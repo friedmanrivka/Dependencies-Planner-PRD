@@ -61,3 +61,31 @@ export const getAllProductManagers = async (req: Request, res: Response): Promis
       res.status(500).send('Internal Server Error');
   }
 };
+
+export const updateProductManagerName = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const email = req.params.email;
+    const { productManagerName } = req.body;
+
+    await ProductManagerService.updateProductManagerName(email, productManagerName);
+    res.status(200).send('Product manager name updated successfully');
+  } catch (error) {
+    console.error('Controller: Error updating product manager name:', error);
+    res.status(500).send('Internal Server Error');
+  }
+  
+};
+
+export const addAdmin = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const email = req.params.email;
+    const { productManagerName } = req.body;
+
+    await ProductManagerService.addAdmin(email, productManagerName);
+    res.status(200).send('Product manager name updated successfully');
+  } catch (error) {
+    console.error('Controller: Error updating product manager name:', error);
+    res.status(500).send('Internal Server Error');
+  }
+  
+};

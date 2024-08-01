@@ -81,10 +81,10 @@ export const updateRequestComment = async (req: Request, res: Response): Promise
 };
 export const updateRequestJira = async (req: Request, res: Response): Promise<void> => {
     console.log('Controller: Entering updateRequestJira method');
-    const { requestId, jira } = req.body;
+    const { requestId, jiralink } = req.body;
 
     try {
-        await RequestRepo.updateRequestJira(requestId, jira);
+        await RequestRepo.updateRequestJira(requestId, jiralink);
         console.log('Controller: jira updated successfully');
         res.status(200).json({ message: 'Jira updated successfully' });
     } catch (error) {
@@ -158,6 +158,7 @@ export const updateAffectedGroup = async (req: Request, res: Response): Promise<
         console.error('Error updating IdDrag:', error);
         res.status(500).send('Internal Server Error');
     }
+    
 }
 
 

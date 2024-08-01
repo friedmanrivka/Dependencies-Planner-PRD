@@ -46,10 +46,10 @@ export default class ProductManagerRepo {
             throw err;
         }
     }
-    static async addProductManager(email: string, productmanagername: string,): Promise<void> {
+    static async addProductManager(email: string, productmanagername: string): Promise<void> {
         try {
             await pool.query(
-                `INSERT INTO productmanager (email,productmanagername) VALUES ($1, $2)`,
+                `INSERT INTO productmanager (email,productmanagername, is_admin) VALUES ($1, $2,false)`,
                 [email, productmanagername]
             );
         } catch (err) {
@@ -57,6 +57,18 @@ export default class ProductManagerRepo {
             throw err;
         }
     }
+    static async addAdmin(email: string, productManagerName: string): Promise<void> {
+        try {
+            await pool.query(
+                `INSERT INTO productmanager (email, productmanagername, is_admin) VALUES ($1, $2, true)`,
+                [email, productManagerName]
+            );
+        } catch (err) {
+            console.error('Error adding admin:', err);
+            throw err;
+        }
+    }
+    
     //?????????????????????????????????????????????????????????
     static async requestExists(id: number): Promise<boolean> {
         try {
@@ -121,6 +133,17 @@ export default class ProductManagerRepo {
             throw err;
         }
     }
+    static async updateProductManagerName(email: string, productManagerName: string): Promise<void> {
+        try {
+          await pool.query(
+            `UPDATE productmanager SET productmanagername = $1 WHERE email = $2`,
+            [productManagerName, email]
+          );
+        } catch (err) {
+          console.error('Error updating product manager name:', err);
+          throw err;
+        }
+      }
 }
 
 
