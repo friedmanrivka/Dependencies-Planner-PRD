@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {exportTable} from './services'
+import { exportTable } from './services'
 
 import { useDataContext } from './Contexts/DataContext';
 import Table from '@mui/material/Table';
@@ -27,7 +27,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import MyModal from './addRequest';
 import DraggableRow from './DraggableRow';
 import UdateRquest from './updateRequestDetails';
-import {updateIdRow} from './services';
+import { updateIdRow } from './services';
 
 
 const ItemType = 'ROW';
@@ -69,13 +69,13 @@ const BasicTable = () => {
   const moveRow = async (dragIndex, hoverIndex) => {
     const dragRow = rows[dragIndex];
     const hoverRow = rows[hoverIndex];
-  
+
     const newRows = [...rows];
     newRows.splice(dragIndex, 1);
     newRows.splice(hoverIndex, 0, dragRow);
     setRows(newRows);
     setFilteredRows(newRows);
-  
+
     try {
       await updateIdRow(dragRow.id, hoverRow.id);
       console.log(`Successfully updated idDrag values for id1: ${dragRow.id} and id2: ${hoverRow.id}`);
@@ -98,7 +98,7 @@ const BasicTable = () => {
         return groupNames.some(groupname => filterInvolvedName.includes(groupname));
       });
     };
-      setFilteredRows(newFilteredRows);   
+    setFilteredRows(newFilteredRows);
   }
   useEffect(() => {
     handleFilterChange();
@@ -151,13 +151,13 @@ const BasicTable = () => {
           <Button
             variant="contained"
             color="primary"
-            startIcon={<AdminPanelSettingsIcon  />}
+            startIcon={<AdminPanelSettingsIcon />}
             style={{ backgroundColor: '#58D64D', marginRight: '10px' }}
             onClick={goToAdminPage}
           >
-           Admin Page
+            Admin Page
           </Button>
-        <MyModal />
+          <MyModal />
 
           <IconButton onClick={toggleGroups} color="inherit">
             {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
@@ -257,6 +257,11 @@ const BasicTable = () => {
                       <TableCell className="highlight-header">
                         <div className='columnName'>Final Decision</div><ExpandCircleDownIcon className="table-header-icon" />
                       </TableCell>
+                      <TableCell className="highlight-header">sow group
+                      <IconButton onClick={toggleGroups} color="inherit">
+                      {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                        </IconButton>
+                      </TableCell>
                       {showGroups && group.map((item, index) => (
                         <TableCell className="highlight-header" key={index}>
                           <div className='columnName'>{item}</div><ExpandCircleDownIcon className="table-header-icon" />
@@ -269,7 +274,7 @@ const BasicTable = () => {
                         <div className='columnName'>Jira Link</div><LinkIcon className="table-header-icon" />
                       </TableCell>
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Delete Request</div>
+                        <div className='columnName'>Additional actions</div>
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -299,7 +304,7 @@ const BasicTable = () => {
       </div>
       <UdateRquest finalDecisionChose={finalDecisionChose} />
       <MyModal visible={modalVisible} onClose={closeModal} onOk={closeModal} onAddRequest={addRequest} />
-   
+
 
     </DndProvider>
   );

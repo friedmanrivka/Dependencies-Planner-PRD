@@ -10,6 +10,12 @@ import { updatePriority, updateRequestor, updateRequestorGroup, updateFinalDecis
 import FinalDecisionDialog from './updateFinalDecision';
 import UpdateTitleDialog from './UpdateTitleDialog';
 import UpdateDescription from './updateDescriptionDialog';
+import UpdateComment from './updateComment';
+import UpdateJira from './updateJira';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
+import EditIcon from '@mui/icons-material/Edit';
+import BasicTable from "./table"
 const ItemType = 'ROW';
 const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, priorityOptions, quarterDates, finalDecision, requestorNames }) => {
 
@@ -25,8 +31,13 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
   const [dialogValue, setDialogValue] = useState('');
   const [open, setOpen] = useState(false);
   const [openDes, setOpenDes] = useState(false);
+  const [openJira, setOpenJira] = useState(false);
+  const [openComment, setOpenComment] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [selectedRowDes, setSelectedRowDes] = useState(null);
+  const [selectedRowComment, setSelectedRowComment] = useState(null);
+  const [selectedRowJira, setSelectedRowJira] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     setSelectedStatus(row.affectedGroupsList)
@@ -36,6 +47,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
     setSelectedFinalDecision(row.decision)
     setSelectedRequestorName(row.productmanagername)
   }, [row])
+
   const [, drop] = useDrop({
     accept: ItemType,
     hover: (item, monitor) => {
@@ -60,7 +72,11 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
       moveRow(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
-  });
+  }); 
+  const handleEditClick = () => {
+    setIsEditing(!isEditing);
+    console.log(isEditing)
+  };
 
   const [{ isDragging }, drag] = useDrag({
     type: ItemType,
@@ -83,18 +99,27 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
   const handleClose = () => {
     setOpen(false);
     setSelectedRow(null);
+    setIsEditing(!EditIcon);
+
   };
   const handleCloseDes = () => {
     setOpenDes(false);
     setSelectedRowDes(null);
+    setIsEditing(!EditIcon);
+
   }
-  const handleTitleUpdate = (rowId, newTitle) => {
-    const updatedRows = row.map(row => 
-      row.id === rowId ? { ...row, title: newTitle } : row
-    );
-    setRows(updatedRows);
-    handleClose();
-  };
+  const handleCloseJira = () => {
+    setOpenJira(false);
+    setSelectedRowJira(null);
+    setIsEditing(!EditIcon);
+
+  } 
+   const handleCloseComment = () => {
+    setOpenComment(false);
+    setSelectedRowComment(null);
+    setIsEditing(!EditIcon);
+  }
+
   const handlePriorityChange = async (event) => {
     const newPriority = event.target.value;
     setSelectedPriority(newPriority);
@@ -106,21 +131,30 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
     }
   };
   const handleOpen = (rowTitle) => {
+    if(isEditing){
     setSelectedRow(rowTitle);
-    setOpen(true);
+    setOpen(true);}
   };
   const handleOpenDes = (row) => {
+    if(isEditing){
     setSelectedRowDes(row);
-    setOpenDes(true);
+    setOpenDes(true);}
+    else{
+      alert("לא לחזתה על עריכה")
+    }
+
+  };
+  const handleOpenJira = (row) => {
+    if(isEditing){
+    setSelectedRowJira(row);
+    setOpenJira(true);}
+  };
+  const handleOpenComment = (row) => {   
+     if(isEditing){
+    setSelectedRowComment(row);
+    setOpenComment(true);}
   };
 
-  const handleDescriptionUpdate = (rowId, newDescription) => {
-    const updatedRows = row.map(row =>
-      row.id === rowId ? { ...row, description: newDescription } : row
-    );
-    setRows(updatedRows);
-    handleCloseDes();
-  };
   const handlePlannedChange = (event) => {
     setSelectedPlanned(event.target.value);
   };
@@ -312,6 +346,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
             ))}
           </Select>
         </TableCell>
+        <TableCell align="right" >show group</TableCell>
              {showGroups && group.map((item, groupIndex) => (
         <TableCell align="right" key={groupIndex}>
           <StatusSelect
@@ -321,10 +356,9 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
           />
         </TableCell>
 ))}
-
-        <TableCell align="right">{row.comment}</TableCell>
-        <TableCell align="right"><a href={row.jiralink}>Jira Link</a></TableCell>
-        <TableCell align="right"><DeleteComponent id={row.id} /></TableCell>
+        <TableCell align="right" onDoubleClick={() => handleOpenComment(row)}>{row.comment}</TableCell>
+        <TableCell align="right" onDoubleClick={() => handleOpenJira(row)}><a href={row.jiralink}>Jira Link</a></TableCell>
+        <TableCell align="right" id='iconButon'><DeleteComponent id={row.id} /><EditIcon  onClick={handleEditClick} style={{ cursor: 'pointer' }}/></TableCell>
       </TableRow>
       <FinalDecisionDialog
         open={dialogOpen}
@@ -348,6 +382,22 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
           onClose={handleCloseDes}
           rowId={selectedRowDes.id}
           currentDescription={selectedRowDes.description}
+        />
+      )}
+              {selectedRowComment && (
+        <UpdateComment
+          open={openComment}
+          onClose={handleCloseComment}
+          rowId={selectedRowComment.id}
+          currentComment={selectedRowComment.comment}
+        />
+      )}
+              {selectedRowJira && (
+        <UpdateJira
+          open={openJira}
+          onClose={handleCloseJira}
+          rowId={selectedRowJira.id}
+          currentJira={selectedRowJira.jiralink}
         />
       )}
     </>

@@ -38,8 +38,8 @@ export const updateFinalDecision = async (req: Request, res: Response): Promise<
 
 export const updateDescription = async (req: Request, res: Response): Promise<void> => {
     console.log('Controller: Entering updateDescription method');
-    const { requestId, description } = req.body;
-
+    const requestId = parseInt(req.params.id, 10); // Ensure id is parsed as a number
+    const {description } = req.body;
     try {
         await RequestRepo.updateDescription(requestId, description);
         console.log('Controller: Description updated successfully');
