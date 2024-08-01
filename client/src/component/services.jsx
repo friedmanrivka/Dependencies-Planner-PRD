@@ -194,7 +194,8 @@ export const addNewRequest = async (newRequest) => {
 
 export const updateDescription = async (id,description) => {
     try{
-     const response = await axios.put(`${API_URL}/update-description`, {id,description});
+        console.log(`id${id}description${description}`)
+     const response = await axios.put(`${API_URL}/update-description/${id}`, {description});
      return response.data;
     } catch (error){
         console.error('Error update request:', error);

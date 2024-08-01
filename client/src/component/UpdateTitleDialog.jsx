@@ -3,6 +3,8 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } 
 import { updateTitle } from './services'; 
 
 const UpdateTitleDialog = ({ open, onClose, rowId, currentTitle }) => {
+  console.log(`rowId,${rowId} currentNew ${currentTitle}`)
+
   const [newTitle, setNewTitle] = useState(currentTitle);
 
   const handleTitleChange = (e) => {
