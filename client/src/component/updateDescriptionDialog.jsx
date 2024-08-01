@@ -1,42 +1,50 @@
-// import React, { useState } from 'react';
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
-// import TextField from '@mui/material/TextField';
-// import Button from '@mui/material/Button';
+// 
+import React, { useState } from 'react';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
+import { updateDescription } from './services'; 
 
-// const UpdateDescriptionDialog = ({ open, onClose, onSave, description }) => {
-//   const [newDescription, setNewDescription] = useState(description);
+const UpdateDescriptionDialog = ({ open, onClose, rowId, currentDescription }) => {
+    console.log(`rowId, ${rowId} currentDescription ${currentDescription}`);
+    const [newDescription, setNewDescription] = useState(currentDescription);
 
-//   const handleSave = () => {
-//     onSave(newDescription);
-//   };
+    const handleDescriptionChange = (e) => {
+        setNewDescription(e.target.value);
+    };
 
-//   return (
-//     <Dialog open={open} onClose={onClose}>
-//       <DialogTitle>Update Description</DialogTitle>
-//       <DialogContent>
-//         <DialogContentText>
-//           Please enter the new description.
-//         </DialogContentText>
-//         <TextField
-//           autoFocus
-//           margin="dense"
-//           label="Description"
-//           type="text"
-//           fullWidth
-//           value={newDescription}
-//           onChange={(e) => setNewDescription(e.target.value)}
-//         />
-//       </DialogContent>
-//       <DialogActions>
-//         <Button onClick={onClose}>Cancel</Button>
-//         <Button onClick={handleSave}>Save</Button>
-//       </DialogActions>
-//     </Dialog>
-//   );
-// };
+    const handleSave = async () => {
+        try {
+            await updateDescription(rowId, newDescription);
+            console.log('Description updated successfully');
+            onClose();
+        } catch (error) {
+            console.error('Failed to update the description:', error);
+        }
+    };
 
-// export default UpdateDescriptionDialog;
+    return (
+        <Dialog open={open} onClose={onClose}>
+            <DialogTitle>Update Description</DialogTitle>
+            <DialogContent>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    label="New Description"
+                    type="text"
+                    fullWidth
+                    value={newDescription}
+                    onChange={handleDescriptionChange}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onClose} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={handleSave} color="primary">
+                    Save
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+};
+
+export default UpdateDescriptionDialog;
