@@ -7,7 +7,7 @@ router.get('/requestor-Details', getAllRequest);
 router.put('/updateFinalDecision/:id', updateFinalDecision);
 router.get('/comments');
 router.put('/update-title/:id', updateRequestTitle);
-router.put('/update-description', updateDescription);
+router.put('/update-description/:id', updateDescription);
 router.put('/update-comment', updateRequestComment);
 router.put('/update-jira', updateRequestJira);
 router.put('/update-product-manager', updateRequestProductManager);
