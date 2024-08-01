@@ -212,18 +212,18 @@ export const updateTitle = async (id,title) => {
         throw error;
     }
 };
-export const updateJira= async (id,jira) => {
+export const updateJira= async (requestId,jira) => {
     try{
-     const response = await axios.put(`${API_URL}/update-jira`,{id,jira} );
+     const response = await axios.put(`${API_URL}/update-jira`,{requestId,jira} );
      return response.data;
     } catch (error){
         console.error('Error update jira in  request:', error);
         throw error;
     }
 };
-export const updateComment= async (id,comment) => {
+export const updateComment= async (requestId,comment) => {
     try{
-     const response = await axios.put(`${API_URL}/update-comment`, {id,comment});
+     const response = await axios.put(`${API_URL}/update-comment`, {requestId,comment});
      return response.data;
     } catch (error){
         console.error('Error update jira in  request:', error);
