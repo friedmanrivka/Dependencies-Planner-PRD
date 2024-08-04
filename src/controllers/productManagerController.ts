@@ -40,6 +40,7 @@ export const getRequestorNames = async (req: Request, res: Response): Promise<vo
         res.status(500).send('Internal Server Error');
     }
 };
+
 export const deleteProductManagerByEmail = async (req: Request, res: Response): Promise<void> => {
   try {
     const {email} = req.params;

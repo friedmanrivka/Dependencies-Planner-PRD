@@ -7,5 +7,5 @@ router.post('/addProductManager', addProductManagerController);
 router.delete('/delete-product-manager/:email', deleteProductManagerByEmail);
 router.get('/product-managers', getAllProductManagers);
 router.put('/update-product-manager-name/:email', updateProductManagerName);
-router.put('/update-product-manager-name/:email', addAdmin);
+router.post('/add-admin/:email', addAdmin);
 export default router;

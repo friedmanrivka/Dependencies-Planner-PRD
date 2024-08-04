@@ -160,7 +160,17 @@ export const deleteProductManager = async (email) => {
 export const addProductManager = async (email, productManagerName) => {
     console.log('try')
     try {
-       const response = await axios.post(`${API_URL}/addProductManager`, { email, productManagerName });
+       const response = await axios.post(`${API_URL}/addProductManager/${email}`, { productManagerName });
+       return response.data;
+    } catch (error) {
+      console.error('Error adding product manager:', error);
+      throw error;
+    }
+  };
+  export const addAdmin = async (email, productManagerName) => {
+    console.log('try')
+    try {
+       const response = await axios.post(`${API_URL}/add-admin/${email}`, { productManagerName });
        return response.data;
     } catch (error) {
       console.error('Error adding product manager:', error);
