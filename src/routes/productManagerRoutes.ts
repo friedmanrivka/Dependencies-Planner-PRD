@@ -3,7 +3,7 @@ import {getRequestorNames ,getProductManagerEmails,addProductManagerController,d
 const router = Router();
 router.get('/requestor-names', getRequestorNames);
 router.get('/requestor-email',getProductManagerEmails)
-router.post('/addProductManager', addProductManagerController);
+router.post('/addProductManager/:email', addProductManagerController);
 router.delete('/delete-product-manager/:email', deleteProductManagerByEmail);
 router.get('/product-managers', getAllProductManagers);
 router.put('/update-product-manager-name/:email', updateProductManagerName);
