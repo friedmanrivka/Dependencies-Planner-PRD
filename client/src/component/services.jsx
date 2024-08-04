@@ -149,7 +149,7 @@ export const updateRequestorGroup = async (requestId, groupName) => {
 };
 export const deleteProductManager = async (email) => {
     try {
-        const response = await axios.put(`${API_URL}/delete-product-manager${email}`);
+        const response = await axios.delete(`${API_URL}/delete-product-manager/${email}`);
         return response.data;
     } catch (error) {
         console.error(' delete Product Manager:', error);
