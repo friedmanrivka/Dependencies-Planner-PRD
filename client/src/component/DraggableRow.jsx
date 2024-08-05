@@ -99,25 +99,25 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
   const handleClose = () => {
     setOpen(false);
     setSelectedRow(null);
-    setIsEditing(!EditIcon);
+    // setIsEditing(!EditIcon);
     fetchData();
   };
   const handleCloseDes = () => {
     setOpenDes(false);
     setSelectedRowDes(null);
-    setIsEditing(!EditIcon);
+    // setIsEditing(!EditIcon);
     fetchData();
   }
   const handleCloseJira = () => {
     setOpenJira(false);
     setSelectedRowJira(null);
-    setIsEditing(!EditIcon);
+    // setIsEditing(!EditIcon);
     fetchData();
   }
   const handleCloseComment = () => {
     setOpenComment(false);
     setSelectedRowComment(null);
-    setIsEditing(!EditIcon);
+    // setIsEditing(!EditIcon);
     fetchData();
   }
 
@@ -143,9 +143,8 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
       setOpenDes(true);
     }
     else {
-      alert("לא לחזתה על עריכה")
+      alert("press on edit icon");
     }
-
   };
   const handleOpenJira = (row) => {
     if (isEditing) {
@@ -363,7 +362,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
         ))}
         <TableCell align="right" onDoubleClick={() => handleOpenComment(row)}>{row.comment}</TableCell>
         <TableCell align="right" onDoubleClick={() => handleOpenJira(row)}><a href={row.jiralink}>Jira Link</a></TableCell>
-        <TableCell align="right" id='iconButon'><DeleteComponent id={row.id} /><EditIcon onClick={handleEditClick} style={{ cursor: 'pointer' }} /></TableCell>
+        <TableCell align="right" id='iconButon'><DeleteComponent id={row.id} /><EditIcon onClick={handleEditClick} style={{ cursor: 'pointer',color: isEditing ? '#58D64D' : 'black'}} /></TableCell>
       </TableRow>
       <FinalDecisionDialog
         open={dialogOpen}
