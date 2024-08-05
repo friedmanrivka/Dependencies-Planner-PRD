@@ -298,7 +298,7 @@ const BasicTable = () => {
                       <TableCell className="highlight-header">
                         <div className='columnName'>Final Decision</div><ExpandCircleDownIcon className="table-header-icon" />
                       </TableCell>
-                      <TableCell className="highlight-header">sow group
+                      <TableCell className="highlight-header"><div className='columnName'>show group</div>
                         <IconButton onClick={toggleGroups} color="inherit">
                           {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
                         </IconButton>
@@ -315,7 +315,7 @@ const BasicTable = () => {
                         <div className='columnName'>Jira Link</div><LinkIcon className="table-header-icon" />
                       </TableCell>
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Delete Request</div>
+                        <div className='columnName'>Additional actions</div>
                       </TableCell>
                     </TableRow>
                   </TableHead>
