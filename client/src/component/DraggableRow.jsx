@@ -17,7 +17,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 import EditIcon from '@mui/icons-material/Edit';
 import BasicTable from "./table"
 const ItemType = 'ROW';
-const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, priorityOptions, quarterDates, finalDecision, requestorNames }) => {
+const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status, priorityOptions, quarterDates, finalDecision, requestorNames, fetchData }) => {
 
   const ref = useRef(null);
   const [selectedStatus, setSelectedStatus] = useState(row.affectedGroupsList || '');
@@ -40,12 +40,12 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    setSelectedStatus(row.affectedGroupsList)
-    setSelectedPriority(row.critical)
-    setSelectedPlanned(row.planned)
-    setSelectedRequestorGroup(row.requestorGroup)
-    setSelectedFinalDecision(row.decision)
-    setSelectedRequestorName(row.productmanagername)
+    setSelectedStatus(row.affectedGroupsList);
+    setSelectedPriority(row.critical);
+    setSelectedPlanned(row.planned);
+    setSelectedRequestorGroup(row.requestorGroup);
+    setSelectedFinalDecision(row.decision);
+    setSelectedRequestorName(row.productmanagername);
   }, [row])
 
   const [, drop] = useDrop({
@@ -72,7 +72,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
       moveRow(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
-  }); 
+  });
   const handleEditClick = () => {
     setIsEditing(!isEditing);
     console.log(isEditing)
@@ -84,7 +84,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-  }); 
+  });
 
   drag(drop(ref));
 
@@ -100,24 +100,25 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
     setOpen(false);
     setSelectedRow(null);
     setIsEditing(!EditIcon);
-
+    fetchData();
   };
   const handleCloseDes = () => {
     setOpenDes(false);
     setSelectedRowDes(null);
     setIsEditing(!EditIcon);
-
+    fetchData();
   }
   const handleCloseJira = () => {
     setOpenJira(false);
     setSelectedRowJira(null);
     setIsEditing(!EditIcon);
-
-  } 
-   const handleCloseComment = () => {
+    fetchData();
+  }
+  const handleCloseComment = () => {
     setOpenComment(false);
     setSelectedRowComment(null);
     setIsEditing(!EditIcon);
+    fetchData();
   }
 
   const handlePriorityChange = async (event) => {
@@ -131,28 +132,32 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
     }
   };
   const handleOpen = (rowTitle) => {
-    if(isEditing){
-    setSelectedRow(rowTitle);
-    setOpen(true);}
+    if (isEditing) {
+      setSelectedRow(rowTitle);
+      setOpen(true);
+    }
   };
   const handleOpenDes = (row) => {
-    if(isEditing){
-    setSelectedRowDes(row);
-    setOpenDes(true);}
-    else{
+    if (isEditing) {
+      setSelectedRowDes(row);
+      setOpenDes(true);
+    }
+    else {
       alert("לא לחזתה על עריכה")
     }
 
   };
   const handleOpenJira = (row) => {
-    if(isEditing){
-    setSelectedRowJira(row);
-    setOpenJira(true);}
+    if (isEditing) {
+      setSelectedRowJira(row);
+      setOpenJira(true);
+    }
   };
-  const handleOpenComment = (row) => {   
-     if(isEditing){
-    setSelectedRowComment(row);
-    setOpenComment(true);}
+  const handleOpenComment = (row) => {
+    if (isEditing) {
+      setSelectedRowComment(row);
+      setOpenComment(true);
+    }
   };
 
   const handlePlannedChange = (event) => {
@@ -347,18 +352,18 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
           </Select>
         </TableCell>
         <TableCell align="right" >show group</TableCell>
-             {showGroups && group.map((item, groupIndex) => (
-        <TableCell align="right" key={groupIndex}>
-          <StatusSelect
-            value={row.affectedGroupsList[groupIndex]?.statusname || 'Pending Response'}
-            onChange={(event) => handleStatusChange(event, groupIndex)}
-            options={status}
-          />
-        </TableCell>
-))}
+        {showGroups && group.map((item, groupIndex) => (
+          <TableCell align="right" key={groupIndex}>
+            <StatusSelect
+              value={row.affectedGroupsList[groupIndex]?.statusname || 'Pending Response'}
+              onChange={(event) => handleStatusChange(event, groupIndex)}
+              options={status}
+            />
+          </TableCell>
+        ))}
         <TableCell align="right" onDoubleClick={() => handleOpenComment(row)}>{row.comment}</TableCell>
         <TableCell align="right" onDoubleClick={() => handleOpenJira(row)}><a href={row.jiralink}>Jira Link</a></TableCell>
-        <TableCell align="right" id='iconButon'><DeleteComponent id={row.id} /><EditIcon  onClick={handleEditClick} style={{ cursor: 'pointer' }}/></TableCell>
+        <TableCell align="right" id='iconButon'><DeleteComponent id={row.id} /><EditIcon onClick={handleEditClick} style={{ cursor: 'pointer' }} /></TableCell>
       </TableRow>
       <FinalDecisionDialog
         open={dialogOpen}
@@ -373,10 +378,10 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
           open={open}
           onClose={handleClose}
           rowId={selectedRow.id}
-          currentTitle={selectedRow.description}
+          currentTitle={selectedRow.title}
         />
       )}
-        {selectedRowDes && (
+      {selectedRowDes && (
         <UpdateDescription
           open={openDes}
           onClose={handleCloseDes}
@@ -384,7 +389,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
           currentDescription={selectedRowDes.description}
         />
       )}
-              {selectedRowComment && (
+      {selectedRowComment && (
         <UpdateComment
           open={openComment}
           onClose={handleCloseComment}
@@ -392,7 +397,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group,setRows, status, 
           currentComment={selectedRowComment.comment}
         />
       )}
-              {selectedRowJira && (
+      {selectedRowJira && (
         <UpdateJira
           open={openJira}
           onClose={handleCloseJira}

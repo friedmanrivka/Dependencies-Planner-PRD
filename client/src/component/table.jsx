@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { exportTable } from './services';
@@ -58,7 +56,8 @@ const BasicTable = () => {
     priorityOptions: [priorityOptions],
     descriptions: [descriptions],
     productEmail: [,],
-    status: [status]
+    status: [status],
+    refreshRows
   } = useDataContext();
 
   const [showGroups, setShowGroups] = useState(false);
@@ -70,12 +69,16 @@ const BasicTable = () => {
   const [finalDecisionChose, setFinalDecisionChose] = useState();
   const [modalVisible, setModalVisible] = useState(false);
 
+  const fetchData = async () => {
+    refreshRows();
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
+    const setData = async () => {
       setRows(descriptions);
       setFilteredRows(descriptions);
     };
-    fetchData();
+    setData();
   }, [group, finalDecision, quarterDates, requestorNames, priorityOptions, descriptions, status]);
 
   const toggleGroups = () => {
@@ -280,6 +283,11 @@ const BasicTable = () => {
                       <TableCell className="highlight-header">
                         <div className='columnName'>Final Decision</div><ExpandCircleDownIcon className="table-header-icon" />
                       </TableCell>
+                      <TableCell className="highlight-header">sow group
+                        <IconButton onClick={toggleGroups} color="inherit">
+                          {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                        </IconButton>
+                      </TableCell>
                       {showGroups && group.map((item, index) => (
                         <TableCell className="highlight-header" key={index}>
                           <div className='columnName'>{item}</div><ExpandCircleDownIcon className="table-header-icon" />
@@ -311,6 +319,7 @@ const BasicTable = () => {
                         finalDecision={finalDecision}
                         requestorNames={requestorNames}
                         setRows={setRows}
+                        fetchData={fetchData}
                       />
                     ))}
                   </TableBody>
