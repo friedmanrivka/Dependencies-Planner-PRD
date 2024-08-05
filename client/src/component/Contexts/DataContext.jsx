@@ -49,9 +49,7 @@ export const DataProvider = ({ children }) => {
         const finalDecisionData = await getFinalDecision();
         setFinalDecision(finalDecisionData);
 
-        const quarterDatesData = await getQuarterDates();
-        setQuarterDates(quarterDatesData);
-
+        
         const requestorNamesData = await getRequestorNames();
         setRequestorNames(requestorNamesData);
 
@@ -71,6 +69,8 @@ export const DataProvider = ({ children }) => {
         const groupsData = await getAllGroups();
         setGroups(groupsData);
 
+const quarterDatesData = await getQuarterDates();
+        setQuarterDates(quarterDatesData);
 
       } catch (error) {
         console.error('Error fetching data:', error);

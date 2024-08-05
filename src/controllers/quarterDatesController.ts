@@ -17,13 +17,14 @@ export const setCurrentQuarter = async (req: Request, res: Response) => {
 
 export const getCurrentQuarter = async (req: Request, res: Response) => {
   try {
-    const currentQuarter = await QuarterRepo.getCurrentQuarter();
-    if (!currentQuarter) {
+    const currentQuarters = await QuarterRepo.getCurrentQuarter();
+    if (currentQuarters.length === 0) {
       return res.status(404).json({ message: 'No current quarter found.' });
     }
-    return res.status(200).json(currentQuarter);
+    
+    return res.status(200).json(currentQuarters);
   } catch (error) {
-    console.error('Controller: Error fetching current quarter:', error);
+    console.error('Controller: Error fetching current quarters:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 };

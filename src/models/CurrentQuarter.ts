@@ -1,6 +1,7 @@
 export interface CurrentQuarter {
-    id: number;
     year: number;
     quarter: string;
+    is_current: boolean;
+
   }
   

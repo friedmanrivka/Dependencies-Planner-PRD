@@ -1,10 +1,10 @@
 import { deleteRequest } from './services';
 import DeleteIcon from '@mui/icons-material/Delete';
-const DeleteComponent = ({id}) => {
+const DeleteComponent = ({id,fetchData}) => {
     const handleDelete = async () => {
-        if (window.confirm('Are you sure you want to delete this request?')) {
             try {
                 const success = await deleteRequest(id);
+                fetchData();
                 if (success) {
                     console.log('Request deleted successfully');
                    // onDelete(id);
@@ -14,7 +14,6 @@ const DeleteComponent = ({id}) => {
             } catch (error) {
                 alert('Failed to delete the request. Please try again.');
             }
-        }
     };
 
     return (

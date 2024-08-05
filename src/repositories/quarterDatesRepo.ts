@@ -30,20 +30,30 @@ export default class QuarterRepo {
     }
 
     // Function to get the current quarter
-    static async getCurrentQuarter(): Promise<CurrentQuarter | null> {
-        try {
-            const result = await pool.query(
-                'SELECT id, year, quarter FROM current_quarter ORDER BY id DESC LIMIT 1'
-            );
-
-            if (result && result.rowCount! > 0) {
-                console.log('Repository: Current quarter fetched successfully', result.rows[0]);
-                return result.rows[0] as CurrentQuarter;
-            }
-            return null;
-        } catch (err) {
-            console.error('Repository: Error fetching current quarter:', err);
-            throw err;
+    
+    static async getCurrentQuarter(): Promise<string[]> {
+      try {
+        const result = await pool.query(
+          `
+          SELECT year, quarter 
+          FROM current_quarter 
+          WHERE is_current = false
+          ORDER BY id DESC 
+          LIMIT 4
+          `
+        );
+  
+        if (result && result.rowCount! > 0) { // Use non-null assertion
+          // Transform the results into the desired format
+          const quarters = result.rows.map((row: CurrentQuarter) => `${row.year} ${row.quarter}`);
+          console.log('Repository: Current quarters fetched successfully', quarters);
+          return quarters;
         }
+  
+        return [];
+      } catch (err) {
+        console.error('Repository: Error fetching current quarters:', err);
+        throw err;
+      }
     }
 }
