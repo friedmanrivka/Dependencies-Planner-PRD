@@ -39,7 +39,6 @@ import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import LinkIcon from '@mui/icons-material/Link';
 import MyModal from './addRequest';
 import DraggableRow from './DraggableRow';
-import UdateRquest from './updateRequestDetails';
 import { updateIdRow } from './services';
 
 const ItemType = 'ROW';
@@ -77,10 +76,14 @@ const BasicTable = () => {
     const setData = async () => {
       setRows(descriptions);
       setFilteredRows(descriptions);
+
     };
     setData();
+    // fetchData()
   }, [group, finalDecision, quarterDates, requestorNames, priorityOptions, descriptions, status]);
-
+  useEffect(() => {
+    fetchData();
+  }, []);
   const toggleGroups = () => {
     setShowGroups(!showGroups);
   };
@@ -341,7 +344,6 @@ const BasicTable = () => {
           </Card>
         </div>
       </div>
-      <UdateRquest finalDecisionChose={finalDecisionChose} />
       <MyModal visible={modalVisible} onClose={closeModal} onOk={closeModal} onAddRequest={addRequest} />
     </DndProvider>
   );
