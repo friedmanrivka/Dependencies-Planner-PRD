@@ -22,7 +22,6 @@ export const getCurrentQuarter = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'No current quarter found.' });
     }
     
-    // Return the array of current quarters directly
     return res.status(200).json(currentQuarters);
   } catch (error) {
     console.error('Controller: Error fetching current quarters:', error);
