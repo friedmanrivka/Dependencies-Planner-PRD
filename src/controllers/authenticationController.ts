@@ -1,16 +1,17 @@
-// productManagerController.js
-import { Request, Response } from 'express';
-import  AuthenticationRepo from '../repositories/authenticationRepo'
+// src/controllers/productManagerController.ts
 
-export const checkEmail = async (req: Request, res: Response): Promise<void> => {
-    console.log('controller');
+import { Request, Response } from 'express';
+import ProductManagerService from '../services/authenticationService';
+
+export const checkUserDetails = async (req: Request, res: Response): Promise<void> => {
+    console.log('Controller: Entering checkUserDetails method rivky friedman');
     try {
         const { email } = req.body;
-       const exists = await AuthenticationRepo.getProductManagerByEmail(email);
-        console.log(`Email exists: ${exists}`); 
-        res.json({ exists });
+        const { exists, isAdmin } = await ProductManagerService.checkUserDetails(email);
+        console.log(`Email exists: ${exists}, Is Admin: ${isAdmin}`); 
+        res.json({ exists, isAdmin });
     } catch (error) {
-        console.error('Error checking email:', error);
+        console.error('Error checking user details:', error);
         res.status(500).send('Internal Server Error');
     }
 };

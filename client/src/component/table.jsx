@@ -1,8 +1,6 @@
-
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { exportTable } from './services'
-
+import { exportTable } from './services';
 import { useDataContext } from './Contexts/DataContext';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -17,7 +15,22 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './BasicTable.css';
-import { Select, MenuItem, Checkbox, ListItemText, List, ListItem, IconButton, FormControl, InputLabel, Card, CardContent, AppBar, Toolbar, Typography } from '@mui/material';
+import {
+  Select,
+  MenuItem,
+  Checkbox,
+  ListItemText,
+  List,
+  ListItem,
+  IconButton,
+  FormControl,
+  InputLabel,
+  Card,
+  CardContent,
+  AppBar,
+  Toolbar,
+  Typography
+} from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -29,8 +42,8 @@ import DraggableRow from './DraggableRow';
 import UdateRquest from './updateRequestDetails';
 import { updateIdRow } from './services';
 
-
 const ItemType = 'ROW';
+
 const BasicTable = () => {
   const navigate = useNavigate();
 
@@ -71,6 +84,7 @@ const BasicTable = () => {
   const toggleGroups = () => {
     setShowGroups(!showGroups);
   };
+
   const moveRow = async (dragIndex, hoverIndex) => {
     const dragRow = rows[dragIndex];
     const hoverRow = rows[hoverIndex];
@@ -88,6 +102,7 @@ const BasicTable = () => {
       console.error(`Error updating idDrag values: ${error} idDrag values for id1: ${dragRow.id} and id2: ${hoverRow.id}`);
     }
   }
+
   const handleFilterChange = () => {
     let newFilteredRows = rows;
     if (filterRequestorGroup.length > 0) {
@@ -105,6 +120,7 @@ const BasicTable = () => {
     };
     setFilteredRows(newFilteredRows);
   }
+
   useEffect(() => {
     handleFilterChange();
   }, [filterRequestorGroup, filterRequestorName, filterInvolvedName]);
@@ -118,9 +134,14 @@ const BasicTable = () => {
   };
 
   const goToAdminPage = () => {
-    navigate('/admin');
+    // Check if the user is an admin before navigating
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    if (isAdmin) {
+      navigate('/admin');
+    } else {
+      alert('You do not have access to the admin page');
+    }
   };
-
 
   const addRequest = (newRequest) => {
     setRows((prevRows) => [...prevRows, newRequest]);
@@ -279,7 +300,7 @@ const BasicTable = () => {
                         <div className='columnName'>Jira Link</div><LinkIcon className="table-header-icon" />
                       </TableCell>
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Additional actions</div>
+                        <div className='columnName'>Delete Request</div>
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -310,11 +331,8 @@ const BasicTable = () => {
       </div>
       <UdateRquest finalDecisionChose={finalDecisionChose} />
       <MyModal visible={modalVisible} onClose={closeModal} onOk={closeModal} onAddRequest={addRequest} />
-
-
     </DndProvider>
   );
 };
 
 export default BasicTable;
-

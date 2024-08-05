@@ -31,15 +31,17 @@ export const getRequestorNames = async (req: Request, res: Response): Promise<vo
   export const addProductManagerController = async (req: Request, res: Response): Promise<void> => {
     try {
        
-        // const { email } = req.query;
-        const {email, productmanagername } = req.body;
-        await ProductManagerService.addProductManager( email as string,productmanagername);
+      const email = req.params.email;
+      const { productManagerName } = req.body;
+  
+      await ProductManagerService.addProductManager(email, productManagerName);
         res.status(201).send('Product manager added successfully');
     } catch (error) {
         console.error('Controller: Error adding product manager:', error);
         res.status(500).send('Internal Server Error');
     }
 };
+
 export const deleteProductManagerByEmail = async (req: Request, res: Response): Promise<void> => {
   try {
     const {email} = req.params;
@@ -60,4 +62,32 @@ export const getAllProductManagers = async (req: Request, res: Response): Promis
       console.error('Error fetching product managers:', error);
       res.status(500).send('Internal Server Error');
   }
+};
+
+export const updateProductManagerName = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const email = req.params.email;
+    const { productManagerName } = req.body;
+
+    await ProductManagerService.updateProductManagerName(email, productManagerName);
+    res.status(200).send('Product manager name updated successfully');
+  } catch (error) {
+    console.error('Controller: Error updating product manager name:', error);
+    res.status(500).send('Internal Server Error');
+  }
+  
+};
+
+export const addAdmin = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const email = req.params.email;
+    const { productManagerName } = req.body;
+
+    await ProductManagerService.addAdmin(email, productManagerName);
+    res.status(200).send('Product manager name updated successfully');
+  } catch (error) {
+    console.error('Controller: Error updating product manager name:', error);
+    res.status(500).send('Internal Server Error');
+  }
+  
 };

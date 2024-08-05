@@ -1,4 +1,3 @@
-
 import './BasicTable.css';
 import React, { useState } from 'react';
 import { Avatar, Button, CssBaseline, TextField, Paper, Box, Grid, Typography } from '@mui/material';
@@ -8,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { checkEmailExists } from './services';
 import appsflyerLogo from '../images/appsflyerLogo.png'
 import logoapp from '../images/logoapp.png'
-
 
 const theme = createTheme();
 
@@ -35,9 +33,10 @@ const EmailCheckPage = () => {
     }
 
     try {
-      const exists = await checkEmailExists(email);
+      const { exists, isAdmin } = await checkEmailExists(email);
       if (exists) {
         localStorage.setItem('userEmail', email);
+        localStorage.setItem('isAdmin', isAdmin.toString());
         navigate('/table');
       } else {
         setErrorMessage('Email not found');
@@ -62,7 +61,7 @@ const EmailCheckPage = () => {
               alignItems: 'center',
             }}
           >
-            <Avatar className="avatar"> {/* Apply the CSS class */}
+            <Avatar className="avatar">
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -98,7 +97,7 @@ const EmailCheckPage = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: '#00C2FF', '&:hover': { backgroundColor: '#00A9E0' } }} // Button color
+                sx={{ mt: 3, mb: 2, backgroundColor: '#00C2FF', '&:hover': { backgroundColor: '#00A9E0' } }}
               >
                 Check Email
               </Button>
@@ -108,10 +107,10 @@ const EmailCheckPage = () => {
                   src={appsflyerLogo}
                   alt="Appsflyer Logo"
                   style={{
-                    width: '300px', 
+                    width: '300px',
                     height: 'auto',
-                    marginTop:'100px',
-                    marginRight:'50px'
+                    marginTop: '100px',
+                    marginRight: '50px'
                   }}
                 />
               </Box>
@@ -147,9 +146,9 @@ const EmailCheckPage = () => {
               src={logoapp}
               alt="logoapp Logo"
               style={{
-                width: '1000px', // Adjust the width as needed
-                height: 'auto',
-                marginTop: '100px',
+                width: 'auto',
+                height: '100%',
+                marginTop: '15%',
               }}
             />
           </Box>

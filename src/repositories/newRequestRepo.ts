@@ -33,12 +33,12 @@ export const AddDetails = async (
     );
   }
 
-  for (const groupId of affectedGroupList) {
-    await pool.query(
-      `INSERT INTO request_affected_groups (request_id, group_id, status) VALUES ($1, $2, $3)`,
-      [newRequest.id, groupId, statusName]
-    );
-  }
+  // for (const groupId of affectedGroupList) {
+  //   await pool.query(
+  //     `INSERT INTO request_affected_groups (request_id, group_id, status) VALUES ($1, $2, $3)`,
+  //     [newRequest.id, groupId, statusName]
+  //   );
+  // }
 
   return newRequest;
 };
