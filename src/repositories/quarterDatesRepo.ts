@@ -37,7 +37,6 @@ export default class QuarterRepo {
           `
           SELECT year, quarter 
           FROM current_quarter 
-          WHERE is_current = false
           ORDER BY id DESC 
           LIMIT 4
           `

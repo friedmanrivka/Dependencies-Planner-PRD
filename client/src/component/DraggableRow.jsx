@@ -122,6 +122,8 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
   }
 
   const handlePriorityChange = async (event) => {
+    if (isEditing) {
+
     const newPriority = event.target.value;
     setSelectedPriority(newPriority);
     try {
@@ -130,6 +132,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
     } catch (error) {
       console.error('Failed to update the priority:', error);
     }
+  }
   };
   const handleOpen = (rowTitle) => {
     if (isEditing) {
@@ -164,6 +167,8 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
   };
 
   const handleRequestorGroupChange = async (event) => {
+    if (isEditing) {
+
     const newRequestorGroup = event.target.value;
     setSelectedRequestorGroup(newRequestorGroup);
     try {
@@ -171,10 +176,10 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
       console.log('requestor group updated successfully');
     } catch (error) {
       console.error('Failed to update the requestor group:', error);
-    }
+    }}
   };
-
   const handleFinalDecisionChange = (event) => {
+    if (isEditing) {
     const value = event.target.value;
     setSelectedFinalDecision(value);
 
@@ -183,11 +188,12 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
     } else if (value === 'notInQ') {
       setDialogTitle('Insert Comment');
     }
-
-    setDialogOpen(true);
+    setDialogOpen(true);  }
   };
 
   const handleRequestorNameChange = async (event) => {
+    if (isEditing) {
+
     const newRequestor = event.target.value;
     setSelectedRequestorName(newRequestor);
     try {
@@ -195,6 +201,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
       console.log('requestor updated successfully');
     } catch (error) {
       console.error('Failed to update the requestor:', error);
+    }
     }
   };
 

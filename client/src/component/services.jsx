@@ -66,7 +66,7 @@ export const getRequestorNames = async () => {
 };
 export const getQuarterDates = async () => {
     try {
-        const response = await axios.get(`${API_URL}/quarter-dates`);
+        const response = await axios.get(`${API_URL}/get-current-quarter`);
         return response.data;
     } catch (error) {
         console.error('Error fetching groups:', error);
