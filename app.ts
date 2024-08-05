@@ -3,14 +3,14 @@ import dotenv from 'dotenv';
 import requestRoutes from './src/routes/requestRoutes'
 import priorityRoutes from './src/routes/priorityRoutes'
 import ProductManageRoutes from './src/routes/productManagerRoutes';
-import quarterDatesRoutes from './src/routes/quarterDatesRoutes';
 import finalDesicion from './src/routes/filnalDesicionRoutes'
 import statusRoutes from './src/routes/statusRoutes'
 import newRequest from './src/routes/newRequestRouter';
 import AuthenticationRoutes  from './src/routes/AuthenticationRoutes'
 import exportRoutes from './src/routes/exportRoutes'; 
 import deleteRouter from './src/routes/deleteRouter'
-import groupRoutes from './src/routes/groupRoutes'
+import groupRoutes from './src/routes/groupRoutes';
+import quarterDatesRoutes from './src/routes/quarterDatesRoutes';
 import cors from 'cors';
 
 dotenv.config();
@@ -33,4 +33,4 @@ app.use('/api',AuthenticationRoutes);
 app.use('/api',newRequest);
 app.use('/api',exportRoutes);
 app.use('/api',groupRoutes);
-
+app.use('/api',quarterDatesRoutes);
