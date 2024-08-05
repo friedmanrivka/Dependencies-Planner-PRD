@@ -14,7 +14,8 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
     requestorNames: [,],
     priorityOptions: [priorityOptions],
     descriptions: [,],
-    status: [,]
+    status: [,],
+    refreshRows
   } = useDataContext();
 
   const [form] = Form.useForm();
@@ -31,6 +32,9 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
   useEffect(() => {
   }, [group, planned, priorityOptions]);
 
+  const fetchData = async () => {
+    refreshRows();
+  };
   const handleChange = (key, value) => {
     setRequest((prevRequest) => ({
       ...prevRequest,
@@ -62,8 +66,9 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
       const newRequest = { ...request, productmanageremail: email }; // Add email to request
       console.log("Submitting request:", newRequest);
       const response =await addNewRequest(newRequest);
+      fetchData();
       form.resetFields(); // Reset the form fields
-      onAddRequest(response.data);
+      onAddRequest(response);
       onClose(); // Close the modal after successful submission
     } catch (error) {
       console.error('Error adding request:', error);

@@ -118,10 +118,20 @@ export default class RequestRepo {
         }
  static async updateDescription(requestId: number, description: string): Promise<void> {
         try {
+            const requestName = await pool.query(
+                `SELECT title FROM request WHERE id =$1`,
+                [requestId]
+            );
+            if (requestName.rows.length==0){
+                throw new Error ('request not found')}
+            const requestTitle = requestName.rows[0].title;
             await pool.query(
                 `UPDATE request SET description = $1 WHERE id = $2`, 
                 [description, requestId]
             );
+                const message = `Description  updated in: ${requestTitle}`;
+                await sendSlackMessage(message);
+            
         } catch (err) {
             console.error('Error updating description:', err);
             throw err;
@@ -129,10 +139,19 @@ export default class RequestRepo {
     }
     static async updateRequestTitle(requestId: number, title: string): Promise<void> {
         try {
+            const requestName = await pool.query(
+                `SELECT title FROM request WHERE id =$1`,
+                [requestId]
+            );
+            if (requestName.rows.length==0){
+                throw new Error ('request not found')}
+            const requestTitle = requestName.rows[0].title;
             await pool.query(
                 `UPDATE request SET title = $1 WHERE id = $2`, 
                 [title, requestId]
             );
+            const message = `Title  updated in: ${requestTitle}`;
+            await sendSlackMessage(message);
            } catch (err) {
             console.error('Repository: Error updating title:', err);
             throw err;
@@ -140,11 +159,20 @@ export default class RequestRepo {
     }
     static async updateRequestComment(requestId: number, comment: string): Promise<void> {
         try {
+            const requestName = await pool.query(
+                `SELECT title FROM request WHERE id =$1`,
+                [requestId]
+            );
+            if (requestName.rows.length==0){
+                throw new Error ('request not found')}
+            const requestTitle = requestName.rows[0].title;
             console.log('update comment')
             await pool.query(
                 `UPDATE request SET comment = $1 WHERE id = $2`, 
                 [comment, requestId]
             );
+            const message = `Comment  updated in: ${requestTitle}`;
+            await sendSlackMessage(message);
             console.log('Repository: Comment updated successfully');
         } catch (err) {
             console.error('Repository: Error updating comment:', err);
@@ -154,11 +182,20 @@ export default class RequestRepo {
     static async updateRequestJira(requestId: number, jiralink: string): Promise<void> {
         console.log(requestId)
         try {
+            const requestName = await pool.query(
+                `SELECT title FROM request WHERE id =$1`,
+                [requestId]
+            );
+            if (requestName.rows.length==0){
+                throw new Error ('request not found')}
+            const requestTitle = requestName.rows[0].title;
           
             await pool.query(
                 `UPDATE request SET jiralink = $1 WHERE id = $2`, 
                 [jiralink, requestId]
             );
+            const message = `Jira Link updated in: ${requestTitle}`;
+            await sendSlackMessage(message);
             console.log('Repository: jira updated successfully');
         } catch (err) {
             console.error('Repository: Error updating jira:', err);
