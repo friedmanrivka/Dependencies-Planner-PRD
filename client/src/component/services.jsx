@@ -149,7 +149,7 @@ export const updateRequestorGroup = async (requestId, groupName) => {
 };
 export const deleteProductManager = async (email) => {
     try {
-        const response = await axios.put(`${API_URL}/delete-product-manager${email}`);
+        const response = await axios.delete(`${API_URL}/delete-product-manager/${email}`);
         return response.data;
     } catch (error) {
         console.error(' delete Product Manager:', error);
@@ -161,6 +161,16 @@ export const addProductManager = async (email, productManagerName) => {
     console.log('try')
     try {
        const response = await axios.post(`${API_URL}/addProductManager/${email}`, { productManagerName });
+       return response.data;
+    } catch (error) {
+      console.error('Error adding product manager:', error);
+      throw error;
+    }
+  };
+  export const addQ = async (year,quarter) => {
+    console.log('try')
+    try {
+       const response = await axios.post(`${API_URL}/set-current-quarter/`, { year,quarter });
        return response.data;
     } catch (error) {
       console.error('Error adding product manager:', error);

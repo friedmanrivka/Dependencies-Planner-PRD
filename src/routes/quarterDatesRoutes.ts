@@ -1,7 +1,9 @@
 import { Router } from 'express'
-import {  getQuarterDates } from '../controllers/quarterDatesController';
+import {  setCurrentQuarter,getCurrentQuarter } from '../controllers/quarterDatesController';
 
 
 const router = Router();
-router.get('/quarter-dates', getQuarterDates);
+router.post('/set-current-quarter', setCurrentQuarter);
+router.get('/get-current-quarter', getCurrentQuarter);
+
 export default router;
