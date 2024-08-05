@@ -30,7 +30,7 @@ const SelectQuarterDialog = ({ open, onClose, onSubmit }) => {
             value={year}
             onChange={handleYearChange}
           >
-            {[currentYear, currentYear + 1, currentYear + 2].map((yr) => (
+            {[currentYear, currentYear + 1, currentYear +9].map((yr) => (
               <MenuItem key={yr} value={yr}>
                 {yr}
               </MenuItem>
