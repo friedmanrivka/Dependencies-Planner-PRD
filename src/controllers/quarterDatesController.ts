@@ -1,16 +1,29 @@
-import { quarter1, quarter2, quarter3, quarter4 } from '../config/constants';
 import { Request, Response } from 'express';
-export const getQuarterDates = (req: Request, res: Response): void => {
-    try {
-        const quarters = [
-            quarter1,
-            quarter2,
-            quarter3,
-            quarter4
-        ];
-        res.json(quarters);
-    } catch (error) {
-        console.error('Error fetching quarter dates:', error);
-        res.status(500).send('Internal Server Error');
+import QuarterRepo from '../repositories/quarterDatesRepo';
+
+export const setCurrentQuarter = async (req: Request, res: Response) => {
+  try {
+    const { year, quarter } = req.body;
+
+   
+
+    const currentQuarter = await QuarterRepo.setCurrentQuarter(year, quarter);
+    return res.status(200).json({ message: 'Current quarter set successfully', currentQuarter });
+  } catch (error) {
+    console.error('Controller: Error setting current quarter:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const getCurrentQuarter = async (req: Request, res: Response) => {
+  try {
+    const currentQuarter = await QuarterRepo.getCurrentQuarter();
+    if (!currentQuarter) {
+      return res.status(404).json({ message: 'No current quarter found.' });
     }
+    return res.status(200).json(currentQuarter);
+  } catch (error) {
+    console.error('Controller: Error fetching current quarter:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
 };

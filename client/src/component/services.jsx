@@ -167,6 +167,16 @@ export const addProductManager = async (email, productManagerName) => {
       throw error;
     }
   };
+  export const addQ = async (year,quarter) => {
+    console.log('try')
+    try {
+       const response = await axios.post(`${API_URL}/set-current-quarter/`, { year,quarter });
+       return response.data;
+    } catch (error) {
+      console.error('Error adding product manager:', error);
+      throw error;
+    }
+  };
   export const addAdmin = async (email, productManagerName) => {
     console.log('try')
     try {
