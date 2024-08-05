@@ -28,11 +28,20 @@ export const DataProvider = ({ children }) => {
   const [descriptions, setDescriptions] = useState([]);
   const [productEmail, setProductEmail] = useState([]);
   const [status, setStatus] = useState([]);
-  const [productManagers, setProductManagers] = useState([]); 
-  const [groups, setGroups] = useState([]); 
+  const [productManagers, setProductManagers] = useState([]);
+  const [groups, setGroups] = useState([]);
+
+  const refreshRows = async () => {
+
+    const descriptionsData = await getDescriptions();
+    setDescriptions(descriptionsData);
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+
+        refreshRows();
 
         const groupData = await getGroup();
         setGroup(groupData);
@@ -49,22 +58,20 @@ export const DataProvider = ({ children }) => {
         const priorityData = await getPriority();
         setPriorityOptions(priorityData);
 
-        const descriptionsData = await getDescriptions();
-        setDescriptions(descriptionsData);
 
         const productEmailData = await getProductEmail();
         setProductEmail(productEmailData);
 
         const allStatusData = await getAllStatus();
         setStatus(allStatusData);
-       
-        const productManagersData = await getAllProductsManager(); 
+
+        const productManagersData = await getAllProductsManager();
         setProductManagers(productManagersData);
-      
+
         const groupsData = await getAllGroups();
         setGroups(groupsData);
-     
-     
+
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -84,8 +91,9 @@ export const DataProvider = ({ children }) => {
       descriptions: [descriptions, setDescriptions],
       productEmail: [productEmail, setProductEmail],
       status: [status, setStatus],
-      productManagers: [productManagers, setProductManagers] ,
-      groups:[groups,setGroups]
+      productManagers: [productManagers, setProductManagers],
+      groups: [groups, setGroups],
+      refreshRows
     }}>
       {children}
     </DataContext.Provider>
