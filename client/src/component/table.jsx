@@ -155,15 +155,7 @@ const BasicTable = () => {
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             Dependencies Planner PRD
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddCircleOutlineIcon />}
-            style={{ backgroundColor: '#58D64D', marginRight: '10px' }}
-            onClick={showModal}
-          >
-            Add Request
-          </Button>
+
           <Button
             variant="contained"
             color="primary"
@@ -254,6 +246,26 @@ const BasicTable = () => {
               </FormControl>
             </ListItem>
           </List>
+          <Button
+      variant="contained"
+      color="primary"
+      startIcon={<AddCircleOutlineIcon />}
+      style={{
+        backgroundColor: '#58D64D',
+        color: 'white',
+        marginLeft: '14px',
+        padding: '10px 20px',
+        borderRadius: '5px',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s ease',
+        height: '65px',
+        width: '170px',
+      }}
+      onClick={showModal}
+    >
+      Add Request
+    </Button>
         </div>
         <div className="table-wrapper">
           <Card sx={{ minWidth: 275 }}>
