@@ -21,7 +21,7 @@ const SelectQuarterDialog = ({ open, onClose, onSubmit }) => {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Select Current Quarter</DialogTitle>
+      <DialogTitle>Add Current Quarter</DialogTitle>
       <DialogContent>
         <FormControl fullWidth margin="normal">
           <InputLabel id="year-select-label">Year</InputLabel>
