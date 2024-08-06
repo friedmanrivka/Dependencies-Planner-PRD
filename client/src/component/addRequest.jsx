@@ -3,7 +3,9 @@ import React from 'react';
 import { useDataContext } from './Contexts/DataContext';
 import { useEffect, useState } from 'react';
 import { Modal, Form, Input, Select } from 'antd';
-import { addNewRequest } from './services';
+import { addNewRequest,currentQ } from './services';
+import { MenuItem } from '@mui/material';
+
 const { Option } = Select;
 
 const MyModal = ({ visible, onClose, onAddRequest }) => {
@@ -19,6 +21,7 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
   } = useDataContext();
 
   const [form] = Form.useForm();
+  const[currentqValue, setCurrentq] = useState('');
   const [request, setRequest] = useState({
     title: '',
     requestorGroup: '',
@@ -28,8 +31,18 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
     affectedGroupList: [],
     planned: ''
   });
-
+    const fetchData2 = async () => {
+    try{
+   const data = await currentQ();
+   console.log(data);
+   setCurrentq(data);
+  }
+   catch (error){
+    console.error('failed to get current q:', error)
+   }}
   useEffect(() => {
+
+   fetchData2()
   }, [group, planned, priorityOptions]);
 
   const fetchData = async () => {
@@ -156,6 +169,7 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
         </Form.Item>
         <Form.Item name="planned" label="Planned" rules={[{ required: true, message: 'Please select a planned quarter!' }]}>
           <Select
+            defaultValue={currentqValue} 
             placeholder="Select a planned quarter"
             onChange={(value) => handleChange('planned', value)}
           >

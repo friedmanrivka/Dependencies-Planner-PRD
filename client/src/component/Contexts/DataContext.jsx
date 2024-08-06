@@ -12,7 +12,8 @@ import {
   // addNewRequest,
   getAllProductsManager,
   getAllStatus,
-  getAllGroups
+  getAllGroups,
+  currentQ
 } from '../services';
 
 const DataContext = createContext();
@@ -69,8 +70,9 @@ export const DataProvider = ({ children }) => {
         const groupsData = await getAllGroups();
         setGroups(groupsData);
 
-const quarterDatesData = await getQuarterDates();
+       const quarterDatesData = await getQuarterDates();
         setQuarterDates(quarterDatesData);
+
 
       } catch (error) {
         console.error('Error fetching data:', error);
