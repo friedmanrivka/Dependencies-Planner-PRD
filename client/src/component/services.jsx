@@ -66,7 +66,7 @@ export const getRequestorNames = async () => {
 };
 export const getQuarterDates = async () => {
     try {
-        const response = await axios.get(`${API_URL}/quarter-dates`);
+        const response = await axios.get(`${API_URL}/get-current-quarter`);
         return response.data;
     } catch (error) {
         console.error('Error fetching groups:', error);
@@ -167,10 +167,10 @@ export const addProductManager = async (email, productManagerName) => {
       throw error;
     }
   };
-  export const addQ = async (year,quarter) => {
+  export const addQ = async (year,quarter,isCurrent) => {
     console.log('try')
     try {
-       const response = await axios.post(`${API_URL}/set-current-quarter/`, { year,quarter });
+       const response = await axios.post(`${API_URL}/set-current-quarter`, { year,quarter ,isCurrent});
        return response.data;
     } catch (error) {
       console.error('Error adding product manager:', error);
