@@ -6,7 +6,7 @@ import StatusSelect from './statusColor';
 import './BasicTable.css';
 import { Select, MenuItem, Checkbox, ListItemText, List, ListItem, Divider, IconButton, FormControl, InputLabel, Card, CardContent, AppBar, Toolbar, Typography } from '@mui/material';
 import DeleteComponent from './deleteReq'
-import { updatePriority, updateRequestor, updateRequestorGroup, updateFinalDecision, updatePlanned } from './services'; // Import the update service
+import { updatePriority, updateRequestor, updateRequestorGroup, updateFinalDecision,updateStatus,updatePlanned } from './services'; // Import the update service
 import FinalDecisionDialog from './updateFinalDecision';
 import UpdateTitleDialog from './UpdateTitleDialog';
 import UpdateDescription from './updateDescriptionDialog';
@@ -14,11 +14,14 @@ import UpdateComment from './updateComment';
 import UpdateJira from './updateJira';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { useDataContext } from './Contexts/DataContext';
 import EditIcon from '@mui/icons-material/Edit';
 import BasicTable from "./table"
 const ItemType = 'ROW';
 const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status, priorityOptions, quarterDates, finalDecision, requestorNames, fetchData }) => {
-
+  const {
+    refreshRows
+  } = useDataContext();
   const ref = useRef(null);
   const [selectedStatus, setSelectedStatus] = useState(row.affectedGroupsList || '');
   const [selectedPriority, setSelectedPriority] = useState(row.critical || '');
@@ -46,6 +49,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
     setSelectedRequestorGroup(row.requestorGroup);
     setSelectedFinalDecision(row.decision);
     setSelectedRequestorName(row.productmanagername);
+
   }, [row])
 
   const [, drop] = useDrop({
@@ -88,13 +92,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
 
   drag(drop(ref));
 
-  const handleStatusChange = (event, groupIndex) => {
-    setSelectedStatus((prevStatus) => {
-      const newStatus = [...prevStatus];
-      newStatus[groupIndex] = { ...newStatus[groupIndex], statusname: event.target.value };
-      return newStatus;
-    });
-  };
+
 
   const handleClose = () => {
     setOpen(false);
@@ -161,7 +159,30 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
       setOpenComment(true);
     }
   };
+  // const handleStatusChange = (event, groupIndex) => {
+  //   setSelectedStatus((prevStatus) => {
+  //     const newStatus = [...prevStatus];
+  //     newStatus[groupIndex] = { ...newStatus[groupIndex], statusname: event.target.value };
+  //     return newStatus;
+  //   });
+  // };
+  const handleStatusChange = async (requestId,groupName,statusName,event, groupIndex) => {
+    console.log({requestId,groupName,statusName,event, groupIndex})
+    setSelectedStatus((prevStatus) => {
 
+      const newStatus = [...prevStatus];
+      newStatus[groupIndex] = { ...newStatus[groupIndex], statusname: event.target.value };
+      return newStatus;
+    });
+    // server
+      try {
+        await updateStatus(requestId,groupName,statusName);
+        console.log('Updated Succesfuly');
+        refreshRows()
+      } catch (error) {
+        console.error('failed:', error);
+      }
+  };
   const handlePllanedChange = async (event) => {
     const newPllaned = event.target.value;
     setSelectedPlanned(newPllaned);
@@ -365,15 +386,24 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
           </Select>
         </TableCell>
         <TableCell align="right" >show group</TableCell>
-        {showGroups && group.map((item, groupIndex) => (
+        {/* {showGroups && group.map((item, groupIndex) => (
           <TableCell align="right" key={groupIndex}>
             <StatusSelect
               value={row.affectedGroupsList[groupIndex]?.statusname || 'Pending Response'}
               onChange={(event) => handleStatusChange(event, groupIndex)}
-              options={status}
-            />
+              options={status}/>
           </TableCell>
-        ))}
+        ))} */}
+        
+ {showGroups && group.map((item, groupIndex) => (
+        <TableCell align="right" key={groupIndex}>      
+          <StatusSelect
+            value={selectedStatus[groupIndex]?.statusname || 'Pending Response'}
+            onChange={(event) => handleStatusChange(row.id,row.affectedGroupsList[groupIndex].groupname,event.target.value,event, groupIndex,)}          
+            options={status}
+          />
+        </TableCell>
+))}
         <TableCell align="right" onDoubleClick={() => handleOpenComment(row)}>{row.comment}</TableCell>
         <TableCell align="right" onDoubleClick={() => handleOpenJira(row)}><a href={row.jiralink}>Jira Link</a></TableCell>
         <TableCell align="right" id='iconButon'><DeleteComponent id={row.id} fetchData={fetchData} /><EditIcon onClick={handleEditClick} style={{ cursor: 'pointer',color: isEditing ? '#58D64D' : 'black'}} /></TableCell>

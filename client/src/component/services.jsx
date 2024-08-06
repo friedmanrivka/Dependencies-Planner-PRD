@@ -82,6 +82,19 @@ export const getFinalDecision = async () => {
         throw error;
     }
 };
+export const updateStatus = async (requestId,groupName,statusName) => {
+    try {
+        const response = await axios.put(`${API_URL}/update-affected-groups-status`, { requestId, groupName, statusName});
+        console.log("ssssssss");
+        return response.data;
+        
+    } catch (error) {
+        console.error('Error fetching groups:', error);
+        throw error;
+    }  
+};
+
+
 export const getAllStatus = async () => {
     try {
         const response = await axios.get(`${API_URL}/status`);
