@@ -7,7 +7,7 @@ import StatusSelect from './statusColor';
 import './BasicTable.css';
 import { Select, MenuItem, Checkbox, ListItemText, List, ListItem, Divider, IconButton, FormControl, InputLabel, Card, CardContent, AppBar, Toolbar, Typography } from '@mui/material';
 import DeleteComponent from './deleteReq'
-import { updatePriority, updateRequestor, updateRequestorGroup, updateFinalDecision } from './services'; // Import the update service
+import { updatePriority, updateRequestor, updateRequestorGroup, updateFinalDecision,updatePlanned } from './services'; // Import the update service
 import FinalDecisionDialog from './updateFinalDecision';
 import UpdateTitleDialog from './UpdateTitleDialog';
 const ItemType = 'ROW';

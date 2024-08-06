@@ -1,0 +1,34 @@
+.admin-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .button-container {
+    display: grid;
+    grid-template-columns: repeat(2, 200px); /* Two buttons per row */
+    grid-gap: 20px; /* Space between buttons */
+    justify-content: center; /* Center buttons horizontally */
+    margin-bottom: 20px;
+  }
+  
+  .admin-button {
+    background-color: #58D64D !important; /* Button background color */
+    color: white; /* Text color */
+    width: 200px; /* Width of the button */
+    height: 200px; /* Height of the button */
+    font-size: 18px; /* Font size */
+    border-radius: 8px; /* Rounded corners */
+  }
+  
+  .background-square {
+    width: 440px; /* Adjust width to match buttons */
+    height: 100px; /* Height of the background square */
+    background-color: #00C2FF; /* Background color */
+    border-radius: 10px; /* Rounded corners */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  

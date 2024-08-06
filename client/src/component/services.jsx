@@ -302,3 +302,34 @@ export const updateProductManagerName= async (email,productManagerName) => {
         throw error;
     }
 };
+
+export async function addGroupToManager(email, groupName) {
+    try {
+      const response = await axios.post(`${API_URL}/addGroupToManager`, {
+        email,
+        groupName,
+      });
+  
+      console.log('Group added successfully:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error adding group to manager:', error);
+      throw error;
+    }
+  };
+
+  export async function removeGroupFromManager(email, groupName) {
+    try {
+      const response = await axios.post(`${API_URL}/removeGroupFromManager`, {
+        email,
+        groupName,
+      });
+  
+      console.log('Group removed successfully:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error removing group from manager:', error);
+      throw error;
+    }
+  }
+
