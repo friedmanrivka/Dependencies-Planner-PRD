@@ -395,4 +395,109 @@ export default class RequestRepo {
           throw err; // Rethrow the error to be handled by the controller
         }
       }
+
+      
+  static async clearTable(): Promise<void> {
+    try {
+      const query = 'DELETE FROM request_periods;';
+      await pool.query(query);
+      console.log('All rows deleted from request_periods.');
+    } catch (error) {
+      console.error('Error clearing table:', error);
+      throw error;
+    }
+  }
+
+  
+  static async addPeriod(start: string, end: string): Promise<void> {
+    try {
+      
+      await this.clearTable();
+
+      const query = `
+        INSERT INTO request_periods (request_start, request_end)
+        VALUES ($1, $2);
+      `;
+      await pool.query(query, [start, end]);
+      console.log('New row added to request_periods.');
+    } catch (error) {
+      console.error('Error adding request period:', error);
+      throw error;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
       }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

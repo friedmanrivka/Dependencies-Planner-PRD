@@ -354,8 +354,21 @@ export const updateProductManagerName = async (email, productManagerName) => {
         );
         return response.data;
     } catch (error) {
-        console.error('Error update request:', error);
+
+      console.error('Error update request:', error);
 
         throw error;
     }
-};
+  };
+  
+
+  export async function addRequestPeriod(start, end) {
+    try {
+      const response = await axios.post(`${API_URL}/addRequestPeriod`, {start, end,});
+      console.log('Request period added successfully:', response.data);
+    } catch (error) {
+      console.error('Error adding request period:', error);
+      throw error;
+    }
+  };
+

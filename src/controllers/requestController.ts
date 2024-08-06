@@ -176,5 +176,17 @@ export const updatePlans = async (req: Request, res: Response): Promise<void> =>
     res.status(500).send('Internal Server Error');
   }
 };
-
-
+export const addRequestPeriod = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { start, end } = req.body;
+    if (!start || !end) {
+        res.status(400).json({ error: 'Start and end timestamps are required' });
+        return;
+      }
+    await RequestRepo.addPeriod(start, end);
+    res.status(200).json({ message: 'Request period added successfully' });
+    } catch (error) {
+      console.error('Controller: Error adding request period:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
