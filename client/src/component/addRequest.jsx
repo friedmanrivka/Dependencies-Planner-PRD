@@ -1,27 +1,219 @@
 
-import React from 'react';
+// import React from 'react';
+// import { useDataContext } from './Contexts/DataContext';
+// import { useEffect, useState } from 'react';
+// import { Modal, Form, Input, Select } from 'antd';
+// import { addNewRequest,currentQ } from './services';
+// import { MenuItem } from '@mui/material';
+
+// const { Option } = Select;
+
+// const MyModal = ({ visible, onClose, onAddRequest }) => {
+//   const {
+//     group: [group],
+//     finalDecision: [,],
+//     quarterDates: [planned],
+//     requestorNames: [,],
+//     priorityOptions: [priorityOptions],
+//     descriptions: [,],
+//     status: [,],
+//     refreshRows
+//   } = useDataContext();
+
+//   const [form] = Form.useForm();
+//   const[currentqValue, setCurrentq] = useState('');
+//   const [request, setRequest] = useState({
+//     title: '',
+//     requestorGroup: '',
+//     description: '',
+//     JiraLink: '',
+//     priority: '',
+//     affectedGroupList: [],
+//     planned: ''
+//   });
+//     const fetchData2 = async () => {
+//     try{
+//    const data = await currentQ();
+//    console.log(data);
+//    setCurrentq(data);
+//   }
+//    catch (error){
+//     console.error('failed to get current q:', error)
+//    }}
+//   useEffect(() => {
+
+//    fetchData2()
+//   }, [group, planned, priorityOptions]);
+
+//   const fetchData = async () => {
+//     refreshRows();
+//   };
+//   const handleChange = (key, value) => {
+//     setRequest((prevRequest) => ({
+//       ...prevRequest,
+//       [key]: value,
+//     }));
+//   };
+
+//   const handleAddRequest = async () => {
+//     try {
+//       const titleRegex = /[a-zA-Z]/;
+//       const descriptionRegex = /[a-zA-Z]/;
+
+
+//       if (!titleRegex.test(request.title)) {
+//         form.setFields([
+//           {
+//             name: 'title',
+//             errors: ['Title must contain characters and not just numbers'],
+//           },
+//         ]);
+//         return;
+        
+//       }
+//       if (!descriptionRegex.test(request.description)) {
+//         form.setFields([
+//           {
+//             name: 'description',
+//             errors: ['Description must contain characters and not just numbers'],
+//           },
+//         ]);
+//         return;
+//       }
+
+//       const email = localStorage.getItem('userEmail');
+//       if (!email) {
+//         console.error('User email not found in localStorage');
+//         return;
+//       }
+
+//       const newRequest = { ...request, productmanageremail: email }; // Add email to request
+//       console.log("Submitting request:", newRequest);
+//       const response =await addNewRequest(newRequest);
+//       fetchData();
+//       form.resetFields(); // Reset the form fields
+//       onAddRequest(response);
+//       onClose(); // Close the modal after successful submission
+//     } catch (error) {
+//       console.error('Error adding request:', error);
+//     }
+//   };
+//   const handleOk = () => {
+//     form
+//       .validateFields()
+//       .then((values) => {
+//         console.log('Form Values:', values);
+//         handleAddRequest();
+//         onClose();
+//       })
+//       .catch((info) => {
+//         console.log('Validate Failed:', info);
+//       });
+//   };
+
+//   return (
+//     <Modal title="New Request" visible={visible} onCancel={onClose} onOk={handleOk}>
+//       <Form form={form} layout="vertical">
+//         <Form.Item
+//           name="title"
+//           label="Title"
+//           rules={[{ required: true, message: 'Please input Title' }]}
+//         >
+//           <Input onChange={(e) => handleChange('title', e.target.value)} />
+//         </Form.Item>
+//         <Form.Item
+//           name="requestorGroup"
+//           label="Requestor Group"
+//           rules={[{ required: true, message: 'Please input Requestor Group' }]}
+//         >
+//           <Select
+//             placeholder="Select a group"
+//             onChange={(value) => handleChange('requestorGroup', value)}
+//           >
+//             {group.map((item, index) => (
+//               <Option value={item} key={index}>{item}</Option>
+//             ))}
+//           </Select>
+//         </Form.Item>
+//         <Form.Item
+//           name="description"
+//           label="Description"
+//           rules={[{ required: true, message: 'Please input Description'}]}
+//         >
+//           <Input onChange={(e) => handleChange('description', e.target.value)} />
+//         </Form.Item>
+//         <Form.Item
+//           name="priority"
+//           label="Priority"
+//           rules={[{ required: true, message: 'Please input priority' }]}
+//         >
+//           <Select
+//             placeholder="Select a priority"
+//             onChange={(value) => handleChange('priority', value)}
+//           >
+//             {priorityOptions.map((item, index) => (
+//               <Option value={item} key={index}>{item}</Option>
+//             ))}
+//           </Select>
+//         </Form.Item>
+//         <Form.Item
+//           name="JiraLink"
+//           label="Jira Link"
+//           rules={[{ required: false}]}
+//         >
+//           <Input onChange={(e) => handleChange('JiraLink', e.target.value)} />
+//         </Form.Item>
+//         <Form.Item
+//           name="affectedGroupList"
+//           label="Dependency Group"
+//           rules={[{ required: true, message: 'Please choose Groups' }]}
+//         >
+//           <Select
+//             mode="multiple"
+//             placeholder="Select groups"
+//             onChange={(value) => handleChange('affectedGroupList', value)}
+//           >
+//             {group.map((item, index) => (
+//               <Option value={item} key={index}>{item}</Option>
+//             ))}
+//           </Select>
+//         </Form.Item>
+//         <Form.Item name="planned" label="Planned" rules={[{ required: true, message: 'Please select a planned quarter!' }]}         
+//          initialValue={currentqValue}>
+//           <Select
+//             defaultValue={currentqValue} 
+//             placeholder="Select a planned quarter"
+//             onChange={(defaultValue) => handleChange('planned', defaultValue)}
+//           >
+//             {planned.map((item, index) => (
+//               <Option value={item} key={index}>{item}</Option>
+//             ))}
+//           </Select>
+//         </Form.Item>
+//       </Form>
+//     </Modal>
+//   );
+// };
+
+// export default MyModal;
+import React, { useEffect, useState } from 'react';
+import { Modal, Form, Input, Select, message } from 'antd'; // Using message for notifications
 import { useDataContext } from './Contexts/DataContext';
-import { useEffect, useState } from 'react';
-import { Modal, Form, Input, Select } from 'antd';
-import { addNewRequest,currentQ } from './services';
-import { MenuItem } from '@mui/material';
+import { addNewRequest, currentQ } from './services'; // Import services
 
 const { Option } = Select;
 
 const MyModal = ({ visible, onClose, onAddRequest }) => {
   const {
     group: [group],
-    finalDecision: [,],
     quarterDates: [planned],
-    requestorNames: [,],
     priorityOptions: [priorityOptions],
-    descriptions: [,],
-    status: [,],
-    refreshRows
+    refreshRows,
   } = useDataContext();
 
   const [form] = Form.useForm();
-  const[currentqValue, setCurrentq] = useState('');
+  const [currentqValue, setCurrentq] = useState('');
+
   const [request, setRequest] = useState({
     title: '',
     requestorGroup: '',
@@ -29,24 +221,39 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
     JiraLink: '',
     priority: '',
     affectedGroupList: [],
-    planned: ''
+    planned: '',
   });
-    const fetchData2 = async () => {
-    try{
-   const data = await currentQ();
-   console.log(data);
-   setCurrentq(data);
-  }
-   catch (error){
-    console.error('failed to get current q:', error)
-   }}
+
+  // Fetch the current quarter value when the component mounts
+  const fetchCurrentQuarter = async () => {
+    try {
+      const data = await currentQ();
+      console.log("Current quarter fetched:", data); // Debugging line
+      setCurrentq(data);
+    } catch (error) {
+      console.error('Failed to get current quarter:', error);
+    }
+  };
+
   useEffect(() => {
-   fetchData2()
-  }, [group, planned, priorityOptions]);
+    fetchCurrentQuarter();
+  }, []);
+
+  // Reset the form fields and set default values whenever the modal becomes visible
+  useEffect(() => {
+    if (visible) {
+      form.resetFields();
+      setRequest((prevRequest) => ({
+        ...prevRequest,
+        planned: currentqValue,
+      }));
+    }
+  }, [visible, currentqValue, form]);
 
   const fetchData = async () => {
     refreshRows();
   };
+
   const handleChange = (key, value) => {
     setRequest((prevRequest) => ({
       ...prevRequest,
@@ -57,6 +264,7 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
   const handleAddRequest = async () => {
     try {
       const titleRegex = /[a-zA-Z]/;
+      const descriptionRegex = /[a-zA-Z]/;
 
       if (!titleRegex.test(request.title)) {
         form.setFields([
@@ -67,15 +275,24 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
         ]);
         return;
       }
-
+      if (!descriptionRegex.test(request.description)) {
+        form.setFields([
+          {
+            name: 'description',
+            errors: ['Description must contain characters and not just numbers'],
+          },
+        ]);
+        return;
+      }
 
       const email = localStorage.getItem('userEmail');
       if (!email) {
         console.error('User email not found in localStorage');
+        message.error('User email not found, please log in again.');
         return;
       }
 
-      const newRequest = { ...request, productmanageremail: email }; // Add email to request
+       const newRequest = { ...request, productmanageremail: email }; // Add email to request
       console.log("Submitting request:", newRequest);
       const response =await addNewRequest(newRequest);
       fetchData();
@@ -86,13 +303,13 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
       console.error('Error adding request:', error);
     }
   };
+
   const handleOk = () => {
     form
       .validateFields()
       .then((values) => {
         console.log('Form Values:', values);
         handleAddRequest();
-        onClose();
       })
       .catch((info) => {
         console.log('Validate Failed:', info);
@@ -101,7 +318,13 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
 
   return (
     <Modal title="New Request" visible={visible} onCancel={onClose} onOk={handleOk}>
-      <Form form={form} layout="vertical">
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={{
+          planned: currentqValue,
+        }}
+      >
         <Form.Item
           name="title"
           label="Title"
@@ -126,7 +349,7 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
         <Form.Item
           name="description"
           label="Description"
-          rules={[{ required: false}]}
+          rules={[{ required: true, message: 'Please input Description' }]}
         >
           <Input onChange={(e) => handleChange('description', e.target.value)} />
         </Form.Item>
@@ -147,7 +370,7 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
         <Form.Item
           name="JiraLink"
           label="Jira Link"
-          rules={[{ required: true, message: 'Please input link' }]}
+          rules={[{ required: false }]}
         >
           <Input onChange={(e) => handleChange('JiraLink', e.target.value)} />
         </Form.Item>
@@ -166,9 +389,14 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item name="planned" label="Planned" rules={[{ required: true, message: 'Please select a planned quarter!' }]}>
+        <Form.Item
+          name="planned"
+          label="Planned"
+          rules={[{ required: true, message: 'Please select a planned quarter!' }]}
+          initialValue={currentqValue}
+        >
           <Select
-            defaultValue={currentqValue} 
+            defaultValue={currentqValue} // Ensure default value is set
             placeholder="Select a planned quarter"
             onChange={(value) => handleChange('planned', value)}
           >
@@ -183,3 +411,4 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
 };
 
 export default MyModal;
+
