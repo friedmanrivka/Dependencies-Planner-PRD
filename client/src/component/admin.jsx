@@ -302,7 +302,7 @@ export default function Admin() {
         {/* Render Product Managers Table if showTable is true */}
         {showTable && <ProductManagersTable />}
 
-        {/* Render Groups Table if showGroupsTable is true */}
+    
         {showGroupsTable && <GroupTable />}
       </div>
 
