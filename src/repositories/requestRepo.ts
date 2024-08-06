@@ -1,6 +1,8 @@
 import { pool ,pool2} from '../config/db';
 import GroupRepo from './groupRepo';
 import { ExtendedRequest } from '../models/extendedRequestModel';
+import sendSlackMessage from '../services/sendSlackMessege';
+
 
 export default class RequestRepo {
     static async getAllRequest(): Promise<ExtendedRequest[]> {
@@ -83,17 +85,28 @@ export default class RequestRepo {
     }
      static async updateFinalDecision(requestId: number, finalDecision: string, jiraLinkOrComment: string): Promise<void> {
             try {
+                const requestName = await pool.query(
+                    `SELECT title FROM request WHERE id =$1`,
+                    [requestId]
+                );
+                if (requestName.rows.length==0){
+                    throw new Error ('request not found')}
+                const requestTitle = requestName.rows[0].title;
                 if (finalDecision.toLowerCase() === 'inq') {
                     await pool.query(
                         `UPDATE request SET finaldecision = (SELECT id FROM finaldecision WHERE decision = $2), jiralink = $3 WHERE id = $1`, 
                         [requestId, finalDecision, jiraLinkOrComment]
                     );
+                    const message = `finalDecision  updated in: ${requestTitle}`;
+                    await sendSlackMessage(message);
                     console.log('update jira');
                 } else if (finalDecision.toLowerCase() === 'notinq') {
                     await pool.query(
                         `UPDATE request SET finaldecision = (SELECT id FROM finaldecision WHERE decision = $2), comment = $3 WHERE id = $1`, 
                         [requestId, finalDecision, jiraLinkOrComment]
                     );
+                    const message = `finalDecision  updated in: ${requestTitle}`;
+                    await sendSlackMessage(message);
                     console.log('update comment');
                 } else {
                     throw new Error('Invalid final decision');
@@ -105,10 +118,20 @@ export default class RequestRepo {
         }
  static async updateDescription(requestId: number, description: string): Promise<void> {
         try {
+            const requestName = await pool.query(
+                `SELECT title FROM request WHERE id =$1`,
+                [requestId]
+            );
+            if (requestName.rows.length==0){
+                throw new Error ('request not found')}
+            const requestTitle = requestName.rows[0].title;
             await pool.query(
                 `UPDATE request SET description = $1 WHERE id = $2`, 
                 [description, requestId]
             );
+                const message = `Description  updated in: ${requestTitle}`;
+                await sendSlackMessage(message);
+            
         } catch (err) {
             console.error('Error updating description:', err);
             throw err;
@@ -116,10 +139,19 @@ export default class RequestRepo {
     }
     static async updateRequestTitle(requestId: number, title: string): Promise<void> {
         try {
+            const requestName = await pool.query(
+                `SELECT title FROM request WHERE id =$1`,
+                [requestId]
+            );
+            if (requestName.rows.length==0){
+                throw new Error ('request not found')}
+            const requestTitle = requestName.rows[0].title;
             await pool.query(
                 `UPDATE request SET title = $1 WHERE id = $2`, 
                 [title, requestId]
             );
+            const message = `Title  updated in: ${requestTitle}`;
+            await sendSlackMessage(message);
            } catch (err) {
             console.error('Repository: Error updating title:', err);
             throw err;
@@ -127,11 +159,20 @@ export default class RequestRepo {
     }
     static async updateRequestComment(requestId: number, comment: string): Promise<void> {
         try {
+            const requestName = await pool.query(
+                `SELECT title FROM request WHERE id =$1`,
+                [requestId]
+            );
+            if (requestName.rows.length==0){
+                throw new Error ('request not found')}
+            const requestTitle = requestName.rows[0].title;
             console.log('update comment')
             await pool.query(
                 `UPDATE request SET comment = $1 WHERE id = $2`, 
                 [comment, requestId]
             );
+            const message = `Comment  updated in: ${requestTitle}`;
+            await sendSlackMessage(message);
             console.log('Repository: Comment updated successfully');
         } catch (err) {
             console.error('Repository: Error updating comment:', err);
@@ -141,11 +182,20 @@ export default class RequestRepo {
     static async updateRequestJira(requestId: number, jiralink: string): Promise<void> {
         console.log(requestId)
         try {
+            const requestName = await pool.query(
+                `SELECT title FROM request WHERE id =$1`,
+                [requestId]
+            );
+            if (requestName.rows.length==0){
+                throw new Error ('request not found')}
+            const requestTitle = requestName.rows[0].title;
           
             await pool.query(
                 `UPDATE request SET jiralink = $1 WHERE id = $2`, 
                 [jiralink, requestId]
             );
+            const message = `Jira Link updated in: ${requestTitle}`;
+            await sendSlackMessage(message);
             console.log('Repository: jira updated successfully');
         } catch (err) {
             console.error('Repository: Error updating jira:', err);
@@ -164,12 +214,21 @@ export default class RequestRepo {
          if (productManagerResult.rows.length === 0) {
                 throw new Error('Product Manager not found');
             }
+            const requestName = await pool.query(
+                `SELECT title FROM request WHERE id =$1`,
+                [requestId]
+            );
+            if (requestName.rows.length==0){
+                throw new Error ('request not found')}
+            const requestTitle = requestName.rows[0].title;
             const productManagerEmail = productManagerResult.rows[0].email;
 
             await pool.query(
                 `UPDATE request SET productmanagerid = $1 WHERE id = $2`, 
                 [productManagerEmail, requestId]
             );
+            const message = `requestorName updated in: ${requestTitle}`;
+            await sendSlackMessage(message);
             console.log('Repository: Product Manager updated successfully');
         } catch (err) {
             console.error('Repository: Error updating Product Manager:', err);
@@ -188,12 +247,21 @@ export default class RequestRepo {
          if (groupResult.rows.length === 0) {
                 throw new Error('groupnnot found');
             }
+            const requestName = await pool.query(
+                `SELECT title FROM request WHERE id =$1`,
+                [requestId]
+            );
+            if (requestName.rows.length==0){
+                throw new Error ('request not found')}
+            const requestTitle = requestName.rows[0].title;
             const groupId = groupResult.rows[0].id;
-
+         
             await pool.query(
                 `UPDATE request SET requestgroupid = $1 WHERE id = $2`, 
                 [groupId, requestId]
             );
+            const message = `requestorGroup updated in: ${requestTitle}`;
+            await sendSlackMessage(message);
             console.log('Repository:requestor group updated successfully');
         } catch (err) {
             console.error('Repository: Error updating requestor group:', err);
@@ -212,11 +280,21 @@ export default class RequestRepo {
          if (priorityResult.rows.length === 0) {
                 throw new Error('prioruty not found');
             }
+            const requestName = await pool.query(
+                `SELECT title FROM request WHERE id = $1`,
+                [requestId]
+            )
+            if (requestName.rows.length === 0) {
+                throw new Error('request not found');
+            }
+            const requestTitle = requestName.rows[0].title;
             const priorityId = priorityResult.rows[0].id;
             await pool.query(
                 `UPDATE request SET priority_id = $1 WHERE id = $2`, 
                 [priorityId, requestId]
             );
+            const message = `priority updated in: ${requestTitle} request`;
+            await sendSlackMessage(message);
             console.log('Repository:priority updated successfully');
         } catch (err) {
             console.error('Repository: Error updating priority:', err);

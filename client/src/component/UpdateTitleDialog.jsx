@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
 import { updateTitle } from './services'; 
 
 const UpdateTitleDialog = ({ open, onClose, rowId, currentTitle }) => {
+  console.log(`rowId,${rowId} currentNew ${currentTitle}`)
+
   const [newTitle, setNewTitle] = useState(currentTitle);
 
   const handleTitleChange = (e) => {
     setNewTitle(e.target.value);
   };
-
+  //לאתחל את החלון הנפתח
+  // useEffect(() => {
+  //   if (!open) {
+  //     setNewTitle(''); // Reset newTitle when dialog is closed
+  //   } else {
+  //     setNewTitle(currentTitle); // Set newTitle to currentTitle when dialog is opened
+  //   }
+  // }, [open, currentTitle]);
   const handleSave = async () => {
     try {
       await updateTitle(rowId, newTitle);

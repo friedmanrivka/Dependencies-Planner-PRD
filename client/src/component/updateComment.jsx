@@ -1,38 +1,37 @@
-// 
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
-import { updateDescription } from './services'; 
+import { updateComment } from './services'; 
 
-const UpdateDescriptionDialog = ({ open, onClose, rowId, currentDescription }) => {
-    console.log(`rowId, ${rowId} currentDescription ${currentDescription}`);
-    const [newDescription, setNewDescription] = useState(currentDescription);
+const UpdateComment = ({ open, onClose, rowId, currentComment }) => {
+    console.log(`rowId, ${rowId} currentComment ${currentComment}`);
+    const [newComment, setNewComment] = useState(currentComment);
 
-    const handleDescriptionChange = (e) => {
-        setNewDescription(e.target.value);
+    const handleCommentChange = (e) => {
+        setNewComment(e.target.value);
     };
 
     const handleSave = async () => {
         try {
-            await updateDescription(rowId, newDescription);
-            console.log('Description updated successfully');
+            await updateComment(rowId, newComment);
+            console.log('Comment updated successfully');
             onClose();
         } catch (error) {
-            console.error('Failed to update the description:', error);
+            console.error('Failed to update the Comment:', error);
         }
     };
 
     return (
         <Dialog open={open} onClose={onClose}>
-            <DialogTitle>Update Description</DialogTitle>
+            <DialogTitle>Update Comment</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus
                     margin="dense"
-                    label="New Description"
+                    label="New Comment"
                     type="text"
                     fullWidth
-                    value={newDescription}
-                    onChange={handleDescriptionChange}
+                    value={newComment}
+                    onChange={handleCommentChange}
                 />
             </DialogContent>
             <DialogActions>
@@ -47,4 +46,4 @@ const UpdateDescriptionDialog = ({ open, onClose, rowId, currentDescription }) =
     );
 };
 
-export default UpdateDescriptionDialog;
+export default UpdateComment;

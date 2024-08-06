@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { exportTable } from './services';
@@ -41,7 +39,6 @@ import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import LinkIcon from '@mui/icons-material/Link';
 import MyModal from './addRequest';
 import DraggableRow from './DraggableRow';
-import UdateRquest from './updateRequestDetails';
 import { updateIdRow } from './services';
 
 const ItemType = 'ROW';
@@ -58,7 +55,8 @@ const BasicTable = () => {
     priorityOptions: [priorityOptions],
     descriptions: [descriptions],
     productEmail: [,],
-    status: [status]
+    status: [status],
+    refreshRows
   } = useDataContext();
 
   const [showGroups, setShowGroups] = useState(false);
@@ -70,14 +68,22 @@ const BasicTable = () => {
   const [finalDecisionChose, setFinalDecisionChose] = useState();
   const [modalVisible, setModalVisible] = useState(false);
 
+  const fetchData = async () => {
+    refreshRows();
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
+    const setData = async () => {
       setRows(descriptions);
       setFilteredRows(descriptions);
-    };
-    fetchData();
-  }, [group, finalDecision, quarterDates, requestorNames, priorityOptions, descriptions, status]);
 
+    };
+    setData();
+    // fetchData()
+  }, [group, finalDecision, quarterDates, requestorNames, priorityOptions, descriptions, status]);
+  useEffect(() => {
+    fetchData();
+  }, []);
   const toggleGroups = () => {
     setShowGroups(!showGroups);
   };
@@ -152,15 +158,7 @@ const BasicTable = () => {
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             Dependencies Planner PRD
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddCircleOutlineIcon />}
-            style={{ backgroundColor: '#58D64D', marginRight: '10px' }}
-            onClick={showModal}
-          >
-            Add Request
-          </Button>
+
           <Button
             variant="contained"
             color="primary"
@@ -251,6 +249,26 @@ const BasicTable = () => {
               </FormControl>
             </ListItem>
           </List>
+          <Button
+      variant="contained"
+      color="primary"
+      startIcon={<AddCircleOutlineIcon />}
+      style={{
+        backgroundColor: '#58D64D',
+        color: 'white',
+        marginLeft: '14px',
+        padding: '10px 20px',
+        borderRadius: '5px',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s ease',
+        height: '65px',
+        width: '170px',
+      }}
+      onClick={showModal}
+    >
+      Add Request
+    </Button>
         </div>
         <div className="table-wrapper">
           <Card sx={{ minWidth: 275 }}>
@@ -280,6 +298,11 @@ const BasicTable = () => {
                       <TableCell className="highlight-header">
                         <div className='columnName'>Final Decision</div><ExpandCircleDownIcon className="table-header-icon" />
                       </TableCell>
+                      <TableCell className="highlight-header"><div className='columnName'>show group</div>
+                        <IconButton onClick={toggleGroups} color="inherit">
+                          {showGroups ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                        </IconButton>
+                      </TableCell>
                       {showGroups && group.map((item, index) => (
                         <TableCell className="highlight-header" key={index}>
                           <div className='columnName'>{item}</div><ExpandCircleDownIcon className="table-header-icon" />
@@ -292,7 +315,7 @@ const BasicTable = () => {
                         <div className='columnName'>Jira Link</div><LinkIcon className="table-header-icon" />
                       </TableCell>
                       <TableCell className="highlight-header">
-                        <div className='columnName'>Delete Request</div>
+                        <div className='columnName'>Additional actions</div>
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -311,6 +334,7 @@ const BasicTable = () => {
                         finalDecision={finalDecision}
                         requestorNames={requestorNames}
                         setRows={setRows}
+                        fetchData={fetchData}
                       />
                     ))}
                   </TableBody>
@@ -320,7 +344,6 @@ const BasicTable = () => {
           </Card>
         </div>
       </div>
-      <UdateRquest finalDecisionChose={finalDecisionChose} />
       <MyModal visible={modalVisible} onClose={closeModal} onOk={closeModal} onAddRequest={addRequest} />
     </DndProvider>
   );

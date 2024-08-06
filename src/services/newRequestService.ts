@@ -2,11 +2,11 @@ import { AddDetails } from '../repositories/newRequestRepo';
 import GroupRepo from '../repositories/groupRepo';
 import { pool } from '../config/db';
 import { Request as RequestModel } from '../models/requestModel';
-
+import sendSlackMessage from './sendSlackMessege';
 export default class RequestService {
     static async createDetailsRequest(
         title: string,
-        description: string,
+        description: string | undefined,
         JiraLink: string,
         priority: string,
         requestorGroup: string,
@@ -14,6 +14,7 @@ export default class RequestService {
         affectedGroupList: string[],
         planned: string
     ): Promise<{ request: RequestModel, productManagerName: string }> {
+        
         const allGroups = await GroupRepo.getAllGroup();
         const group = allGroups.find(g => g.name === requestorGroup);
 
@@ -45,8 +46,11 @@ export default class RequestService {
             return group.id;
         });
 
-        const newRequest = await AddDetails(title, group.id, description, JiraLink, priorityId, productManagerId, affectedGroupIds, planned);
+        const newRequest = await AddDetails(title, group.id, description || '', JiraLink, priorityId, productManagerId, affectedGroupIds, planned);
 
+        // Send notification to Slack
+        const message = `New request created: ${title}`;
+        await sendSlackMessage(message);
         return {
             request: newRequest,
             productManagerName: productManagerName,
