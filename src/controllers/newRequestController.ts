@@ -3,15 +3,19 @@ import RequestService from '../services/newRequestService';
 
 export const CreateDetailsRequest = async (req: Request, res: Response): Promise<void> => {
     const { title, description, JiraLink, priority, requestorGroup, productmanageremail, affectedGroupList, planned } = req.body;
-
+    console.log('Received request data:', req.body); 
     if (!title) {
         res.status(400).send({ error: 'Title is required' });
         return;
     }
-    if (!JiraLink) {
-        res.status(400).send({ error: 'JiraLink is required' });
+    if (!description) {
+        res.status(400).send({ error: 'Description is required' });
         return;
     }
+    // if (!JiraLink) {
+    //     res.status(400).send({ error: 'JiraLink is required' });
+    //     return;
+    // }
     if (!priority) {
         res.status(400).send({ error: 'Priority is required' });
         return;

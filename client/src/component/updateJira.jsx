@@ -1,38 +1,38 @@
 // 
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
-import { updateDescription } from './services'; 
+import { updateJira } from './services'; 
 
-const UpdateDescriptionDialog = ({ open, onClose, rowId, currentDescription }) => {
-    console.log(`rowId, ${rowId} currentDescription ${currentDescription}`);
-    const [newDescription, setNewDescription] = useState(currentDescription);
+const UpdateJira = ({ open, onClose, rowId, currentJira }) => {
+    console.log(`rowId, ${rowId} currentJira ${currentJira}`);
+    const [newJira, setNewJira] = useState(currentJira);
 
-    const handleDescriptionChange = (e) => {
-        setNewDescription(e.target.value);
+    const handleJiraChange = (e) => {
+        setNewJira(e.target.value);
     };
 
     const handleSave = async () => {
         try {
-            await updateDescription(rowId, newDescription);
-            console.log('Description updated successfully');
+            await updateJira(rowId, newJira);
+            console.log('Jira updated successfully');
             onClose();
         } catch (error) {
-            console.error('Failed to update the description:', error);
+            console.error('Failed to update the Jira:', error);
         }
     };
 
     return (
         <Dialog open={open} onClose={onClose}>
-            <DialogTitle>Update Description</DialogTitle>
+            <DialogTitle>Update Jira</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus
                     margin="dense"
-                    label="New Description"
+                    label="New Jira"
                     type="text"
                     fullWidth
-                    value={newDescription}
-                    onChange={handleDescriptionChange}
+                    value={newJira}
+                    onChange={handleJiraChange}
                 />
             </DialogContent>
             <DialogActions>
@@ -47,4 +47,4 @@ const UpdateDescriptionDialog = ({ open, onClose, rowId, currentDescription }) =
     );
 };
 
-export default UpdateDescriptionDialog;
+export default UpdateJira;

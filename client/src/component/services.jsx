@@ -111,25 +111,25 @@ export const getAllProductsManager = async () => {
 };
 export const updateFinalDecision = async (requestId, finalDecision, jiraLinkOrComment) => {
     try {
-      const response = await axios.put(`${API_URL}/updateFinalDecision/${requestId}`, { finalDecision, jiraLinkOrComment });
-      return response.data;
+        const response = await axios.put(`${API_URL}/updateFinalDecision/${requestId}`, { finalDecision, jiraLinkOrComment });
+        return response.data;
     } catch (error) {
-      console.error('Error updating final decision:', error);
-      throw error;
+        console.error('Error updating final decision:', error);
+        throw error;
     }
-  };
-  export const updatePlanned = async (requestId, plans) => {
+};
+export const updatePlanned = async (requestId, plans) => {
     try {
-      const response = await axios.put(`${API_URL}/update-planned`, { requestId, plans });
-      return response.data;
+        const response = await axios.put(`${API_URL}/update-planned`, { requestId, plans });
+        return response.data;
     } catch (error) {
-      console.error('Error updating final decision:', error);
-      throw error;
+        console.error('Error updating final decision:', error);
+        throw error;
     }
-  };
+};
 export const updatePriority = async (requestId, priorityName) => {
     try {
-        const response = await axios.put(`${API_URL}/update-priority`, {requestId,  priorityName });
+        const response = await axios.put(`${API_URL}/update-priority`, { requestId, priorityName });
         return response.data;
     } catch (error) {
         console.error('Error updating priority:', error);
@@ -139,7 +139,7 @@ export const updatePriority = async (requestId, priorityName) => {
 
 export const updateRequestor = async (requestId, productManagerName) => {
     try {
-        const response = await axios.put(`${API_URL}/update-product-manager`, {requestId,  productManagerName });
+        const response = await axios.put(`${API_URL}/update-product-manager`, { requestId, productManagerName });
         return response.data;
     } catch (error) {
         console.error('Error updating priority:', error);
@@ -148,7 +148,7 @@ export const updateRequestor = async (requestId, productManagerName) => {
 };
 export const updateRequestorGroup = async (requestId, groupName) => {
     try {
-        const response = await axios.put(`${API_URL}/update-requestor-group`, {requestId,  groupName });
+        const response = await axios.put(`${API_URL}/update-requestor-group`, { requestId, groupName });
         return response.data;
     } catch (error) {
         console.error('Error updating priority:', error);
@@ -168,47 +168,66 @@ export const deleteProductManager = async (email) => {
 export const addProductManager = async (email, productManagerName) => {
     console.log('try')
     try {
-       const response = await axios.post(`${API_URL}/addProductManager/${email}`, { productManagerName });
-       return response.data;
+        const response = await axios.post(`${API_URL}/addProductManager/${email}`, { productManagerName });
+        return response.data;
     } catch (error) {
-      console.error('Error adding product manager:', error);
-      throw error;
+        console.error('Error adding product manager:', error);
+        throw error;
     }
-  };
-  export const addQ = async (year,quarter,isCurrent) => {
+};
+export const currentQ = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/getQ`);
+        return response.data;
+    }
+    catch (error) {
+        console.error('Error update request:', error);
+        throw error;
+    }
+};
+export const addQ = async (year, quarter, isCurrent) => {
     console.log(year)
     console.log(quarter)
     console.log(isCurrent)
     console.log('try')
     try {
         console.log(`${API_URL}/set-current-quarter`)
-       const response = await axios.post(`${API_URL}/set-current-quarter`, { year,quarter ,isCurrent});
-       return response.data;
+        const response = await axios.post(`${API_URL}/set-current-quarter`, { year, quarter, isCurrent });
+        return response.data;
     } catch (error) {
-      console.error('Error adding product manager:', error);
-      throw error;
+        console.error('Error adding product manager:', error);
+        throw error;
     }
-  };
-  export const addAdmin = async (email, productManagerName) => {
+};
+export const addAdmin = async (email, productManagerName) => {
     console.log('try')
     try {
-       const response = await axios.post(`${API_URL}/add-admin/${email}`, { productManagerName });
-       return response.data;
+        const response = await axios.post(`${API_URL}/add-admin/${email}`, { productManagerName });
+        return response.data;
     } catch (error) {
-      console.error('Error adding product manager:', error);
-      throw error;
+        console.error('Error adding product manager:', error);
+        throw error;
     }
-  };
-  export const addGroup = async (groupName) => {
+};
+export const updateStatus = async (requestId, groupName, statusName) => {
+    try {
+        const response = await axios.put(`${API_URL}/update-affected-groups-status`, { requestId, groupName, statusName });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching groups:', error);
+        throw error;
+    }
+};
+export const addGroup = async (groupName) => {
     console.log('Trying to add group');
     try {
-     const response = await axios.post(`${API_URL}/add-group`, { groupName });
-      return response.data;
+        const response = await axios.post(`${API_URL}/add-group`, { groupName });
+        return response.data;
     } catch (error) {
-      console.error('Error adding group:', error);
-      throw error;
+        console.error('Error adding group:', error);
+        throw error;
     }
-  };
+};
 export const addNewRequest = async (newRequest) => {
     try {
         console.log('Adding new request')
@@ -224,48 +243,40 @@ export const addNewRequest = async (newRequest) => {
     }
 };
 
-export const updateDescription = async (id,description) => {
-    try{
-     const response = await axios.put(`${API_URL}/update-description`, {id,description});
-     return response.data;
-    } catch (error){
+export const updateDescription = async (id, description) => {
+    try {
+        const response = await axios.put(`${API_URL}/update-description`, { id, description });
+        return response.data;
+    } catch (error) {
         console.error('Error update request:', error);
         throw error;
     }
 };
 
-export const updateTitle = async (id,title) => {
-    try{
-     const response = await axios.put(`${API_URL}/update-title`,{id,title} );
-     return response.data;
-    } catch (error){
-        console.error('Error update request:', error);
-        throw error;
-    }
-};
-export const updateJira= async (id,jira) => {
-    try{
-     const response = await axios.put(`${API_URL}/update-jira`,{id,jira} );
-     return response.data;
-    } catch (error){
+
+export const updateJira = async (id, jira) => {
+    try {
+        const response = await axios.put(`${API_URL}/update-jira`, { id, jira });
+        return response.data;
+    } catch (error) {
         console.error('Error update jira in  request:', error);
         throw error;
     }
 };
-export const updateComment= async (id,comment) => {
-    try{
-     const response = await axios.put(`${API_URL}/update-comment`, {id,comment});
-     return response.data;
-    } catch (error){
+export const updateComment = async (id, comment) => {
+    try {
+        const response = await axios.put(`${API_URL}/update-comment`, { id, comment });
+        return response.data;
+    } catch (error) {
         console.error('Error update jira in  request:', error);
         throw error;
     }
 };
-export const exportTable= async () => {
-    try{
-     const response = await axios.get(`${API_URL}/export/csv`);
-     return response.data;
-    } catch (error){
+export const exportTable = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/export/csv`);
+        return response.data;
+    } catch (error) {
         console.error('Error export the table:', error);
         throw error;
     }
@@ -273,8 +284,22 @@ export const exportTable= async () => {
 
 
 
+
+export const updateIdRow = async (id1, id2) => {
+    try {
+        const response = await axios.put(`http://localhost:3001/api/update-swapIdDrag/${id1}/${id2}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error update request:', error);
+
+        throw error;
+    }
+};
+
+
+
 export const deleteGroup = async (groupId) => {
-  
+
     try {
         const response = await axios.delete(`${API_URL}/delete-group/${groupId}`);
         return response.data;
@@ -282,54 +307,57 @@ export const deleteGroup = async (groupId) => {
         console.error('Error delete group:', error);
     }
 };
-export const updateIdRow = async (id1,id2) => {
-    try{
-     const response = await axios.put(`http://localhost:3001/api/update-swapIdDrag/${id1}/${id2}`);
-     return response.data;
-    } catch (error){
+export const updateTitle = async (id, title) => {
+    try {
+        const response = await axios.put(`${API_URL}/update-title`, { id, title });
+        return response.data;
+    } catch (error) {
         console.error('Error update request:', error);
-
         throw error;
     }
 };
-export const updateProductManagerName= async (email,productManagerName) => {
-    try{
-     const response = await axios.put(`http://localhost:3001/api/update-product-manager-name/${email}`,productManagerName);
-     return response.data;
-    } catch (error){
-        console.error('Error update request:', error);
-
+export const removeGroupFromManager = async (email, groupName) => {
+    try {console.log(`${API_URL}/removeGroupFromManager`)
+    console.log(email, groupName)
+        const response = await axios.delete(`${API_URL}/removeGroupFromManager`, {
+            data: { email, groupName }  // Add data object to specify request body for DELETE request
+        });
+        console.log('Group removed successfully:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error removing group from manager:', error);
         throw error;
     }
 };
-
-export async function addGroupToManager(email, groupName) {
+export const  addGroupToManager = async (groupName, email) => {
     try {
-      const response = await axios.post(`${API_URL}/addGroupToManager`, {
-        email,
-        groupName,
-      });
-  
-      console.log('Group added successfully:', response.data);
-      return response.data;
+
+        const response = await axios.post(`${API_URL}/addGroupToManager`, {
+         email,
+            groupName
+        });
+
+        console.log('Group added successfully:', response.data);
+        return response.data;
     } catch (error) {
-      console.error('Error adding group to manager:', error);
-      throw error;
+        console.error('Error adding group to manager:', error);
+        throw error;
     }
-  };
-
-  export async function removeGroupFromManager(email, groupName) {
+};
+export const updateProductManagerName = async (email, productManagerName) => {
     try {
-      const response = await axios.post(`${API_URL}/removeGroupFromManager`, {
-        email,
-        groupName,
-      });
-  
-      console.log('Group removed successfully:', response.data);
-      return response.data;
+        console.log("hi")
+        console.log(`emal :${email}`)
+        console.log(productManagerName)
+        const response = await axios.put(`http://localhost:3001/api/update-product-manager-name/${email}`, 
+            {productManagerName}
+        );
+        return response.data;
     } catch (error) {
-      console.error('Error removing group from manager:', error);
-      throw error;
+
+      console.error('Error update request:', error);
+
+        throw error;
     }
   };
   
@@ -343,3 +371,4 @@ export async function addGroupToManager(email, groupName) {
       throw error;
     }
   };
+
