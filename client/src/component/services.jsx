@@ -316,3 +316,13 @@ export const updateProductManagerName= async (email,productManagerName) => {
         throw error;
     }
 };
+export const currentQ = async ()=>{
+    try{
+        const response = await axios.get(`${API_URL}/getQ`);
+        return response.data;
+    }
+    catch(error){
+        console.error('Error update request:', error);
+        throw error;
+    }
+    };
