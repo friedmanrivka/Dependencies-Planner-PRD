@@ -291,10 +291,9 @@ export default function Admin() {
           </Button>
         </div>
 
-        {/* AddAdminDialog component */}
+      
         <AddAdminDialog open={adminDialogOpen} onClose={closeAdminDialog} onSubmit={handleAddAdmin} />
 
-        {/* SelectQuarterDialog component */}
         <SelectQuarterDialog open={quarterDialogOpen} onClose={closeQuarterDialog} onSubmit={handleAddQuarter} />
 
         {/* AddPeriodDialog component */}
