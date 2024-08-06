@@ -68,7 +68,9 @@ export const updateProductManagerName = async (req: Request, res: Response): Pro
   try {
     const email = req.params.email;
     const { productManagerName } = req.body;
-
+    console.log("gimni")
+console.log(email)
+console.log(productManagerName)
     await ProductManagerService.updateProductManagerName(email, productManagerName);
     res.status(200).send('Product manager name updated successfully');
   } catch (error) {
