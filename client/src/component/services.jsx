@@ -118,7 +118,15 @@ export const updateFinalDecision = async (requestId, finalDecision, jiraLinkOrCo
       throw error;
     }
   };
-
+  export const updatePlanned = async (requestId, plans) => {
+    try {
+      const response = await axios.put(`${API_URL}/update-planned`, { requestId, plans });
+      return response.data;
+    } catch (error) {
+      console.error('Error updating final decision:', error);
+      throw error;
+    }
+  };
 export const updatePriority = async (requestId, priorityName) => {
     try {
         const response = await axios.put(`${API_URL}/update-priority`, {requestId,  priorityName });
@@ -168,8 +176,12 @@ export const addProductManager = async (email, productManagerName) => {
     }
   };
   export const addQ = async (year,quarter,isCurrent) => {
+    console.log(year)
+    console.log(quarter)
+    console.log(isCurrent)
     console.log('try')
     try {
+        console.log(`${API_URL}/set-current-quarter`)
        const response = await axios.post(`${API_URL}/set-current-quarter`, { year,quarter ,isCurrent});
        return response.data;
     } catch (error) {

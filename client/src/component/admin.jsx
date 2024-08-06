@@ -154,10 +154,10 @@ export default function Admin() {
   };
 
   // Function to handle the submission of the selected quarter
-  const handleAddQuarter = async (year, quarter) => {
+  const handleAddQuarter = async (year, quarter,isCurrent) => {
     try {
       // Call the addQ service function to update the current quarter
-      await addQ(year, quarter);
+      await addQ(year, quarter,isCurrent);
       console.log('Current quarter updated successfully');
       // Update the UI or display a success message
     } catch (error) {

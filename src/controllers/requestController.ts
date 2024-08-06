@@ -158,6 +158,22 @@ export const updateAffectedGroup = async (req: Request, res: Response): Promise<
         res.status(500).send('Internal Server Error');
     }
     
-}
+};
+
+export const updatePlans = async (req: Request, res: Response): Promise<void> => {
+  console.log('Controller: Entering updatePlans method');
+  try {
+    const { requestId, plans } = req.body; // Destructure requestId and plans from request body
+
+    // Call the repository function to update plans
+    await RequestRepo.updatePlans(requestId, plans);
+
+    console.log('Controller: Plans updated successfully');
+    res.status(200).json({ message: 'Plans updated successfully' });
+  } catch (error) {
+    console.error('Controller: Error updating plans:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
 
 
