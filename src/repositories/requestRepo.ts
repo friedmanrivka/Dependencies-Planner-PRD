@@ -377,4 +377,22 @@ export default class RequestRepo {
           throw err;
         }
       }
+      static async updatePlans(requestId: number, plans: string): Promise<void> {
+        try {
+          // Update the plans column in the request table
+          const query = `
+            UPDATE request
+            SET planned = $1
+            WHERE id = $2
+          `;
+    
+          // Execute the query with parameterized values
+          await pool.query(query, [plans, requestId]);
+    
+          console.log('Repository: Plans updated successfully');
+        } catch (err) {
+          console.error('Repository: Error updating plans:', err);
+          throw err; // Rethrow the error to be handled by the controller
+        }
+      }
       }

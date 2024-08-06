@@ -162,8 +162,15 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
     }
   };
 
-  const handlePlannedChange = (event) => {
-    setSelectedPlanned(event.target.value);
+  const handlePllanedChange = async (event) => {
+    const newPllaned = event.target.value;
+    setSelectedPlanned(newPllaned);
+    try {
+      await updatePlanned(row.id, newPllaned);
+      console.log('Planned updated successfully');
+    } catch (error) {
+      console.error('Failed to update the planned:', error);
+    }
   };
 
   const handleRequestorGroupChange = async (event) => {
@@ -293,7 +300,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
         <TableCell align="right">
           <Select
             value={selectedPlanned}
-            onChange={handlePlannedChange}
+            onChange={handlePllanedChange}
             displayEmpty
             style={{ backgroundColor: '#d3d3d3' }}
             MenuProps={{
