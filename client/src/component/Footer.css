@@ -1,0 +1,26 @@
+/* src/components/Footer.css */
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Adjust height as needed */
+  background-color: #ffffff; /* Set background color */
+}
+
+.footer-content {
+  text-align: center;
+}
+
+.footer-logo {
+  display: block;
+  margin: 0 auto; /* Center the logo */
+  max-height: 50px; /* Adjust as needed */
+  margin-bottom: 10px; /* Space between logo and text */
+}
+
+.footer-text {
+  font-weight: 400;
+  font-size: 14px;
+  color: #333333; /* Adjust text color as needed */
+}

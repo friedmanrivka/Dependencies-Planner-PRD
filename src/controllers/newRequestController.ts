@@ -8,10 +8,14 @@ export const CreateDetailsRequest = async (req: Request, res: Response): Promise
         res.status(400).send({ error: 'Title is required' });
         return;
     }
-    if (!JiraLink) {
-        res.status(400).send({ error: 'JiraLink is required' });
+    if (!description) {
+        res.status(400).send({ error: 'Description is required' });
         return;
     }
+    // if (!JiraLink) {
+    //     res.status(400).send({ error: 'JiraLink is required' });
+    //     return;
+    // }
     if (!priority) {
         res.status(400).send({ error: 'Priority is required' });
         return;
