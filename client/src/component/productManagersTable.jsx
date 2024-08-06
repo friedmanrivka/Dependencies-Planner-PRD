@@ -2,6 +2,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import React, { useState } from 'react';
 import './BasicTable.css';
+import { Modal, Form, Input } from 'antd';
+import { Select, MenuItem } from '@mui/material';
+
 import { useDataContext } from './Contexts/DataContext';
 import {
   Table,
@@ -21,14 +24,18 @@ import {
   TextField
 } from '@mui/material';
 import AddAdminDialog from './AddAdminDialog'; // Import the AddAdminDialog component
-import { deleteProductManager, updateProductManagerName, addProductManager } from './services';
+import { deleteProductManager, updateProductManagerName, addProductManager ,addGroupToManager,removeGroupFromManager} from './services';
 
 const ProductManagersTable = () => {
   const { productManagers } = useDataContext();
   const [productManagersData, setProductManagersData] = productManagers;
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentEmail, setCurrentEmail] = useState('');
+  const [insert, setInsert] = useState('');
+  const [delete1, setDelete] = useState('');
   const [newName, setNewName] = useState('');
+  const [emailGroup, setEmailGroup] = useState('');
+  const [insertGroup, setInsertGroup] = useState('');
   const [addAdminDialogOpen, setAddAdminDialogOpen] = useState(false); // State to control AddAdminDialog
 
   // Function to handle deletion of a product manager
@@ -43,7 +50,21 @@ const ProductManagersTable = () => {
     setCurrentEmail(email);
     setDialogOpen(true);
   };
+  const handleChangeDelete = async (event) => {
+    setDelete(event);
 
+    //   try {
+    //     await updateStatus(requestId,groupName,statusName);
+    //     console.log('Updated Succesfuly');
+    //     refreshRows()
+    //   } catch (error) {
+    //     console.error('failed:', error);
+    //   }
+  };
+  const handleChangeInsert = async (email,event) => {
+    setInsert(event);
+    setEmailGroup(email);
+  };
   // Function to close the update dialog
   const handleDialogClose = () => {
     setDialogOpen(false);
@@ -52,17 +73,71 @@ const ProductManagersTable = () => {
   };
 
   // Function to update product manager's name
-  const handleUpdate = async () => {
-    await updateProductManagerName(currentEmail, newName);
-    // Update the UI by changing the product manager's name
-    setProductManagersData((prevData) =>
-      prevData.map((pm) =>
-        pm.email === currentEmail ? { ...pm, productManagerName: newName } : pm
-      )
-    );
-    handleDialogClose();
-  };
+  // const handleUpdate = async () => {
+  //   console.log(currentEmail)
+  //     console.log(newName)
+  //   await updateProductManagerName(currentEmail, newName);
+  //     if(delete1!='') 
+  //       try{
+  //     console.log(currentEmail)
+  //     console.log(delete1)
+  //           const del = await removeGroupFromManager(currentEmail,delete1); }
+  //       catch(error){
+  //           console.error('Error fetching data:', error);}   
+  //     if(insert!='')
+  //       try{
+  //         console.log(currentEmail)
+  //         console.log(insertGroup)
+  //           const del2 =await addGroupToManager(currentEmail,insertGroup);}
+  //       catch(error){
+  //             console.error('Error fetching data:', error);}  
+ 
+  //     setDelete('');
+  //     setInsert('');
+  //   // Update the UI by changing the product manager's name
+  //   setProductManagersData((prevData) =>
+  //     prevData.map((pm) =>
+  //       pm.email === currentEmail ? { ...pm, productManagerName: newName } : pm
+  //     )
+  //   );
+  //   handleDialogClose();
+  // };
+  const handleUpdate = async () => { 
+    try {      
+      console.log(`Updating name for email: ${currentEmail} to new name: ${newName}`);
 
+       await updateProductManagerName(currentEmail,newName);
+      if (insert !== '') {
+        console.log(`Inserting group: ${insert} for email: ${currentEmail}`);
+        await addGroupToManager(insert[0],emailGroup);
+      }
+         if (delete1 !== '') {
+        console.log(`Deleting group: ${delete1} for email: ${currentEmail}`);
+        await removeGroupFromManager(currentEmail,delete1);
+      }
+
+
+
+      
+
+  
+
+  
+      setProductManagersData((prevData) =>
+        prevData.map((pm) =>
+          pm.email === currentEmail ? { ...pm, productManagerName: newName } : pm
+        )
+      );
+  
+      handleDialogClose();
+    } catch (error) {
+      console.error('Update failed 111:', error);
+      // הצג הודעת שגיאה למשתמש
+    }
+  
+    setDelete('');
+    setInsert('');
+  };
   // Function to open the AddAdminDialog
   const handleAddAdminClick = () => {
     setAddAdminDialogOpen(true);
@@ -144,6 +219,45 @@ const ProductManagersTable = () => {
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
           />
+
+          {/* <Select
+            placeholder="delete group"
+            // onChange={(value) => handleChange('planned', value)}
+          >
+            {productManagersData.map((item, index) => (
+              <Option value={item.groupNames} key={index}>{item}</Option>
+            ))}
+          </Select> */}
+
+          <DialogTitle>delete a group</DialogTitle>
+          <Select
+            defaultValue={"gggg"}
+            placeholder="delete group"
+            onChange={(event) => handleChangeDelete(event.target.value)}
+          >
+            {productManagersData
+              .filter((item) => item.email === currentEmail)
+              .flatMap((item) =>
+                item.groupNames.map((groupName, index) => (
+                  <MenuItem key={index} value={groupName}>
+                    {groupName}
+                  </MenuItem>
+                ))
+              )}
+          </Select>
+          <DialogTitle>insert a group</DialogTitle>
+          <Select
+            defaultValue={"gggg"}
+            placeholder="insere group"
+            onChange={(event) => handleChangeInsert(currentEmail,event.target.value)}
+          >
+            {productManagersData.map((item, index) => (
+              <MenuItem value={item.groupNames} key={index}>
+                {item.groupNames}
+              </MenuItem>
+
+            ))}
+          </Select>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose} color="primary">

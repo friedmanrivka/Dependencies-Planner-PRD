@@ -41,7 +41,6 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
     console.error('failed to get current q:', error)
    }}
   useEffect(() => {
-
    fetchData2()
   }, [group, planned, priorityOptions]);
 

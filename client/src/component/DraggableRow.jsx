@@ -7,7 +7,7 @@ import './BasicTable.css';
 import { Select, MenuItem, Checkbox, ListItemText, List, ListItem, Divider, IconButton, FormControl, InputLabel, Card, CardContent, AppBar, Toolbar, Typography } from '@mui/material';
 import DeleteComponent from './deleteReq'
 
-import { updatePriority, updateRequestor, updateRequestorGroup, updateFinalDecision,updateStatus,updatePlanned } from './services'; // Import the update service
+import { updatePriority, updateRequestor, updateRequestorGroup, updateFinalDecision, updateStatus, updatePlanned } from './services'; // Import the update service
 
 import FinalDecisionDialog from './updateFinalDecision';
 import UpdateTitleDialog from './UpdateTitleDialog';
@@ -124,15 +124,15 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
   const handlePriorityChange = async (event) => {
     if (isEditing) {
 
-    const newPriority = event.target.value;
-    setSelectedPriority(newPriority);
-    try {
-      await updatePriority(row.id, newPriority);
-      console.log('Priority updated successfully');
-    } catch (error) {
-      console.error('Failed to update the priority:', error);
+      const newPriority = event.target.value;
+      setSelectedPriority(newPriority);
+      try {
+        await updatePriority(row.id, newPriority);
+        console.log('Priority updated successfully');
+      } catch (error) {
+        console.error('Failed to update the priority:', error);
+      }
     }
-  }
   };
   const handleOpen = (rowTitle) => {
     if (isEditing) {
@@ -168,8 +168,8 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
   //     return newStatus;
   //   });
   // };
-  const handleStatusChange = async (requestId,groupName,statusName,event, groupIndex) => {
-    console.log({requestId,groupName,statusName,event, groupIndex})
+  const handleStatusChange = async (requestId, groupName, statusName, event, groupIndex) => {
+    console.log({ requestId, groupName, statusName, event, groupIndex })
     setSelectedStatus((prevStatus) => {
 
       const newStatus = [...prevStatus];
@@ -177,13 +177,13 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
       return newStatus;
     });
     // server
-      try {
-        await updateStatus(requestId,groupName,statusName);
-        console.log('Updated Succesfuly');
-        refreshRows()
-      } catch (error) {
-        console.error('failed:', error);
-      }
+    try {
+      await updateStatus(requestId, groupName, statusName);
+      console.log('Updated Succesfuly');
+      refreshRows()
+    } catch (error) {
+      console.error('failed:', error);
+    }
   };
   const handlePllanedChange = async (event) => {
     const newPllaned = event.target.value;
@@ -199,39 +199,41 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
   const handleRequestorGroupChange = async (event) => {
     if (isEditing) {
 
-    const newRequestorGroup = event.target.value;
-    setSelectedRequestorGroup(newRequestorGroup);
-    try {
-      await updateRequestorGroup(row.id, newRequestorGroup);
-      console.log('requestor group updated successfully');
-    } catch (error) {
-      console.error('Failed to update the requestor group:', error);
-    }}
+      const newRequestorGroup = event.target.value;
+      setSelectedRequestorGroup(newRequestorGroup);
+      try {
+        await updateRequestorGroup(row.id, newRequestorGroup);
+        console.log('requestor group updated successfully');
+      } catch (error) {
+        console.error('Failed to update the requestor group:', error);
+      }
+    }
   };
   const handleFinalDecisionChange = (event) => {
     if (isEditing) {
-    const value = event.target.value;
-    setSelectedFinalDecision(value);
+      const value = event.target.value;
+      setSelectedFinalDecision(value);
 
-    if (value === 'inQ') {
-      setDialogTitle('Insert Jira Link');
-    } else if (value === 'notInQ') {
-      setDialogTitle('Insert Comment');
+      if (value === 'inQ') {
+        setDialogTitle('Insert Jira Link');
+      } else if (value === 'notInQ') {
+        setDialogTitle('Insert Comment');
+      }
+      setDialogOpen(true);
     }
-    setDialogOpen(true);  }
   };
 
   const handleRequestorNameChange = async (event) => {
     if (isEditing) {
 
-    const newRequestor = event.target.value;
-    setSelectedRequestorName(newRequestor);
-    try {
-      await updateRequestor(row.id, newRequestor);
-      console.log('requestor updated successfully');
-    } catch (error) {
-      console.error('Failed to update the requestor:', error);
-    }
+      const newRequestor = event.target.value;
+      setSelectedRequestorName(newRequestor);
+      try {
+        await updateRequestor(row.id, newRequestor);
+        console.log('requestor updated successfully');
+      } catch (error) {
+        console.error('Failed to update the requestor:', error);
+      }
     }
   };
 
@@ -388,27 +390,18 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
           </Select>
         </TableCell>
         <TableCell align="right" >show group</TableCell>
-        {/* {showGroups && group.map((item, groupIndex) => (
+        {showGroups && group.map((item, groupIndex) => (
           <TableCell align="right" key={groupIndex}>
             <StatusSelect
-              value={row.affectedGroupsList[groupIndex]?.statusname || 'Pending Response'}
-              onChange={(event) => handleStatusChange(event, groupIndex)}
-              options={status}/>
+              value={selectedStatus[groupIndex]?.statusname || 'Pending Response'}
+              onChange={(event) => handleStatusChange(row.id, row.affectedGroupsList[groupIndex].groupname, event.target.value, event, groupIndex,)}
+              options={status}
+            />
           </TableCell>
-        ))} */}
-        
- {showGroups && group.map((item, groupIndex) => (
-        <TableCell align="right" key={groupIndex}>      
-          <StatusSelect
-            value={selectedStatus[groupIndex]?.statusname || 'Pending Response'}
-            onChange={(event) => handleStatusChange(row.id,row.affectedGroupsList[groupIndex].groupname,event.target.value,event, groupIndex,)}          
-            options={status}
-          />
-        </TableCell>
-))}
+        ))}
         <TableCell align="right" onDoubleClick={() => handleOpenComment(row)}>{row.comment}</TableCell>
         <TableCell align="right" onDoubleClick={() => handleOpenJira(row)}><a href={row.jiralink}>Jira Link</a></TableCell>
-        <TableCell align="right" id='iconButon'><DeleteComponent id={row.id} fetchData={fetchData} /><EditIcon onClick={handleEditClick} style={{ cursor: 'pointer',color: isEditing ? '#58D64D' : 'black'}} /></TableCell>
+        <TableCell align="right" id='iconButon'><DeleteComponent id={row.id} fetchData={fetchData} /><EditIcon onClick={handleEditClick} style={{ cursor: 'pointer', color: isEditing ? '#58D64D' : 'black' }} /></TableCell>
       </TableRow>
       <FinalDecisionDialog
         open={dialogOpen}
