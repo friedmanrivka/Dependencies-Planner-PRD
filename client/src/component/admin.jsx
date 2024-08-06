@@ -1,20 +1,37 @@
 
+// import './BasicTable.css';
 // import React, { useState } from 'react';
 // import ProductManagersTable from './productManagersTable';
 // import GroupTable from './groupTable';
 // import { DataProvider } from './Contexts/DataContext';
 // import Button from '@mui/material/Button';
 // import AddAdminDialog from './AddAdminDialog'; // Import the AddAdminDialog component
-// import { addAdmin,addQ } from './services'; // Import the addAdmin function
-// import SelectQuarterDialog from './selectQuarterDialog '
+// import SelectQuarterDialog from './selectQuarterDialog'; // Import the SelectQuarterDialog component
+// import { addAdmin, addQ } from './services'; // Import the addAdmin and addQ functions
+// import {
+//   Select,
+//   MenuItem,
+//   Checkbox,
+//   ListItemText,
+//   List,
+//   ListItem,
+//   IconButton,
+//   FormControl,
+//   InputLabel,
+//   Card,
+//   CardContent,
+//   AppBar,
+//   Toolbar,
+//   Typography
+// } from '@mui/material';
 
 // // Admin Component
 // export default function Admin() {
-//   // State variables for showing tables and dialog
+//   // State variables for showing tables and dialogs
 //   const [showTable, setShowTable] = useState(false);
 //   const [showGroupsTable, setShowGroupsTable] = useState(false);
-//   const [dialogOpen, setDialogOpen] = useState(false); // State for controlling dialog visibility
-//   const [quarterDialogOpen, setQuarterDialogOpen] = useState(false);
+//   const [adminDialogOpen, setAdminDialogOpen] = useState(false); // State for AddAdminDialog
+//   const [quarterDialogOpen, setQuarterDialogOpen] = useState(false); // State for SelectQuarterDialog
 
 //   // Toggle function to show/hide Product Managers Table
 //   const toggleTableVisibility = () => {
@@ -27,13 +44,13 @@
 //   };
 
 //   // Function to open the AddAdminDialog
-//   const openDialog = () => {
-//     setDialogOpen(true);
+//   const openAdminDialog = () => {
+//     setAdminDialogOpen(true);
 //   };
 
 //   // Function to close the AddAdminDialog
-//   const closeDialog = () => {
-//     setDialogOpen(false);
+//   const closeAdminDialog = () => {
+//     setAdminDialogOpen(false);
 //   };
 
 //   // Function to handle the addition of a new admin
@@ -49,50 +66,92 @@
 //     }
 //   };
 
+//   // Function to open the SelectQuarterDialog
+//   const openQuarterDialog = () => {
+//     setQuarterDialogOpen(true);
+//   };
+
+//   // Function to close the SelectQuarterDialog
+//   const closeQuarterDialog = () => {
+//     setQuarterDialogOpen(false);
+//   };
+
+//   // Function to handle the submission of the selected quarter
+//   const handleAddQuarter = async (year, quarter,isCurrent) => {
+//     try {
+//       // Call the addQ service function to update the current quarter
+//       await addQ(year, quarter,isCurrent);
+//       console.log('Current quarter updated successfully');
+//       // Update the UI or display a success message
+//     } catch (error) {
+//       console.error('Error updating current quarter:', error);
+//       // Optionally, display an error message to the user
+//     }
+//   };
+
 //   return (
 //     <DataProvider>
+//        <AppBar position="sticky" style={{ backgroundColor: '#00C2FF' }}>
+//         <Toolbar>
+//           <Typography variant="h6" style={{ flexGrow: 1 }}>
+//             Dependencies Planner PRD
+//           </Typography>
+         
+//         </Toolbar>
+//       </AppBar>
 //       <div className="admin-page" style={{ padding: '20px' }}>
 //         {/* Button to toggle Product Managers Table visibility */}
-//         <Button
+//         <Button className='adminbutton'
 //           variant="contained"
-//           style={{ backgroundColor: '#58D64D', width: '350px', height: '60px', marginBottom: '20px' }}
+//           style={{  marginBottom: '20px' }}
 //           onClick={toggleTableVisibility}
 //         >
 //           {showTable ? 'Hide Product Managers Table' : 'Show Product Managers Table'}
 //         </Button>
-        
+
 //         {/* Render Product Managers Table if showTable is true */}
 //         {showTable && <ProductManagersTable />}
-        
+
 //         {/* Button to toggle Groups Table visibility */}
-//         <Button
+//         <Button className='adminbutton'
 //           variant="contained"
-//           style={{ backgroundColor: '#58D64D', width: '350px', height: '60px', marginBottom: '20px', marginLeft: '10%' }}
+//           style={{ marginBottom: '20px', marginLeft: '10%' }}
 //           onClick={toggleGroupsTableVisibility}
 //         >
 //           {showGroupsTable ? 'Hide Groups Table' : 'Show Groups Table'}
 //         </Button>
-        
+
 //         {/* Render Groups Table if showGroupsTable is true */}
 //         {showGroupsTable && <GroupTable />}
 
 //         {/* Button to open AddAdminDialog */}
-//         <Button
+//         <Button className='adminbutton'
 //           variant="contained"
-//           style={{ backgroundColor: '#FFA500', width: '350px', height: '60px', marginTop: '20px' }}
-//           onClick={openDialog}
+//           style={{  marginTop: '20px' }}
+//           onClick={openAdminDialog}
 //         >
 //           Add New Admin
 //         </Button>
 
 //         {/* AddAdminDialog component */}
-//         <AddAdminDialog open={dialogOpen} onClose={closeDialog} onSubmit={handleAddAdmin} />
+//         <AddAdminDialog open={adminDialogOpen} onClose={closeAdminDialog} onSubmit={handleAddAdmin} />
+
+//         {/* Button to open SelectQuarterDialog */}
+//         <Button className='adminbutton'
+//           variant="contained"
+//           style={{  marginLeft: '10%' }}
+//           onClick={openQuarterDialog}
+//         >
+//           Add Q
+//         </Button>
+
+//         {/* SelectQuarterDialog component */}
+//         <SelectQuarterDialog open={quarterDialogOpen} onClose={closeQuarterDialog} onSubmit={handleAddQuarter} />
 //       </div>
 //     </DataProvider>
 //   );
 // }
-
-
+import './adminDesign.css';
 import React, { useState } from 'react';
 import ProductManagersTable from './productManagersTable';
 import GroupTable from './groupTable';
@@ -101,6 +160,11 @@ import Button from '@mui/material/Button';
 import AddAdminDialog from './AddAdminDialog'; // Import the AddAdminDialog component
 import SelectQuarterDialog from './selectQuarterDialog'; // Import the SelectQuarterDialog component
 import { addAdmin, addQ } from './services'; // Import the addAdmin and addQ functions
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 
 // Admin Component
 export default function Admin() {
@@ -154,10 +218,10 @@ export default function Admin() {
   };
 
   // Function to handle the submission of the selected quarter
-  const handleAddQuarter = async (year, quarter,isCurrent) => {
+  const handleAddQuarter = async (year, quarter, isCurrent) => {
     try {
       // Call the addQ service function to update the current quarter
-      await addQ(year, quarter,isCurrent);
+      await addQ(year, quarter, isCurrent);
       console.log('Current quarter updated successfully');
       // Update the UI or display a success message
     } catch (error) {
@@ -168,55 +232,67 @@ export default function Admin() {
 
   return (
     <DataProvider>
+      <AppBar position="sticky" style={{ backgroundColor: '#00C2FF' }}>
+        <Toolbar>
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            Dependencies Planner PRD
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <div className="admin-page" style={{ padding: '20px' }}>
-        {/* Button to toggle Product Managers Table visibility */}
-        <Button
-          variant="contained"
-          style={{ backgroundColor: '#58D64D', width: '350px', height: '60px', marginBottom: '20px' }}
-          onClick={toggleTableVisibility}
-        >
-          {showTable ? 'Hide Product Managers Table' : 'Show Product Managers Table'}
-        </Button>
+        <div className="button-container">
+          {/* Button to toggle Product Managers Table visibility */}
+          <Button
+            className="admin-button"
+            variant="contained"
+            onClick={toggleTableVisibility}
+          >
+            {showTable ? 'Hide Product Managers' : 'Show Product Managers'}
+          </Button>
 
-        {/* Render Product Managers Table if showTable is true */}
-        {showTable && <ProductManagersTable />}
+          {/* Button to toggle Groups Table visibility */}
+          <Button
+            className="admin-button"
+            variant="contained"
+            onClick={toggleGroupsTableVisibility}
+          >
+            {showGroupsTable ? 'Hide Groups' : 'Show Groups'}
+          </Button>
 
-        {/* Button to toggle Groups Table visibility */}
-        <Button
-          variant="contained"
-          style={{ backgroundColor: '#58D64D', width: '350px', height: '60px', marginBottom: '20px', marginLeft: '10%' }}
-          onClick={toggleGroupsTableVisibility}
-        >
-          {showGroupsTable ? 'Hide Groups Table' : 'Show Groups Table'}
-        </Button>
+          {/* Button to open AddAdminDialog */}
+          <Button
+            className="admin-button"
+            variant="contained"
+            onClick={openAdminDialog}
+          >
+            Add New Admin
+          </Button>
 
-        {/* Render Groups Table if showGroupsTable is true */}
-        {showGroupsTable && <GroupTable />}
-
-        {/* Button to open AddAdminDialog */}
-        <Button
-          variant="contained"
-          style={{ backgroundColor: '#FFA500', width: '350px', height: '60px', marginTop: '20px' }}
-          onClick={openAdminDialog}
-        >
-          Add New Admin
-        </Button>
+          {/* Button to open SelectQuarterDialog */}
+          <Button
+            className="admin-button"
+            variant="contained"
+            onClick={openQuarterDialog}
+          >
+            Add Q
+          </Button>
+        </div>
 
         {/* AddAdminDialog component */}
         <AddAdminDialog open={adminDialogOpen} onClose={closeAdminDialog} onSubmit={handleAddAdmin} />
 
-        {/* Button to open SelectQuarterDialog */}
-        <Button
-          variant="contained"
-          style={{ backgroundColor: '#00C2FF', width: '350px', height: '60px', marginTop: '20px', marginLeft: '10%' }}
-          onClick={openQuarterDialog}
-        >
-          Update Current Quarter
-        </Button>
-
         {/* SelectQuarterDialog component */}
         <SelectQuarterDialog open={quarterDialogOpen} onClose={closeQuarterDialog} onSubmit={handleAddQuarter} />
+
+        {/* Render Product Managers Table if showTable is true */}
+        {showTable && <ProductManagersTable />}
+
+        {/* Render Groups Table if showGroupsTable is true */}
+        {showGroupsTable && <GroupTable />}
       </div>
+      
+      {/* Background square under buttons */}
+      <div className="background-square"></div>
     </DataProvider>
   );
 }

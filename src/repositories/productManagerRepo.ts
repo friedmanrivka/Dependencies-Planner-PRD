@@ -3,9 +3,8 @@ import { pool } from '../config/db';
 import { ProductManager } from '../models/productManagerModel'
 import GroupRepo from './groupRepo'
 import { TransformedProductManager } from '../models/transformedProductManager '
+import { Group } from '../models/groupModel'
 export default class ProductManagerRepo {
-    
-    //?????????????????????????????????????????????????????????????
     static async deleteRequestById(id: number): Promise<void> {
         const client = await pool.connect();
         try {
@@ -144,7 +143,61 @@ export default class ProductManagerRepo {
           throw err;
         }
       }
-}
+      static async addGroupToManager(email: string, groupName: string): Promise<void> {
+        try {
+         
+          const groups: Group[] = await GroupRepo.getAllGroup();
+    
+          const group = groups.find((group) => group.name === groupName);
+    
+          if (!group) {
+            throw new Error('Group not found');
+          }
+    
+          const groupId = group.id;
+    
+          await pool.query(
+            `UPDATE productmanager
+             SET groupid = array_append(groupid, $1::integer)
+             WHERE email = $2 AND NOT groupid @> ARRAY[$1::integer]`,
+            [groupId, email]
+          );
+    
+          console.log('Repository: Group ID added successfully');
+        } catch (err) {
+          console.error('Repository: Error adding group ID:', err);
+          throw err; // Rethrow to be handled by the controller
+        }
+      }
+      static async removeGroupFromManager(email: string, groupName: string): Promise<void> {
+        try {
+          // Retrieve all groups using the existing getAllGroup function
+          const groups: Group[] = await GroupRepo.getAllGroup();
+    
+          // Find the group by name to get its ID
+          const group = groups.find((group) => group.name === groupName);
+    
+          if (!group) {
+            throw new Error('Group not found');
+          }
+    
+          const groupId = group.id;
+    
+          // Update the product manager's groupid array to remove the group ID
+          await pool.query(
+            `UPDATE productmanager
+             SET groupid = array_remove(groupid, $1::integer)
+             WHERE email = $2 AND groupid @> ARRAY[$1::integer]`,
+            [groupId, email]
+          );
+    
+          console.log('Repository: Group ID removed successfully');
+        } catch (err) {
+          console.error('Repository: Error removing group ID:', err);
+          throw err; // Rethrow to be handled by the controller
+        }
+      }
+    }
 
 
 
