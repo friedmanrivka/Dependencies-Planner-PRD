@@ -146,7 +146,7 @@ const EmailCheckPage = () => {
               src={logoapp}
               alt="logoapp Logo"
               style={{
-                width: 'auto',
+                width: '100%',
                 height: '100%',
                 marginTop: '15%',
               }}
