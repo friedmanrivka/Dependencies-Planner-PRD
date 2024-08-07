@@ -16,7 +16,7 @@ const AddAdminDialog = ({ open, onClose, onSubmit }) => {
     setName(e.target.value);
     setErrorMessage('');
   };
-
+console.log("hdh")
   const validateEmail = (email) => {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return re.test(String(email).toLowerCase());
@@ -40,7 +40,7 @@ const AddAdminDialog = ({ open, onClose, onSubmit }) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Add New Admin</DialogTitle>
-      <DialogContent>
+      <DialogContent> 
  
         <TextField
           autoFocus
