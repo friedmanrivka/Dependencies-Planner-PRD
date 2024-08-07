@@ -26,13 +26,10 @@
   background: linear-gradient(45deg, #f3f3f3, #e2e2e2);
   border-bottom: 2px solid #5A00E1;
 }
-
 .columnName {
   font-size: 0.85rem;
   font-weight: 600;
 }
-
-
 th, td {
   padding: 12px;
   text-align: left;
