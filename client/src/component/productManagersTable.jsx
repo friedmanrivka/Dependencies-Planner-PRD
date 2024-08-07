@@ -2,6 +2,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import React, { useState } from 'react';
 import './BasicTable.css';
+
 import { Modal, Form, Input } from 'antd';
 import { Select, MenuItem } from '@mui/material';
 
@@ -27,7 +28,9 @@ import AddAdminDialog from './AddAdminDialog'; // Import the AddAdminDialog comp
 import { deleteProductManager, updateProductManagerName, addProductManager ,addGroupToManager,removeGroupFromManager} from './services';
 
 const ProductManagersTable = () => {
-  const { productManagers } = useDataContext();
+  
+  const { productManagers,refreshRows, group: [group],
+  } = useDataContext();
   const [productManagersData, setProductManagersData] = productManagers;
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentEmail, setCurrentEmail] = useState('');
@@ -52,14 +55,6 @@ const ProductManagersTable = () => {
   };
   const handleChangeDelete = async (event) => {
     setDelete(event);
-
-    //   try {
-    //     await updateStatus(requestId,groupName,statusName);
-    //     console.log('Updated Succesfuly');
-    //     refreshRows()
-    //   } catch (error) {
-    //     console.error('failed:', error);
-    //   }
   };
   const handleChangeInsert = async (email,event) => {
     setInsert(event);
@@ -71,37 +66,6 @@ const ProductManagersTable = () => {
     setCurrentEmail('');
     setNewName('');
   };
-
-  // Function to update product manager's name
-  // const handleUpdate = async () => {
-  //   console.log(currentEmail)
-  //     console.log(newName)
-  //   await updateProductManagerName(currentEmail, newName);
-  //     if(delete1!='') 
-  //       try{
-  //     console.log(currentEmail)
-  //     console.log(delete1)
-  //           const del = await removeGroupFromManager(currentEmail,delete1); }
-  //       catch(error){
-  //           console.error('Error fetching data:', error);}   
-  //     if(insert!='')
-  //       try{
-  //         console.log(currentEmail)
-  //         console.log(insertGroup)
-  //           const del2 =await addGroupToManager(currentEmail,insertGroup);}
-  //       catch(error){
-  //             console.error('Error fetching data:', error);}  
- 
-  //     setDelete('');
-  //     setInsert('');
-  //   // Update the UI by changing the product manager's name
-  //   setProductManagersData((prevData) =>
-  //     prevData.map((pm) =>
-  //       pm.email === currentEmail ? { ...pm, productManagerName: newName } : pm
-  //     )
-  //   );
-  //   handleDialogClose();
-  // };
   const handleUpdate = async () => { 
     try {      
       console.log(`Updating name for email: ${currentEmail} to new name: ${newName}`);
@@ -116,13 +80,6 @@ const ProductManagersTable = () => {
         await removeGroupFromManager(currentEmail,delete1);
       }
 
-
-
-      
-
-  
-
-  
       setProductManagersData((prevData) =>
         prevData.map((pm) =>
           pm.email === currentEmail ? { ...pm, productManagerName: newName } : pm
@@ -206,32 +163,26 @@ const ProductManagersTable = () => {
         </TableContainer>
       </CardContent>
 
-      {/* Dialog for updating product manager name */}
       <Dialog open={dialogOpen} onClose={handleDialogClose}>
         <DialogTitle>Update Product Manager Name</DialogTitle>
         <DialogContent>
           <TextField
+          defaultValue={productManagersData
+            .filter((item) => item.email === currentEmail)
+            .flatMap((item) =>
+              item.productManagerName             
+            )}
             autoFocus
             margin="dense"
             label="New Name"
             type="text"
             fullWidth
-            value={newName}
+            // value={newName}
             onChange={(e) => setNewName(e.target.value)}
           />
-
-          {/* <Select
-            placeholder="delete group"
-            // onChange={(value) => handleChange('planned', value)}
-          >
-            {productManagersData.map((item, index) => (
-              <Option value={item.groupNames} key={index}>{item}</Option>
-            ))}
-          </Select> */}
-
           <DialogTitle>delete a group</DialogTitle>
           <Select
-            defaultValue={"gggg"}
+          fullWidth
             placeholder="delete group"
             onChange={(event) => handleChangeDelete(event.target.value)}
           >
@@ -247,13 +198,13 @@ const ProductManagersTable = () => {
           </Select>
           <DialogTitle>insert a group</DialogTitle>
           <Select
-            defaultValue={"gggg"}
-            placeholder="insere group"
+          fullWidth
+          placeholder="insere group"
             onChange={(event) => handleChangeInsert(currentEmail,event.target.value)}
           >
-            {productManagersData.map((item, index) => (
-              <MenuItem value={item.groupNames} key={index}>
-                {item.groupNames}
+            {group.map((item, index) => (
+              <MenuItem value={item} key={index}>
+                {item}
               </MenuItem>
 
             ))}
