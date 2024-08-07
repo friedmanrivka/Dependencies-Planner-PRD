@@ -148,9 +148,6 @@ export const updateRequestor = async (requestId, productManagerName) => {
 };
 export const updateRequestorGroup = async (requestId, groupName) => {
     try {
-        console.log('hii')
-        console.log(requestId)
-        console.log(groupName)
         const response = await axios.put(`${API_URL}/update-requestor-group`, { requestId, groupName });
         return response.data;
     } catch (error) {
