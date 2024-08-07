@@ -60,9 +60,7 @@ const handleDelete = async (groupId) => {
                 <TableRow key={g.id}>
                   <TableCell>{g.name}</TableCell>
                   <TableCell>
-                    <Button id='deleteButton' variant="contained" color="secondary" onClick={() => handleDelete(g.id)}>
-                    <DeleteIcon />
-                    </Button>
+                    <DeleteIcon variant="contained" onClick={() => handleDelete(g.id)}/>
                   </TableCell>
                 </TableRow>
               ))}

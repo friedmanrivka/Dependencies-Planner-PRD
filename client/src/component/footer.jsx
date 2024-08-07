@@ -1,27 +1,4 @@
-// // src/components/Footer.js
-// import React from 'react';
-// import { Box, Container, Typography, Link } from '@mui/material';
-// import logo from '../images/logo.svg'
-// import './Footer.css';
 
-// const Footer = () => {
-//   return (
-//     <footer className="footer">
-//     <div className="footer-content">
-//       <div className="contact-info">
-//       <Typography variant="body1" color="textSecondary" align="center">
-//             <img src={logo} alt="" />
-//           © {new Date().getFullYear()} Practicum
-//         </Typography>
-//       </div>
-//     </div>
-//   </footer>
-
-//   );
-// };
-
-// export default Footer;
-// src/components/Footer.js
 import React from 'react';
 import { Typography } from '@mui/material';
 import logo from '../images/logo.svg';
