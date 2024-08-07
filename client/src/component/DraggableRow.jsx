@@ -161,13 +161,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
       setOpenComment(true);
     }
   };
-  // const handleStatusChange = (event, groupIndex) => {
-  //   setSelectedStatus((prevStatus) => {
-  //     const newStatus = [...prevStatus];
-  //     newStatus[groupIndex] = { ...newStatus[groupIndex], statusname: event.target.value };
-  //     return newStatus;
-  //   });
-  // };
+
   const handleStatusChange = async (requestId, groupName, statusName, event, groupIndex) => {
     console.log({ requestId, groupName, statusName, event, groupIndex })
     setSelectedStatus((prevStatus) => {

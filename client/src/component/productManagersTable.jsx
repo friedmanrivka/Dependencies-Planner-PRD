@@ -71,37 +71,6 @@ const ProductManagersTable = () => {
     setCurrentEmail('');
     setNewName('');
   };
-
-  // Function to update product manager's name
-  // const handleUpdate = async () => {
-  //   console.log(currentEmail)
-  //     console.log(newName)
-  //   await updateProductManagerName(currentEmail, newName);
-  //     if(delete1!='') 
-  //       try{
-  //     console.log(currentEmail)
-  //     console.log(delete1)
-  //           const del = await removeGroupFromManager(currentEmail,delete1); }
-  //       catch(error){
-  //           console.error('Error fetching data:', error);}   
-  //     if(insert!='')
-  //       try{
-  //         console.log(currentEmail)
-  //         console.log(insertGroup)
-  //           const del2 =await addGroupToManager(currentEmail,insertGroup);}
-  //       catch(error){
-  //             console.error('Error fetching data:', error);}  
- 
-  //     setDelete('');
-  //     setInsert('');
-  //   // Update the UI by changing the product manager's name
-  //   setProductManagersData((prevData) =>
-  //     prevData.map((pm) =>
-  //       pm.email === currentEmail ? { ...pm, productManagerName: newName } : pm
-  //     )
-  //   );
-  //   handleDialogClose();
-  // };
   const handleUpdate = async () => { 
     try {      
       console.log(`Updating name for email: ${currentEmail} to new name: ${newName}`);
