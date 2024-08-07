@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { updateDescription, getAllRequest, updateFinalDecision, updateRequestTitle, updateRequestComment, updateRequestJira, updateRequestProductManager, updateRequestorGroup, updatePriority,updateAffectedGroup,swapIdDrag,updatePlans,addRequestPeriod } from '../controllers/requestController';
+import { updateDescription, getAllRequest, updateFinalDecision, updateRequestTitle, updateRequestComment, updateRequestJira, updateRequestProductManager, updateRequestorGroup, updatePriority,updateAffectedGroup,swapIdDrag,updatePlans,addRequestPeriod,getDateRange } from '../controllers/requestController';
 
 const router = Router();
 router.get('/requestor-Details', getAllRequest);
@@ -17,6 +17,9 @@ router.put('/update-affected-groups-status', updateAffectedGroup);
 router.put('/update-swapIdDrag/:id1/:id2', swapIdDrag);
 router.put('/update-planned',updatePlans);
 router.post('/addRequestPeriod', addRequestPeriod);
+router.get('/getDateRange', getDateRange);
+
+
 
 // router.put('/update-affected-groups', updateAffectedGroups);
 export default router;

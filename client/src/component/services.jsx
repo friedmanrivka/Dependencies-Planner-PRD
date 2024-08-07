@@ -169,7 +169,6 @@ export const deleteProductManager = async (email) => {
 };
 
 export const addProductManager = async (email, productManagerName) => {
-    console.log('try')
     try {
         const response = await axios.post(`${API_URL}/addProductManager/${email}`, { productManagerName });
         return response.data;
@@ -189,10 +188,6 @@ export const currentQ = async () => {
     }
 };
 export const addQ = async (year, quarter, isCurrent) => {
-    console.log(year)
-    console.log(quarter)
-    console.log(isCurrent)
-    console.log('try')
     try {
         console.log(`${API_URL}/set-current-quarter`)
         const response = await axios.post(`${API_URL}/set-current-quarter`, { year, quarter, isCurrent });
@@ -203,7 +198,6 @@ export const addQ = async (year, quarter, isCurrent) => {
     }
 };
 export const addAdmin = async (email, productManagerName) => {
-    console.log('try')
     try {
         const response = await axios.post(`${API_URL}/add-admin/${email}`, { productManagerName });
         return response.data;
@@ -222,7 +216,6 @@ export const updateStatus = async (requestId, groupName, statusName) => {
     }
 };
 export const addGroup = async (groupName) => {
-    console.log('Trying to add group');
     try {
         const response = await axios.post(`${API_URL}/add-group`, { groupName });
         return response.data;
@@ -233,7 +226,6 @@ export const addGroup = async (groupName) => {
 };
 export const addNewRequest = async (newRequest) => {
     try {
-        console.log('Adding new request')
         const response = await axios.post(`${API_URL}/requestor-Details`, newRequest, {
             headers: {
                 'Content-Type': 'application/json'
@@ -289,14 +281,26 @@ export const updateComment= async (requestId,comment) => {
 };
 export const exportTable = async () => {
     try {
-        const response = await axios.get(`${API_URL}/export/csv`);
-        return response.data;
+      const response = await axios.get(`${API_URL}/export/csv`, {
+        responseType: 'blob', // חשוב להגדיר את זה כדי לקבל blob
+      });
+  
+      // המרת התגובה ל-blob
+      const blob = new Blob([response.data], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'dependencies_planner.csv'; // שם הקובץ שיירד
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url); // שחרור הזיכרון
+  
     } catch (error) {
-        console.error('Error export the table:', error);
-        throw error;
+      console.error('Error exporting the table:', error);
+      throw error;
     }
-};
-
+  };
 
 
 
@@ -379,3 +383,16 @@ export const updateProductManagerName = async (email, productManagerName) => {
     }
   };
 
+  export async function getRequestPeriod() {
+    try {
+      const response = await axios.get(`${API_URL}/getDateRange`);
+      console.log('Fetched request period:', response.data);
+  
+      const { start, end } = response.data[0]; 
+  
+      return { start, end };
+    } catch (error) {
+      console.error('Error fetching request period:', error);
+      throw error;
+    }
+  }

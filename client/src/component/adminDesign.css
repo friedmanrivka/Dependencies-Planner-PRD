@@ -1,9 +1,45 @@
+
 .admin-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #f4f4f9;
+}
+
+.button-container {
+  display: flex; /* Use flexbox for a single row */
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; /* Allow buttons to wrap in smaller screens */
+  gap: 20px; /* Space between buttons */
+  width: 100%;
+  max-width: 1200px; /* Max width for the button container */
+  margin-bottom: 200px;
+  margin-top: 100px;
+}
+
+.admin-button {
+  background-color: #5a00e1 !important; /* Solid color matching the navbar */
+  color: white !important;
+  width: 150px; /* Uniform button size */
+  height: 150px; /* Adjusted height */
+  font-size: 12px; /* Adjusted font size for better readability */
+  font-weight: bold;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase; /* Consistent text styling */
+}
+
+.admin-button:hover {
+  background: linear-gradient(to right, #00C2FF, #5a00e1) !important; /* Inverse gradient on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+
   .button-container {
     display: grid;
     grid-template-columns: repeat(2, 200px); /* Two buttons per row */
@@ -21,14 +57,22 @@
     border-radius: 8px; /* Rounded corners */
   }
   
-  .background-square {
-    width: 440px; /* Adjust width to match buttons */
-    height: 100px; /* Height of the background square */
-    background-color: #00C2FF; /* Background color */
-    border-radius: 10px; /* Rounded corners */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
+
+
+}
+
+.background-square {
+  width: 100%;
+  max-width: 1200px;
+  height: 100px;
+  background-color: #5a00e1; /* Use solid color for consistency */
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+

@@ -1,6 +1,7 @@
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { exportTable } from './services';
+import { exportTable,getRequestPeriod } from './services';
 import { useDataContext } from './Contexts/DataContext';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -40,6 +41,8 @@ import MyModal from './addRequest';
 import DraggableRow from './DraggableRow';
 import { updateIdRow } from './services';
 
+
+
 const ItemType = 'ROW';
 
 const BasicTable = () => {
@@ -66,6 +69,7 @@ const BasicTable = () => {
   const [filterInvolvedName, setFilterInvolvedName] = useState([]);
   const [finalDecisionChose, setFinalDecisionChose] = useState();
   const [modalVisible, setModalVisible] = useState(false);
+  const [requestPeriod, setRequestPeriod] = useState({ startDate: null, endDate: null });
 
   const fetchData = async () => {
     refreshRows();
@@ -83,6 +87,20 @@ const BasicTable = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(() => {
+    const fetchRequestPeriod = async () => {
+      const periodData = await getRequestPeriod();
+      if (periodData) {
+        setRequestPeriod({
+          startDate: new Date(periodData.start),
+          endDate: new Date(periodData.end),
+        });
+      }
+    };
+
+    fetchRequestPeriod();
+  }, []);
+
 
   const toggleGroups = () => {
     setShowGroups(!showGroups);
@@ -129,7 +147,13 @@ const BasicTable = () => {
   }, [filterRequestorGroup, filterRequestorName, filterInvolvedName]);
 
   const showModal = () => {
-    setModalVisible(true);
+    const currentDate = new Date();
+    if (currentDate >= requestPeriod.startDate && currentDate <= requestPeriod.endDate) {
+      setModalVisible(true);
+    } else {
+      console.log(currentDate);
+      alert('The request period is currently closed. You cannot add a new request at this time.');
+    }
   };
 
   const closeModal = () => {
@@ -154,29 +178,32 @@ const BasicTable = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <AppBar position="sticky" style={{ backgroundColor: '#491688' }}>
-        <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
-            Dependencies Planner PRD
-          </Typography>
 
-          <Button
-            variant="contained"
-            className="custom-button"
-            startIcon={<SaveAltIcon className="custom-button-icon" />}
-            onClick={exportTable}
-          >
-            Export Table
-          </Button>
+      <Toolbar>
+  <Typography variant="h6" style={{ flexGrow: 1 }}>
+    Dependencies Planner PRD
+  </Typography>
 
-          <Button
-            variant="contained"
-            className="custom-button"
-            startIcon={<AdminPanelSettingsIcon className="custom-button-icon" />}
-            onClick={goToAdminPage}
-          >
-            Admin Page
-          </Button>
-        </Toolbar>
+  <Button
+    variant="contained"
+    className="custom-button"
+    startIcon={<SaveAltIcon className="custom-button-icon" />}
+    onClick={exportTable}
+    sx={{ mr: 2 }} // Add spacing here
+  >
+    Export Table
+  </Button>
+
+  <Button
+    variant="contained"
+    className="custom-button"
+    startIcon={<AdminPanelSettingsIcon className="custom-button-icon" />}
+    onClick={goToAdminPage}
+  >
+    Admin Page
+  </Button>
+</Toolbar>
+
       </AppBar>
       <div className="container">
         <div className="sidebar">
@@ -243,14 +270,30 @@ const BasicTable = () => {
             </ListItem>
           </List>
           <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddCircleOutlineIcon />}
-            className="add-request-button"
-            onClick={showModal}
-          >
-            Add Request
-          </Button>
+  variant="contained"
+  sx={{
+    background: '#491688', // Navbar color
+    borderRadius: 4, // 90-degree angles
+    padding: '12px 25px',
+    color: 'white',
+    fontWeight:'light',
+    boxShadow: '0 4px 6px 3px rgba(90, 0, 225, 0.2)',
+    transition: 'background 0.3s ease', // Smooth transition effect
+    '&:hover': {
+      background: 'linear-gradient(45deg, #5A00E1 30%, #00C2FF 90%)',
+      boxShadow: '0 6px 8px 3px rgba(90, 0, 225, 0.3)',
+    },
+    // alignSelf: 'flex-end', // Align button to the right
+    marginRight: '15px', // Add right margin to move further
+    marginLeft: '15px',
+    width: '165px', // Maintain consistent width
+    marginTop: 'auto', // Push the button to the bottom of the sidebar
+  }}
+  startIcon={<AddCircleOutlineIcon />}
+  onClick={showModal} // Keeping the click handler
+>
+  Add Request
+</Button>
         </div>
         <div className="table-wrapper">
           <Card sx={{ minWidth: 275 }}>

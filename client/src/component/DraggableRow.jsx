@@ -161,13 +161,7 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
       setOpenComment(true);
     }
   };
-  // const handleStatusChange = (event, groupIndex) => {
-  //   setSelectedStatus((prevStatus) => {
-  //     const newStatus = [...prevStatus];
-  //     newStatus[groupIndex] = { ...newStatus[groupIndex], statusname: event.target.value };
-  //     return newStatus;
-  //   });
-  // };
+
   const handleStatusChange = async (requestId, groupName, statusName, event, groupIndex) => {
     console.log({ requestId, groupName, statusName, event, groupIndex })
     setSelectedStatus((prevStatus) => {
@@ -247,7 +241,6 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
       setDialogOpen(false);
     }
   };
-
   const getFinalDecisionBackgroundColor = (decision) => {
     switch (decision) {
       case 'inQ':
@@ -279,19 +272,12 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
   return (
     <>
       <TableRow
-        ref={ref}
-        // style={{
-        //   opacity: isDragging ? 0.5 : 1,
-        //   cursor: isDragging ? "url('/waving-hand-cursor.png'), auto" : "grab",
-        //   '&:hover': { backgroundColor: '#e23939' }
-        sx={{
-          // opacity: isDragging ? 0.5 : 1,
-          // cursor: isDragging ? 'grabbing' : 'grab',
-          '&:hover': { backgroundColor: '#f0f0f0' },
-          '&:last-child td, &:last-child th': { border: 0 }
-        }}
+         ref={ref}
+
         key={index}
-        // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        sx={{ '&:hover': { backgroundColor: '#f0f0f0' },
+          '&:last-child td, &:last-child th': { border: 0 } }}
+
       >
         <TableCell>
           <Select

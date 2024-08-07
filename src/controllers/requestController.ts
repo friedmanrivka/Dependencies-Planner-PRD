@@ -190,3 +190,23 @@ export const addRequestPeriod = async (req: Request, res: Response): Promise<voi
       res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+export const getDateRange = async (req: Request, res: Response): Promise<void> => {
+    console.log('Controller hit: getDateRange');
+    try {
+        // Call the repository function to get date ranges
+        const dateRanges = await RequestRepo.getDateRange();
+
+        // Extract the date ranges if needed or send them directly
+        const responseArray = dateRanges.map(range => ({
+            start: range.request_start,
+            end: range.request_end
+        }));
+
+        // Send the response as JSON
+        res.json(responseArray);
+        console.log('Date Ranges:', responseArray);
+    } catch (error) {
+        console.error('Error fetching date ranges:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};

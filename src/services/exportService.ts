@@ -1,11 +1,9 @@
+
 import { Request, Response } from 'express';
 import RequestRepo from '../repositories/requestRepo';
-import { createObjectCsvWriter } from 'csv-writer';
-import * as path from 'path';
+import { createObjectCsvStringifier } from 'csv-writer';
 
-const csvFilePath = path.join(__dirname, '../config/dependencies_planner.csv');
-const csvWriter = createObjectCsvWriter({
-  path: csvFilePath,
+const csvStringifier = createObjectCsvStringifier({
   header: [
     { id: 'id', title: 'Request ID' },
     { id: 'productmanagername', title: 'Product Manager Name' },
@@ -51,8 +49,15 @@ export const exportToCSV = async (req: Request, res: Response): Promise<void> =>
       return record;
     });
 
-    await csvWriter.writeRecords(records);
-    res.json({ message: 'CSV file created successfully', filePath: csvFilePath });
+    // Convert records to CSV string
+    const csvString = csvStringifier.getHeaderString() + csvStringifier.stringifyRecords(records);
+
+    // Set response headers for file download
+    res.setHeader('Content-Disposition', 'attachment; filename="dependencies_planner.csv"');
+    res.setHeader('Content-Type', 'text/csv');
+
+    // Send the CSV string as a response
+    res.send(csvString);
   } catch (error) {
     console.error('Error exporting to CSV:', error);
     res.status(500).send('Internal Server Error');
