@@ -18,7 +18,8 @@ const DeleteComponent = ({id,fetchData}) => {
 
     return (
         <div>
-            <button onClick={handleDelete}>  <DeleteIcon /></button>
+            <DeleteIcon><button onClick={handleDelete}> </button></DeleteIcon>
+            
         </div>
     );
 };

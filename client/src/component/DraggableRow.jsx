@@ -279,13 +279,11 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
     <>
       <TableRow
          ref={ref}
-        // style={{
-        //   opacity: isDragging ? 0.5 : 1,
-        //   cursor: isDragging ? "url('/waving-hand-cursor.png'), auto" : "grab"
-        // }}
+
         key={index}
         sx={{ '&:hover': { backgroundColor: '#f0f0f0' },
           '&:last-child td, &:last-child th': { border: 0 } }}
+
       >
         <TableCell>
           <Select
