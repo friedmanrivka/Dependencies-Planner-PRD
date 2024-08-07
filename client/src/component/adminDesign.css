@@ -39,7 +39,26 @@
   background: linear-gradient(to right, #00C2FF, #5a00e1) !important; /* Inverse gradient on hover */
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+
+  .button-container {
+    display: grid;
+    grid-template-columns: repeat(2, 200px); /* Two buttons per row */
+    grid-gap: 20px; /* Space between buttons */
+    justify-content: center; /* Center buttons horizontally */
+    margin-bottom: 20px;
+  }
   
+  .admin-button {
+    background-color: #5A00E1 !important; /* Button background color */
+    color: white; /* Text color */
+    width: 200px; /* Width of the button */
+    height: 200px; /* Height of the button */
+    font-size: 18px; /* Font size */
+    border-radius: 8px; /* Rounded corners */
+  }
+  
+
+
 }
 
 .background-square {
@@ -56,3 +75,4 @@
   font-size: 18px;
   font-weight: bold;
 }
+

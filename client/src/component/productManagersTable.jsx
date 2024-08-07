@@ -66,6 +66,7 @@ const ProductManagersTable = () => {
     setCurrentEmail('');
     setNewName('');
   };
+
   const handleUpdate = async () => { 
     try {      
       console.log(`Updating name for email: ${currentEmail} to new name: ${newName}`);
@@ -116,7 +117,7 @@ const ProductManagersTable = () => {
       <CardContent>
         <Button
           variant="contained"
-          style={{ backgroundColor: '#FFA500', marginBottom: '20px' }}
+          style={{ backgroundColor: ' #5A00E1', marginBottom: '20px' }}
           onClick={handleAddAdminClick}
         >
           Add Product Manager
@@ -141,20 +142,15 @@ const ProductManagersTable = () => {
                     {pm.groupNames.length > 0 ? pm.groupNames.join(', ') : <em>No Groups</em>}
                   </TableCell>
                   <TableCell>
-                    <Button
+                   <DeleteIcon
                       variant="contained"
-                      style={{ backgroundColor: '#58D64D' }}
                       onClick={() => handleDelete(pm.email)}
-                    >
-                      <DeleteIcon />
-                    </Button>
-                    <Button
+                    />   
+                    
+                    <EditIcon
                       variant="contained"
-                      style={{ backgroundColor: '#FFA500', marginLeft: '10px' }}
                       onClick={() => handleUpdateClick(pm.email)}
-                    >
-                      <EditIcon />
-                    </Button>
+                    />
                   </TableCell>
                 </TableRow>
               ))}
@@ -180,7 +176,9 @@ const ProductManagersTable = () => {
             // value={newName}
             onChange={(e) => setNewName(e.target.value)}
           />
-          <DialogTitle>delete a group</DialogTitle>
+
+          <DialogTitle>delete group</DialogTitle>
+
           <Select
           fullWidth
             placeholder="delete group"
@@ -196,7 +194,7 @@ const ProductManagersTable = () => {
                 ))
               )}
           </Select>
-          <DialogTitle>insert a group</DialogTitle>
+          <DialogTitle>insert group</DialogTitle>
           <Select
           fullWidth
           placeholder="insere group"
