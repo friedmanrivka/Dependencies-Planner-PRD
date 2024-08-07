@@ -10,6 +10,10 @@
   width: calc(100% - 250px);
   max-width: calc(100% - 250px);
   margin-left: 0;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .highlight-header {
@@ -19,16 +23,15 @@
   text-align: center;
   display: flex;
   align-items: center;
-  flex-direction: column;
   justify-content: center;
-  padding: 12px;
-  font-size: 0.9rem;
+  padding: 16px;
+  font-size: 1rem;
   background: linear-gradient(45deg, #f3f3f3, #e2e2e2);
   border-bottom: 2px solid #5A00E1;
 }
 
 .columnName {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
 }
 
@@ -40,7 +43,7 @@ tr:hover {
 th, td {
   padding: 12px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #5A00E1; /* Blue bottom border */
   vertical-align: middle;
 }
 
@@ -53,7 +56,7 @@ tbody tr:nth-of-type(even) {
 }
 
 .table-header-icon {
-  display: none;
+  display: block;
   margin-top: 4px;
 }
 
@@ -71,7 +74,7 @@ tbody tr:nth-of-type(even) {
 }
 
 .sidebar .MuiInputBase-input {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
 .sidebar .MuiFormControl-root .MuiOutlinedInput-root {
@@ -94,7 +97,7 @@ tbody tr:nth-of-type(even) {
 }
 
 .sidebar .MuiInputLabel-root {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: #5A00E1;
 }
 
@@ -111,7 +114,7 @@ tbody tr:nth-of-type(even) {
 }
 
 .sidebar .MuiListItemText-primary {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
 /* Button styling */
@@ -123,12 +126,13 @@ tbody tr:nth-of-type(even) {
   font-size: 14px;
   font-weight: bold;
   color: white;
-  background: linear-gradient(45deg, #5A00E1 30%, #00C2FF 90%);
-  border-radius: 25px;
+  background: linear-gradient(45deg, #5A00E1 30%, #00C2FF 90%); 
+  border-radius: 4px;
   border: none;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.3s;
   box-shadow: 0 3px 5px 2px rgba(90, 0, 225, 0.3);
+  margin-right: 10px;
 }
 
 .custom-button:hover {
@@ -141,32 +145,31 @@ tbody tr:nth-of-type(even) {
 }
 
 .add-request-button {
-  /* background-color: #58D64D; */
   color: white;
-  /* margin-left: 40px;
-  padding: 10px 20px; */
-  border-radius: 25px;
+  border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: transform 0.2s, background-color 0.3s ease;
   height: 65px;
   width: 170px;
+  margin-top: auto;
+  align-self: flex-end;
+  margin-right: 15px;
 }
 
 .add-request-button:hover {
-  background-color: #45B039;
-  /* transform: translateY(-2px); */
+  background: linear-gradient(45deg, #5A00E1 30%, #00C2FF 90%);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-#deleteButton{
+#deleteButton {
   background-color: #58D64D;
   width: 15px;
   height: 30px;
 }
-.adminbutton{
- background-color:#58D64D ;
+
+.adminbutton {
+  background-color: #58D64D;
   width: 20%;
   height: 80%;
 }
-

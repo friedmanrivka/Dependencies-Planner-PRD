@@ -372,3 +372,16 @@ export const updateProductManagerName = async (email, productManagerName) => {
     }
   };
 
+  export async function getRequestPeriod() {
+    try {
+      const response = await axios.get(`${API_URL}/getDateRange`);
+      console.log('Fetched request period:', response.data);
+  
+      const { start, end } = response.data[0]; 
+  
+      return { start, end };
+    } catch (error) {
+      console.error('Error fetching request period:', error);
+      throw error;
+    }
+  }

@@ -335,6 +335,14 @@ export default class RequestRepo {
     }
     static async updateAffectedGroup(requestId: number, groupName: string, statusName: string): Promise<void> {
         try {
+            const requestName = await pool.query(
+                `SELECT title FROM request WHERE id = $1`,
+                [requestId]
+            )
+            if (requestName.rows.length === 0) {
+                throw new Error('request not found');
+            }
+            const requestTitle = requestName.rows[0].title;
           // Begin a transaction
           await pool.query('BEGIN');
       
@@ -370,6 +378,8 @@ export default class RequestRepo {
       
           // Commit the transaction
           await pool.query('COMMIT');
+          const message = `affectedGroup updated in: ${requestTitle} request`;
+          await sendSlackMessage(message);
         } catch (err) {
           // Rollback the transaction in case of an error
           await pool.query('ROLLBACK');
@@ -425,23 +435,17 @@ export default class RequestRepo {
       throw error;
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
+  static async getDateRange() {
+    try {
+      const result = await pool.query('SELECT request_start, request_end FROM request_periods');
+     
+      return result.rows ;
+    } catch (err) {
+        console.error('Error executing query in getAllPriority:', err);
+        throw err;
+    }
+}
+   
       }
 
 
