@@ -35,10 +35,11 @@
   font-weight: 600;
 }
 
-tr:hover {
+/* tr:hover {
   background-color: #eaf3ff;
   transition: background-color 0.3s ease;
-}
+
+} */
 
 th, td {
   padding: 12px;
@@ -54,12 +55,18 @@ tbody tr:nth-of-type(odd) {
 tbody tr:nth-of-type(even) {
   background-color: #f3f3f3;
 }
-
+#iconButon{
+  display: flex;
+  align-items: center; /* כדי ליישר אותם באמצע אנכית */
+  gap: 8px; /* רווח בין האייקונים, ניתן לשנות לפי הצורך */
+}
 .table-header-icon {
   display: block;
   margin-top: 4px;
 }
-
+/* tr:hover {
+  background-color: #f1f1f1;
+} */
 .sidebar {
   padding-top: 100px;
   width: 200px;

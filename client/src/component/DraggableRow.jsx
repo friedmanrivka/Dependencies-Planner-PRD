@@ -247,7 +247,6 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
       setDialogOpen(false);
     }
   };
-
   const getFinalDecisionBackgroundColor = (decision) => {
     switch (decision) {
       case 'inQ':
@@ -280,12 +279,18 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
     <>
       <TableRow
         ref={ref}
-        style={{
-          opacity: isDragging ? 0.5 : 1,
-          cursor: isDragging ? "url('/waving-hand-cursor.png'), auto" : "grab"
+        // style={{
+        //   opacity: isDragging ? 0.5 : 1,
+        //   cursor: isDragging ? "url('/waving-hand-cursor.png'), auto" : "grab",
+        //   '&:hover': { backgroundColor: '#e23939' }
+        sx={{
+          // opacity: isDragging ? 0.5 : 1,
+          // cursor: isDragging ? 'grabbing' : 'grab',
+          '&:hover': { backgroundColor: '#f0f0f0' },
+          '&:last-child td, &:last-child th': { border: 0 }
         }}
         key={index}
-        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
         <TableCell>
           <Select
@@ -401,7 +406,9 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
         ))}
         <TableCell align="right" onDoubleClick={() => handleOpenComment(row)}>{row.comment}</TableCell>
         <TableCell align="right" onDoubleClick={() => handleOpenJira(row)}><a href={row.jiralink}>Jira Link</a></TableCell>
+
         <TableCell align="right" id='iconButon'><DeleteComponent id={row.id} fetchData={fetchData} /><EditIcon onClick={handleEditClick} style={{ cursor: 'pointer', color: isEditing ? '#5A00E1' : 'black' }} /></TableCell>
+
       </TableRow>
       <FinalDecisionDialog
         open={dialogOpen}

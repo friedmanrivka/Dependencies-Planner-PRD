@@ -178,6 +178,7 @@ const BasicTable = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <AppBar position="sticky" style={{ backgroundColor: '#491688' }}>
+
       <Toolbar>
   <Typography variant="h6" style={{ flexGrow: 1 }}>
     Dependencies Planner PRD
