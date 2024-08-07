@@ -406,7 +406,9 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
         ))}
         <TableCell align="right" onDoubleClick={() => handleOpenComment(row)}>{row.comment}</TableCell>
         <TableCell align="right" onDoubleClick={() => handleOpenJira(row)}><a href={row.jiralink}>Jira Link</a></TableCell>
-        <TableCell align="right" id='iconButon'><DeleteComponent id={row.id} fetchData={fetchData} /><EditIcon onClick={handleEditClick} style={{ cursor: 'pointer', color: isEditing ? '#1976D2' : 'black' }} /></TableCell>
+
+        <TableCell align="right" id='iconButon'><DeleteComponent id={row.id} fetchData={fetchData} /><EditIcon onClick={handleEditClick} style={{ cursor: 'pointer', color: isEditing ? '#5A00E1' : 'black' }} /></TableCell>
+
       </TableRow>
       <FinalDecisionDialog
         open={dialogOpen}
