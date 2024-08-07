@@ -1,4 +1,5 @@
-# Use the official Node.js 14 image as the base
+
+__tpx__# Use the official Node.js image as the base
 FROM node:14
 
 # Set the working directory inside the container
@@ -11,16 +12,16 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 # Copy the rest of the application code to the working directory
-COPY . .
+COPY ./ ./
 
-# Build the React application
+# Build the client application
 RUN npm run build
 
-# Install the `serve` package globally
+# Install a simple server to serve the static files
 RUN npm install -g serve
 
-# Expose the port the app runs on
+# Expose the port the client app runs on
 EXPOSE 3000
 
-# Command to serve the app in production mode
+# Command to serve the application
 CMD ["serve", "-s", "build"]
