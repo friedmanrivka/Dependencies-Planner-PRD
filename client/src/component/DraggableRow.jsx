@@ -247,7 +247,6 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
       setDialogOpen(false);
     }
   };
-
   const getFinalDecisionBackgroundColor = (decision) => {
     switch (decision) {
       case 'inQ':

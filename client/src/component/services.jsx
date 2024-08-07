@@ -169,7 +169,6 @@ export const deleteProductManager = async (email) => {
 };
 
 export const addProductManager = async (email, productManagerName) => {
-    console.log('try')
     try {
         const response = await axios.post(`${API_URL}/addProductManager/${email}`, { productManagerName });
         return response.data;
@@ -189,10 +188,6 @@ export const currentQ = async () => {
     }
 };
 export const addQ = async (year, quarter, isCurrent) => {
-    console.log(year)
-    console.log(quarter)
-    console.log(isCurrent)
-    console.log('try')
     try {
         console.log(`${API_URL}/set-current-quarter`)
         const response = await axios.post(`${API_URL}/set-current-quarter`, { year, quarter, isCurrent });
@@ -203,7 +198,6 @@ export const addQ = async (year, quarter, isCurrent) => {
     }
 };
 export const addAdmin = async (email, productManagerName) => {
-    console.log('try')
     try {
         const response = await axios.post(`${API_URL}/add-admin/${email}`, { productManagerName });
         return response.data;
@@ -222,7 +216,6 @@ export const updateStatus = async (requestId, groupName, statusName) => {
     }
 };
 export const addGroup = async (groupName) => {
-    console.log('Trying to add group');
     try {
         const response = await axios.post(`${API_URL}/add-group`, { groupName });
         return response.data;
@@ -233,7 +226,6 @@ export const addGroup = async (groupName) => {
 };
 export const addNewRequest = async (newRequest) => {
     try {
-        console.log('Adding new request')
         const response = await axios.post(`${API_URL}/requestor-Details`, newRequest, {
             headers: {
                 'Content-Type': 'application/json'
