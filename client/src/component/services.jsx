@@ -281,14 +281,26 @@ export const updateComment= async (requestId,comment) => {
 };
 export const exportTable = async () => {
     try {
-        const response = await axios.get(`${API_URL}/export/csv`);
-        return response.data;
+      const response = await axios.get(`${API_URL}/export/csv`, {
+        responseType: 'blob', // חשוב להגדיר את זה כדי לקבל blob
+      });
+  
+      // המרת התגובה ל-blob
+      const blob = new Blob([response.data], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'dependencies_planner.csv'; // שם הקובץ שיירד
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url); // שחרור הזיכרון
+  
     } catch (error) {
-        console.error('Error export the table:', error);
-        throw error;
+      console.error('Error exporting the table:', error);
+      throw error;
     }
-};
-
+  };
 
 
 
