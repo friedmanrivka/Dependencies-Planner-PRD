@@ -2,7 +2,7 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import logo from '../images/logo.svg';
-import './Footer.css';
+import './footer.css';
 
 const Footer = () => {
   return (
