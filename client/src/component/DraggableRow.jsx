@@ -2,23 +2,23 @@ import React, { useState, useRef, useEffect } from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import StatusSelect from './statusColor';
+import StatusSelect from './StatusColor';
 import './BasicTable.css';
 import { Select, MenuItem, Checkbox, ListItemText, List, ListItem, Divider, IconButton, FormControl, InputLabel, Card, CardContent, AppBar, Toolbar, Typography } from '@mui/material';
-import DeleteComponent from './deleteReq'
+import DeleteComponent from './deleteReq';
 
 import { updatePriority, updateRequestor, updateRequestorGroup, updateFinalDecision, updateStatus, updatePlanned } from './services'; // Import the update service
 
-import FinalDecisionDialog from './updateFinalDecision';
+import FinalDecisionDialog from './UpdateFinalDecision';
 import UpdateTitleDialog from './UpdateTitleDialog';
-import UpdateDescription from './updateDescriptionDialog';
-import UpdateComment from './updateComment';
-import UpdateJira from './updateJira';
+import UpdateDescription from './UpdateDescriptionDialog';
+import UpdateComment from './UpdateComment';
+import UpdateJira from './UpdateJira';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { useDataContext } from './Contexts/DataContext';
 import EditIcon from '@mui/icons-material/Edit';
-import BasicTable from "./table"
+import BasicTable from "./Table"
 const ItemType = 'ROW';
 const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status, priorityOptions, quarterDates, finalDecision, requestorNames, fetchData }) => {
   const {

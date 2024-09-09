@@ -1,11 +1,11 @@
 import './adminDesign.css';
 import React, { useState } from 'react';
-import ProductManagersTable from './productManagersTable';
-import GroupTable from './groupTable';
+import ProductManagersTable from './ProductManagersTable';
+import GroupTable from './GroupTable';
 import { DataProvider } from './Contexts/DataContext';
 import Button from '@mui/material/Button';
 import AddAdminDialog from './AddAdminDialog';
-import SelectQuarterDialog from './selectQuarterDialog';
+import SelectQuarterDialog from './SelectQuarterDialog';
 import AddPeriodDialog from './AddPeriodDialog';
 import { addAdmin, addQ, addRequestPeriod } from './services';
 import { AppBar, Toolbar, Typography, Container, Box } from '@mui/material';
