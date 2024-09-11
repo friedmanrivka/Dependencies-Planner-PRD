@@ -56,7 +56,6 @@ export const exportToCSV = async (req: Request, res: Response): Promise<void> =>
     res.setHeader('Content-Disposition', 'attachment; filename="dependencies_planner.csv"');
     res.setHeader('Content-Type', 'text/csv');
 
-    // Send the CSV string as a response
     res.send(csvString);
   } catch (error) {
     console.error('Error exporting to CSV:', error);
