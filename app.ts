@@ -11,17 +11,20 @@ import exportRoutes from './src/routes/exportRoutes';
 import deleteRouter from './src/routes/deleteRouter'
 import groupRoutes from './src/routes/groupRoutes';
 import quarterDatesRoutes from './src/routes/quarterDatesRoutes';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
-
 dotenv.config();
 const app = express();
 const port = process.env.EXPRESS_PORT || 3001
-app.use(cors());
-
+app.use(cors({
+   origin: 'http://localhost:3000', 
+  credentials: true,
+}));
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 })
 app.use(express.json());
+app.use(cookieParser());
 app.use('/api', deleteRouter);
 app.use('/api', requestRoutes);
 app.use('/api',priorityRoutes)

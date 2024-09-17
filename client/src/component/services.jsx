@@ -1,6 +1,30 @@
 import axios from 'axios';
 const API_URL = 'http://localhost:3001/api';
-export const deleteRequest = async (id) => {
+
+
+/////authentication
+export const checkEmailExists = async (email) => {
+    try {
+       console.log(email);
+        const response = await axios.post(`${API_URL}/check-email`, { email }, { withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.error('Error checking email:', error);
+        throw error;
+    }
+};
+
+//autheziration
+export const checkAdminAccess = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/check-admin`, { withCredentials: true });
+      return response.data; 
+    } catch (error) {
+      console.error('Error checking admin access:', error);
+      throw error;
+    }
+  };
+  export const deleteRequest = async (id) => {
     try {
         const response = await axios.delete(`${API_URL}/product-manager/${id}`);
         return response.status === 200;
@@ -9,15 +33,7 @@ export const deleteRequest = async (id) => {
         throw error;
     }
 };
-export const checkEmailExists = async (email) => {
-    try {
-        const response = await axios.post(`${API_URL}/check-email`, { email });
-        return response.data;
-    } catch (error) {
-        console.error('Error checking email:', error);
-        throw error;
-    }
-};
+
 export const getGroup = async () => {
     try {
         const response = await axios.get(`${API_URL}/requestor-Group`);
