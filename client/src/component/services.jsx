@@ -10,14 +10,43 @@ export const deleteRequest = async (id) => {
     }
 };
 export const checkEmailExists = async (email) => {
+    console.log('enter to call the service')
+
     try {
-        const response = await axios.post(`${API_URL}/check-email`, { email });
+        let port2 = `http://localhost:3001/api/check-email`
+        const response = await axios.post(port2, { email }, { withCredentials: true });
+        console.log('Request body being sent:', { email });
+        console.log('Response from server:', response.data);
         return response.data;
     } catch (error) {
-        console.error('Error checking email:', error);
+        if (error.response && error.response.data) {
+            // החזרת תגובת השגיאה מהשרת אם קיימת
+            return error.response.data;
+        }
+        console.error('Error checking email:', error.response ? error.response.data : error.message);
         throw error;
     }
 };
+export const checkAdminAccess = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/admin-action`, {
+            withCredentials: true, // חובה כדי לשלוח את העוגיה לשרת
+        });
+        console.log('Response from server:', response.data);
+        return response.data; // { isAdmin: true } או { isAdmin: false }
+    } catch (error) {
+        if (error.response && error.response.status === 403) {
+            return { isAdmin: false, message: 'Forbidden: Admins only' };
+        }
+        if (error.response && error.response.status === 401) {
+            return { isAdmin: false, message: 'Unauthorized' };
+        }
+        console.error('Error checking admin access:', error.message);
+        throw error;
+    }
+};
+
+
 export const getGroup = async () => {
     try {
         const response = await axios.get(`${API_URL}/requestor-Group`);
@@ -241,66 +270,66 @@ export const addNewRequest = async (newRequest) => {
 
 
 
-export const updateDescription = async (id,description) => {
-    try{
+export const updateDescription = async (id, description) => {
+    try {
         console.log(`id${id}description${description}`)
-     const response = await axios.put(`${API_URL}/update-description/${id}`, {description});
-     return response.data;
-    } catch (error){
+        const response = await axios.put(`${API_URL}/update-description/${id}`, { description });
+        return response.data;
+    } catch (error) {
         console.error('Error update request:', error);
         throw error;
     }
 };
 
-export const updateTitle = async (id,title) => {
-    try{
-     const response = await axios.put(`${API_URL}/update-title/${id}`,{title} );
-     return response.data;
-    } catch (error){
+export const updateTitle = async (id, title) => {
+    try {
+        const response = await axios.put(`${API_URL}/update-title/${id}`, { title });
+        return response.data;
+    } catch (error) {
         console.error('Error update request:', error);
         throw error;
     }
 };
-export const updateJira= async (requestId,jira) => {
-    try{
-     const response = await axios.put(`${API_URL}/update-jira`,{requestId,jira} );
-     return response.data;
-    } catch (error){
+export const updateJira = async (requestId, jira) => {
+    try {
+        const response = await axios.put(`${API_URL}/update-jira`, { requestId, jira });
+        return response.data;
+    } catch (error) {
         console.error('Error update jira in  request:', error);
         throw error;
     }
 };
-export const updateComment= async (requestId,comment) => {
-    try{
-     const response = await axios.put(`${API_URL}/update-comment`, {requestId,comment});
-     return response.data;
-    } catch (error){
+export const updateComment = async (requestId, comment) => {
+    try {
+        const response = await axios.put(`${API_URL}/update-comment`, { requestId, comment });
+        return response.data;
+    } catch (error) {
         console.error('Error update jira in  request:', error);
         throw error;
     }
 };
 export const exportTable = async () => {
     try {
-      const response = await axios.get(`${API_URL}/export/csv`, {
-        responseType: 'blob', // חשוב להגדיר את זה כדי לקבל blob
-      });
-  
-      // המרת התגובה ל-blob
-      const blob = new Blob([response.data], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'dependencies_planner.csv'; // שם הקובץ שיירד
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url); // שחרור הזיכרון
-  
+        const response = await axios.get(`${API_URL}/export/csv`, {
+            responseType: 'blob', // חשוב להגדיר את זה כדי לקבל blob
+        });
+
+        // המרת התגובה ל-blob
+        const blob = new Blob([response.data], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'dependencies_planner.csv'; // שם הקובץ שיירד
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url); // שחרור הזיכרון
+
     } catch (error) {
-      console.error('Error exporting the table:', error);
-      throw error;
+        console.error('Error exporting the table:', error);
+        throw error;
     }
-  };
+};
 
 
 
@@ -328,8 +357,9 @@ export const deleteGroup = async (groupId) => {
 };
 
 export const removeGroupFromManager = async (email, groupName) => {
-    try {console.log(`${API_URL}/removeGroupFromManager`)
-    console.log(email, groupName)
+    try {
+        console.log(`${API_URL}/removeGroupFromManager`)
+        console.log(email, groupName)
         const response = await axios.delete(`${API_URL}/removeGroupFromManager`, {
             data: { email, groupName }  // Add data object to specify request body for DELETE request
         });
@@ -340,11 +370,11 @@ export const removeGroupFromManager = async (email, groupName) => {
         throw error;
     }
 };
-export const  addGroupToManager = async (groupName, email) => {
+export const addGroupToManager = async (groupName, email) => {
     try {
 
         const response = await axios.post(`${API_URL}/addGroupToManager`, {
-         email,
+            email,
             groupName
         });
 
@@ -360,39 +390,39 @@ export const updateProductManagerName = async (email, productManagerName) => {
         console.log("hi")
         console.log(`emal :${email}`)
         console.log(productManagerName)
-        const response = await axios.put(`http://localhost:3001/api/update-product-manager-name/${email}`, 
-            {productManagerName}
+        const response = await axios.put(`http://localhost:3001/api/update-product-manager-name/${email}`,
+            { productManagerName }
         );
         return response.data;
     } catch (error) {
 
-      console.error('Error update request:', error);
+        console.error('Error update request:', error);
 
         throw error;
     }
-  };
-  
+};
 
-  export async function addRequestPeriod(start, end) {
-    try {
-      const response = await axios.post(`${API_URL}/addRequestPeriod`, {start, end,});
-      console.log('Request period added successfully:', response.data);
-    } catch (error) {
-      console.error('Error adding request period:', error);
-      throw error;
-    }
-  };
 
-  export async function getRequestPeriod() {
+export async function addRequestPeriod(start, end) {
     try {
-      const response = await axios.get(`${API_URL}/getDateRange`);
-      console.log('Fetched request period:', response.data);
-  
-      const { start, end } = response.data[0]; 
-  
-      return { start, end };
+        const response = await axios.post(`${API_URL}/addRequestPeriod`, { start, end, });
+        console.log('Request period added successfully:', response.data);
     } catch (error) {
-      console.error('Error fetching request period:', error);
-      throw error;
+        console.error('Error adding request period:', error);
+        throw error;
     }
-  }
+};
+
+export async function getRequestPeriod() {
+    try {
+        const response = await axios.get(`${API_URL}/getDateRange`);
+        console.log('Fetched request period:', response.data);
+
+        const { start, end } = response.data[0];
+
+        return { start, end };
+    } catch (error) {
+        console.error('Error fetching request period:', error);
+        throw error;
+    }
+}

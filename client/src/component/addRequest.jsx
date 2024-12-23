@@ -119,7 +119,7 @@ const MyModal = ({ visible, onClose, onAddRequest }) => {
   };
 
   return (
-    <Modal title="New Request" visible={visible} onCancel={onClose} onOk={handleOk}>
+    <Modal title="New Request" open={visible} onCancel={onClose} onOk={handleOk}>
       <Form
         form={form}
         layout="vertical"

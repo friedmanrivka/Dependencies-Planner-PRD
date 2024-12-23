@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { exportTable,getRequestPeriod } from './services';
+import { exportTable,getRequestPeriod,checkAdminAccess } from './services';
 import { useDataContext } from './Contexts/DataContext';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -160,16 +160,20 @@ const BasicTable = () => {
     setModalVisible(false);
   };
 
-  const goToAdminPage = () => {
-    // Check if the user is an admin before navigating
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    if (isAdmin) {
-      navigate('/admin');
-    } else {
-      alert('You do not have access to the admin page');
+  const goToAdminPage = async () => {
+    try {
+      const { isAdmin, message } = await checkAdminAccess();
+   if (isAdmin) {
+        navigate('/admin');
+      } else {
+        alert(message || 'You do not have access to the admin page');
+      }
+    } catch (error) {
+      console.error('Error verifying admin access:', error);
+      alert('Error verifying admin access. Please try again.');
     }
   };
-
+  
   const addRequest = (newRequest) => {
     setRows((prevRows) => [...prevRows, newRequest]);
     setFilteredRows((prevRows) => [...prevRows, newRequest]);

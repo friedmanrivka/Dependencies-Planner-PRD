@@ -2,8 +2,6 @@ import { pool ,pool2} from '../config/db';
 import GroupRepo from './groupRepo';
 import { ExtendedRequest } from '../models/extendedRequestModel';
 import sendSlackMessage from '../services/sendSlackMessege';
-
-
 export default class RequestRepo {
     static async getAllRequest(): Promise<ExtendedRequest[]> {
         try {
@@ -370,18 +368,16 @@ export default class RequestRepo {
       
           const statusId = statusResult.rows[0].id;
       
-          // Update the affected group status
           await pool.query(
             `UPDATE affectedgroups SET status_id = $1 WHERE requestid = $2 AND groupid = $3`,
             [statusId, requestId, groupId]
           );
-      
-          // Commit the transaction
+     
           await pool.query('COMMIT');
           const message = `affectedGroup updated in: ${requestTitle} request`;
           await sendSlackMessage(message);
         } catch (err) {
-          // Rollback the transaction in case of an error
+        
           await pool.query('ROLLBACK');
           console.error('Error updating affected group:', err);
           throw err;
@@ -389,20 +385,20 @@ export default class RequestRepo {
       }
       static async updatePlans(requestId: number, plans: string): Promise<void> {
         try {
-          // Update the plans column in the request table
+        
           const query = `
             UPDATE request
             SET planned = $1
             WHERE id = $2
           `;
     
-          // Execute the query with parameterized values
           await pool.query(query, [plans, requestId]);
     
           console.log('Repository: Plans updated successfully');
         } catch (err) {
           console.error('Repository: Error updating plans:', err);
-          throw err; // Rethrow the error to be handled by the controller
+          throw err; 
+
         }
       }
 
