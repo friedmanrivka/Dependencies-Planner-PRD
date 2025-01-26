@@ -180,7 +180,8 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
     }
   };
   const handlePllanedChange = async (event) => {
-    const newPllaned = event.target.value;
+    if (isEditing) {
+  const newPllaned = event.target.value;
     setSelectedPlanned(newPllaned);
     try {
       await updatePlanned(row.id, newPllaned);
@@ -188,7 +189,10 @@ const DraggableRow = ({ row, index, moveRow, showGroups, group, setRows, status,
     } catch (error) {
       console.error('Failed to update the planned:', error);
     }
+  }
   };
+
+  
 
   const handleRequestorGroupChange = async (event) => {
     if (isEditing) {

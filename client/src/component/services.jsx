@@ -13,14 +13,12 @@ export const checkEmailExists = async (email) => {
     console.log('enter to call the service')
 
     try {
-        let port2 = `http://localhost:3001/api/check-email`
-        const response = await axios.post(port2, { email }, { withCredentials: true });
+        const response = await axios.post(`${API_URL}/check-email`,{email }, { withCredentials: true });
         console.log('Request body being sent:', { email });
         console.log('Response from server:', response.data);
         return response.data;
     } catch (error) {
         if (error.response && error.response.data) {
-            // החזרת תגובת השגיאה מהשרת אם קיימת
             return error.response.data;
         }
         console.error('Error checking email:', error.response ? error.response.data : error.message);
@@ -30,10 +28,10 @@ export const checkEmailExists = async (email) => {
 export const checkAdminAccess = async () => {
     try {
         const response = await axios.get(`${API_URL}/admin-action`, {
-            withCredentials: true, // חובה כדי לשלוח את העוגיה לשרת
+            withCredentials: true, 
         });
         console.log('Response from server:', response.data);
-        return response.data; // { isAdmin: true } או { isAdmin: false }
+        return response.data; 
     } catch (error) {
         if (error.response && error.response.status === 403) {
             return { isAdmin: false, message: 'Forbidden: Admins only' };
@@ -311,19 +309,18 @@ export const updateComment = async (requestId, comment) => {
 export const exportTable = async () => {
     try {
         const response = await axios.get(`${API_URL}/export/csv`, {
-            responseType: 'blob', // חשוב להגדיר את זה כדי לקבל blob
+            responseType: 'blob', 
         });
 
-        // המרת התגובה ל-blob
         const blob = new Blob([response.data], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'dependencies_planner.csv'; // שם הקובץ שיירד
+        a.download = 'dependencies_planner.csv'; 
         document.body.appendChild(a);
         a.click();
         a.remove();
-        window.URL.revokeObjectURL(url); // שחרור הזיכרון
+        window.URL.revokeObjectURL(url); 
 
     } catch (error) {
         console.error('Error exporting the table:', error);
@@ -334,8 +331,9 @@ export const exportTable = async () => {
 
 
 export const updateIdRow = async (id1, id2) => {
+
     try {
-        const response = await axios.put(`http://localhost:3001/api/update-swapIdDrag/${id1}/${id2}`);
+        const response = await axios.put(`${API_URL}/update-swapIdDrag/${id1}/${id2}`);
         return response.data;
     } catch (error) {
         console.error('Error update request:', error);
@@ -361,7 +359,7 @@ export const removeGroupFromManager = async (email, groupName) => {
         console.log(`${API_URL}/removeGroupFromManager`)
         console.log(email, groupName)
         const response = await axios.delete(`${API_URL}/removeGroupFromManager`, {
-            data: { email, groupName }  // Add data object to specify request body for DELETE request
+            data: { email, groupName } 
         });
         console.log('Group removed successfully:', response.data);
         return response.data;
@@ -390,7 +388,7 @@ export const updateProductManagerName = async (email, productManagerName) => {
         console.log("hi")
         console.log(`emal :${email}`)
         console.log(productManagerName)
-        const response = await axios.put(`http://localhost:3001/api/update-product-manager-name/${email}`,
+        const response = await axios.put(`${API_URL}/update-product-manager-name/${email}`,
             { productManagerName }
         );
         return response.data;
